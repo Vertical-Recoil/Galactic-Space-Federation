@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p5.js example</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #1b1b1b;
+    }
+  </style>
+  <script src="p5.js"></script>
+  <script src="p5.sound.min.js"></script>
+  <script src="p5.sound.js"></script>
+  <script src="GSF_GameCode.js"></script>
+</head>
+
+<body>
+  <main>
+
+  </main>
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyDKQ5ipDBCsyx4H0SkLMV7RaMNjXXSt00o",
+      authDomain: "galactic-space-federation.firebaseapp.com",
+      projectId: "galactic-space-federation",
+      storageBucket: "galactic-space-federation.appspot.com",
+      messagingSenderId: "1006285148519",
+      appId: "1:1006285148519:web:f0ffb11524a38df0839fc2",
+      measurementId: "G-DWMZXZ7F9N"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+</body>
+
+</html>
