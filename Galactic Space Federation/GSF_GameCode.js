@@ -66,6 +66,7 @@ function preload() {
   soundFormats('ogg', 'mp3');
   song = loadSound("GameMusic.mp3");
   pewpewSound = loadSound("LaserBlaster.mp3");
+  pewpewSound.setVolume(0.3)
 }
 
 
@@ -542,6 +543,30 @@ function setup() {
                 //playerBulletY -= 5
             }
         }
+
+        function healthPack() {
+            //HealthBox Start
+            strokeWeight(5)
+            stroke(255)
+            fill(0, 255, 0)
+            rectMode(CENTER)
+            rect(lifeboxX, lifeboxY, 50, 50)
+            lifeboxX -= 2
+            if (lifeboxX <= -25) {
+                lifeboxX = random(1200, 2000)
+                lifeboxY = random(50, 550)
+            }
+            if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25) {
+                if (health == 5) {
+                    score = score + 1000
+                }
+                health = health + 1
+                lifeboxX = random(1200, 2000)
+                lifeboxY = random(50, 550)
+
+            }
+            //HealthBox End
+        }
         
         //Chaos in a can. Used to create the arcade screen and the ending text.
         function draw() {
@@ -561,10 +586,25 @@ function setup() {
                     timing += 0.017
                     lifeboxX = 1000
                     lifeboxX -= 0
+                    
                     enemyX1 = 1000
-                    enemyX1 -= 0
+                    enemyXSpeed1 = 0
+
+                    enemyX2 = 1000
+                    enemyXSpeed2 = 0
+
+                    enemyX3 = 1000
+                    enemyXSpeed3 = 0
+
                     enemyBulletX1 = 1000
-                    enemyBulletX1 -= 0
+                    enemyBulletXSpeed1 = 0
+                    
+                    enemyBulletX2 = 1000
+                    enemyBulletXSpeed2 = 0
+
+                    enemyBulletX3 = 1000
+                    enemyBulletXSpeed3 = 0
+
                     if (timing >= 7.9) {
                         text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
                         noLoop()
@@ -593,25 +633,8 @@ function setup() {
                 enemyLvl2();
                 enemyLvl3();
 
-                strokeWeight(5)
-                stroke(255)
-                fill(0, 255, 0)
-                rectMode(CENTER)
-                rect(lifeboxX, lifeboxY, 50, 50)
-                lifeboxX -= 2
-                if (lifeboxX <= -25) {
-                    lifeboxX = random(1200, 2000)
-                    lifeboxY = random(50, 550)
-                }
-                if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25) {
-                    if (health == 5) {
-                        score = score + 1000
-                    }
-                    health = health + 1
-                    lifeboxX = random(1200, 2000)
-                    lifeboxY = random(50, 550)
+                healthPack();
 
-                }
                 strokeWeight(1)
                 stroke(0)
                 rectMode(CORNER)
@@ -662,7 +685,5 @@ function setup() {
     [X]    EnemyBlaster.bullet = rect.rectangle-brightred.moveleft=always
     [X]    EnemyBlaster.bullet-logic = bullet.create in enemy gun, always moving left. if(bullet < canvas.left || hit player.Ship){enemyfire}. Bullet always respawns at the cannon of enemy ship.
     [X]    EnemyShip.logic = if(player.bullet = hit EnemyShip || EnemyShip < canvas.left){cannon+body = respawn && score + 1}
-        
-        
         
         */
