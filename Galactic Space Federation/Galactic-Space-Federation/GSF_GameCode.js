@@ -1,28 +1,66 @@
-var shipx;
-var shipy;
-var x;
-var y;
-var health;
-var score;
-var playerBulletX;
-var playerBulletY;
-var enemyBulletX;
-var enemyBulletXSpeed;
-var enemyBulletY;
-var enemyX;
-var enemyXSpeed;
-var enemyY;
-var healthPoint;
-var lifeboxX;
-var lifeboxY;
-var song;
-var songtracker;
-var pewpewSound;
-var begin;
-var ty;
-var keydown;
-var lost;
-var timing;
+var shipx;              //ship position X
+var shipy;              //ship position Y
+var x;                  //Stars alignment X
+var y;                  //Stars alignment Y
+var health;             //Player Health Counter
+var score;              //Player Score Counter
+var playerBulletX;      //Player Laser Postion X
+var playerBulletY;      //Player Laser Postion Y
+var lifeboxX;           //Life Pool top left X
+var lifeboxY;           //Life Pool top left Y
+var song;               //Variable that stores the soundtrack
+var songtracker;        //Boolean that only allows the song to play once (no overlap)
+var pewpewSound;        //Variable that stores the blaster sound effect
+var begin;              //Boolean that determines the launch of the actual game post title screen
+var ty;                 //String that holds the title screen location mesh
+var keydown;            //Variable that determines whether a key is pressed
+var lost;               //Lose condition video storage variable
+var timing;             //Stops the game after a couple seconds when the video stops playing
+
+/*
+    ALL ENEMY VARIABLES START
+
+    Each enemy has 7 Variables, and they are in order:
+
+    Enemy Ship Position X
+    Enemy Ship Position Y
+    Enemy Bullet Position X
+    Enemy Bullet Position Y
+    Enemy Ship Speed X (Only has X because ships will only move left) (CAN BE CHANGED LATER)
+    Enemy Bullet Speed X (Only has X because bullets will only move left) (WILL NOT BE CHANGED)
+    Enemy Hit Registration (Each enemy module needs this so that 2 or more intersecting bullets both have a chance to proc damage)
+*/
+
+//LVL 1
+var enemyX1;
+var enemyY1;
+var enemyBulletX1;
+var enemyBulletY1;
+var enemyXSpeed1;
+var enemyBulletXSpeed1;
+var hitReg1;
+
+//LVL 2
+var enemyX2;
+var enemyY2;
+var enemyBulletX2;
+var enemyBulletY2;
+var enemyXSpeed2;
+var enemyBulletXSpeed2;
+var hitReg2;
+
+//LVL 3
+var enemyX3;
+var enemyY3;
+var enemyBulletX3;
+var enemyBulletY3;
+var enemyXSpeed3;
+var enemyBulletXSpeed3;
+var hitReg3;
+
+/*
+    ALL ENEMY VARIABLES END
+*/
 
 function preload() {
   soundFormats('ogg', 'mp3');
@@ -30,12 +68,147 @@ function preload() {
   pewpewSound = loadSound("LaserBlaster.mp3");
 }
 
+
+/*
+    ALL ENEMY LOGIC START
+*/
+
+function enemyLvl1(){
+    fill(190, 0, 0)
+    rect(enemyX1, enemyY1, 40, 40)
+
+    fill(120)
+    rect(enemyX1 - 10, enemyY1 + 13, 35, 12)
+    enemyX1 -= enemyXSpeed1
+
+    fill(255, 0, 0)
+    rectMode(CENTER)
+    rect(enemyBulletX1 - 20, enemyBulletY1 + 18, 30, 10)
+    rectMode(CORNER)
+    enemyBulletX1 -= enemyBulletXSpeed1
+    if (enemyBulletX1 <= -30) {
+        enemyBulletX1 = enemyX1
+        enemyBulletY1 = enemyY1
+    }
+
+    if (enemyBulletX1 >= shipx - 10 && enemyBulletX1 <= shipx + 35 && enemyBulletY1 >= shipy - 35 && enemyBulletY1 <= shipy + 10) {
+        if (hitReg1 == true) {
+            health--
+            hitReg1 = 0
+        }
+
+    }
+
+    if (enemyBulletX1 == enemyX1) {
+        hitReg1 = 1
+    }
+
+    if (enemyX1 <= -30) {
+        enemyX1 = random(800, 900)
+        enemyY1 = random(50, 550)
+        score = score - 100
+    }
+    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40) {
+        enemyX1 = random(800, 900)
+        enemyY1 = random(50, 550)
+        score = score + int(random(59, 217))
+    }
+}
+
+function enemyLvl2(){
+    fill(0, 190, 0)
+    rect(enemyX2, enemyY2, 40, 40)
+
+    fill(120)
+    rect(enemyX2 - 10, enemyY2 + 13, 35, 12)
+    enemyX2 -= enemyXSpeed2
+
+    fill(255, 0, 0)
+    rectMode(CENTER)
+    rect(enemyBulletX2 - 20, enemyBulletY2 + 18, 30, 10)
+    rectMode(CORNER)
+    enemyBulletX2 -= enemyBulletXSpeed2
+    if (enemyBulletX2 <= -30) {
+        enemyBulletX2 = enemyX2
+        enemyBulletY2 = enemyY2
+    }
+
+    if (enemyBulletX2 >= shipx - 10 && enemyBulletX2 <= shipx + 35 && enemyBulletY2 >= shipy - 35 && enemyBulletY2 <= shipy + 10) {
+        if (hitReg2 == true) {
+            health--
+            hitReg2 = 0
+        }
+
+    }
+
+    if (enemyBulletX2 == enemyX2) {
+        hitReg2 = 1
+    }
+
+    if (enemyX2 <= -30) {
+        enemyX2 = random(800, 900)
+        enemyY2 = random(50, 550)
+        score = score - 100
+    }
+    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40) {
+        enemyX2 = random(800, 900)
+        enemyY2 = random(50, 550)
+        score = score + int(random(59, 217))
+    }
+}
+
+function enemyLvl3(){
+    fill(0, 0, 190)
+    rect(enemyX3, enemyY3, 40, 40)
+
+    fill(120)
+    rect(enemyX3 - 10, enemyY3 + 13, 35, 12)
+    enemyX3 -= enemyXSpeed3
+
+    fill(255, 0, 0)
+    rectMode(CENTER)
+    rect(enemyBulletX3 - 20, enemyBulletY3 + 18, 30, 10)
+    rectMode(CORNER)
+    enemyBulletX3 -= enemyBulletXSpeed3
+    if (enemyBulletX3 <= -30) {
+        enemyBulletX3 = enemyX3
+        enemyBulletY3 = enemyY3
+    }
+
+    if (enemyBulletX3 >= shipx - 10 && enemyBulletX3 <= shipx + 35 && enemyBulletY3 >= shipy - 35 && enemyBulletY3 <= shipy + 10) {
+        if (hitReg3 == true) {
+            health--
+            hitReg3 = 0
+        }
+
+    }
+
+    if (enemyBulletX3 == enemyX3) {
+        hitReg3 = 1
+    }
+
+    if (enemyX3 <= -30) {
+        enemyX3 = random(800, 900)
+        enemyY3 = random(50, 550)
+        score = score - 100
+    }
+    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40) {
+        enemyX3 = random(800, 900)
+        enemyY3 = random(50, 550)
+        score = score + int(random(59, 217))
+    }
+}
+
+/*
+    ALL ENEMY LOGIC END
+*/
+
 function setup() {
             createCanvas(800, 600);
             
             //Video Setup
             lost = createVideo(['LoseVid.mp4']);
-            lost.size(800, 600)
+            lost.size(800, 600);
             lost.hide()
             song.setVolume(1)
             lost.volume(1)
@@ -47,21 +220,38 @@ function setup() {
             x = 400
             y = 300
             health = 5
-            healthPoint = true
+            hitReg1 = true
+            hitReg2 = true
+            hitReg3 = true
             score = 0
             playerBulletY = shipy
             playerBulletX = 800
-            enemyX = random(850, 900)
-            enemyY = random(50, 550)
-            enemyBulletX = enemyX
-            enemyBulletY = enemyY
-            enemyXSpeed = -5
-            enemyBulletXSpeed = -10
             lifeboxX = 1500
             lifeboxY = random(50, 550)
             ty = 600
             timing = 0
             songtracker = 0
+
+            enemyX1 = random(850, 900)
+            enemyY1 = random(50, 550)
+            enemyBulletX1 = enemyX1
+            enemyBulletY1 = enemyY1
+            enemyXSpeed1 = 5
+            enemyBulletXSpeed1 = 10
+
+            enemyX2 = random(850, 900)
+            enemyY2 = random(50, 550)
+            enemyBulletX2 = enemyX2
+            enemyBulletY2 = enemyY2
+            enemyXSpeed2 = 5
+            enemyBulletXSpeed2 = 10
+
+            enemyX3 = random(850, 900)
+            enemyY3 = random(50, 550)
+            enemyBulletX3 = enemyX3
+            enemyBulletY3 = enemyY3
+            enemyXSpeed3 = 5
+            enemyBulletXSpeed3 = 10
 
             background(0, 0, 50)
             stars()
@@ -86,7 +276,7 @@ function setup() {
         }
 
         
-        //Your Millenium Falcon :D
+        //Your Millenium Falcon :D (Visuals)
         function ship() {
 
             fill(120)
@@ -227,10 +417,31 @@ function setup() {
                 //console.log("It's not m fam")
             }
         }
-        
-        //Chaos in a can. Used to create the arcade screen and the ending text.
-        function draw() {
 
+        function reticle() {
+            //Spaceship Aim Down Sight Reticle.
+            fill(0, 255, 0)
+            noCursor()
+            strokeWeight(5)
+            stroke(0, 255, 0)
+            point(mouseX, mouseY)
+            strokeWeight(1)
+            stroke(0, 0, 0, 0)
+            
+            rectMode(CENTER)
+            rect(mouseX - 10, mouseY - 12.5, 10, 3)
+            rect(mouseX + 10, mouseY - 12.5, 10, 3)
+            rect(mouseX - 10, mouseY + 12.5, 10, 3)
+            rect(mouseX + 10, mouseY + 12.5, 10, 3)
+
+            rect(mouseX - 12.5, mouseY - 10, 3, 10)
+            rect(mouseX - 12.5, mouseY + 10, 3, 10)
+            rect(mouseX + 12.5, mouseY - 10, 3, 10)
+            rect(mouseX + 12.5, mouseY + 10, 3, 10)
+            rectMode(CORNER)
+        }
+
+        function titleScreen() {
             background(0, 0, 50);
 
             ty -= 1
@@ -307,6 +518,34 @@ function setup() {
             rect(695, 300, 50, 50)
             stroke(0)
             strokeWeight(1)
+        }
+
+        //Ship Movement
+        function shipMove() {
+            if (keyIsDown(65)) {
+                shipx -= 5;
+
+            }
+
+            if (keyIsDown(68)) {
+                shipx += 5;
+
+            }
+
+            if (keyIsDown(87)) {
+                shipy -= 5;
+                //playerBulletY += 5
+            }
+
+            if (keyIsDown(83)) {
+                shipy += 5;
+                //playerBulletY -= 5
+            }
+        }
+        
+        //Chaos in a can. Used to create the arcade screen and the ending text.
+        function draw() {
+            titleScreen()
 
             if (keyCode == 81) {
                 begin = true
@@ -322,10 +561,10 @@ function setup() {
                     timing += 0.017
                     lifeboxX = 1000
                     lifeboxX -= 0
-                    enemyX = 1000
-                    enemyX -= 0
-                    enemyBulletX = 1000
-                    enemyBulletX -= 0
+                    enemyX1 = 1000
+                    enemyX1 -= 0
+                    enemyBulletX1 = 1000
+                    enemyBulletX1 -= 0
                     if (timing >= 7.9) {
                         text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
                         noLoop()
@@ -338,27 +577,7 @@ function setup() {
                 stars()
                 ship()
                 textEffect()
-
-                //Ship Movement
-                if (keyIsDown(65)) {
-                    shipx -= 5;
-
-                }
-
-                if (keyIsDown(68)) {
-                    shipx += 5;
-
-                }
-
-                if (keyIsDown(87)) {
-                    shipy -= 5;
-                    //playerBulletY += 5
-                }
-
-                if (keyIsDown(83)) {
-                    shipy += 5;
-                    //playerBulletY -= 5
-                }
+                shipMove()
 
 
                 //Boolet
@@ -366,48 +585,13 @@ function setup() {
                 shipx = constrain(shipx, 10, 790)
                 shipy = constrain(shipy, 10, 590)
                 health = constrain(health, 0, 5)
-                healthPoint = constrain(healthPoint, 0, 1)
+                hitReg1 = constrain(hitReg1, 0, 1)
+                hitReg2 = constrain(hitReg2, 0, 1)
+                hitReg3 = constrain(hitReg3, 0, 1)
 
-
-                fill(190, 0, 0)
-                rect(enemyX, enemyY, 40, 40)
-
-                fill(120)
-                rect(enemyX - 10, enemyY + 13, 35, 12)
-                enemyX += enemyXSpeed
-
-                fill(255, 0, 0)
-                rectMode(CENTER)
-                rect(enemyBulletX - 20, enemyBulletY + 18, 30, 10)
-                rectMode(CORNER)
-                enemyBulletX += enemyBulletXSpeed
-                if (enemyBulletX <= -30) {
-                    enemyBulletX = enemyX
-                    enemyBulletY = enemyY
-                }
-
-                if (enemyBulletX >= shipx - 10 && enemyBulletX <= shipx + 35 && enemyBulletY >= shipy - 35 && enemyBulletY <= shipy + 10) {
-                    if (healthPoint == true) {
-                        health--
-                        healthPoint = 0
-                    }
-
-                }
-
-                if (enemyBulletX == enemyX) {
-                    healthPoint = 1
-                }
-
-                if (enemyX <= -30) {
-                    enemyX = random(800, 900)
-                    enemyY = random(50, 550)
-                    score = score - 100
-                }
-                if (playerBulletX >= enemyX && playerBulletX <= enemyX + 40 && playerBulletY >= enemyY && playerBulletY <= enemyY + 40) {
-                    enemyX = random(800, 900)
-                    enemyY = random(50, 550)
-                    score = score + int(random(59, 217))
-                }
+                enemyLvl1();
+                enemyLvl2();
+                enemyLvl3();
 
                 strokeWeight(5)
                 stroke(255)
@@ -431,7 +615,7 @@ function setup() {
                 strokeWeight(1)
                 stroke(0)
                 rectMode(CORNER)
-                //console.log(healthPoint)
+                //console.log(hitReg1)
                 fill(255, 0, 0)
                 textSize(20)
                 if (health == 1) {
@@ -439,27 +623,7 @@ function setup() {
                 }
                 fill(255)
             }
-            fill(0, 255, 0)
-            noCursor()
-            strokeWeight(5)
-            stroke(0, 255, 0)
-            point(mouseX, mouseY)
-            strokeWeight(1)
-            stroke(0, 0, 0, 0)
-            
-            
-            //Spaceship Aim Down Sight Reticle.
-            rectMode(CENTER)
-            rect(mouseX - 10, mouseY - 12.5, 10, 3)
-            rect(mouseX + 10, mouseY - 12.5, 10, 3)
-            rect(mouseX - 10, mouseY + 12.5, 10, 3)
-            rect(mouseX + 10, mouseY + 12.5, 10, 3)
-
-            rect(mouseX - 12.5, mouseY - 10, 3, 10)
-            rect(mouseX - 12.5, mouseY + 10, 3, 10)
-            rect(mouseX + 12.5, mouseY - 10, 3, 10)
-            rect(mouseX + 12.5, mouseY + 10, 3, 10)
-            rectMode(CORNER)
+            reticle()
 
             console.log(timing)
 
