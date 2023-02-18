@@ -15,6 +15,17 @@ var begin;              //Boolean that determines the launch of the actual game 
 var ty;                 //String that holds the title screen location mesh
 var keydown;            //Variable that determines whether a key is pressed
 var lost;               //Lose condition video storage variable
+
+var threat0;            //VLRT Image
+var threat1;            //LRT Image
+var threat2;            //MRT Image
+var threat3;            //HRT Image
+var threat4;            //VHRT Image
+var threat5;            //ERT Image
+
+var ttextboxcounter;    //Variable that acts as a boolean, either letting or not letting the text screen play
+var threattextbox;      //Variable that creates a buffer for how long the level up screen should stay
+
 var timing;             //Stops the game after a couple seconds when the video stops playing
 
 /*
@@ -67,6 +78,13 @@ function preload() {
   song = loadSound("GameMusic.mp3");
   pewpewSound = loadSound("LaserBlaster.mp3");
   pewpewSound.setVolume(0.3)
+
+  threat0 = loadImage('Threat0.png');
+  threat1 = loadImage('Threat1.png');
+  threat2 = loadImage('Threat2.png');
+  threat3 = loadImage('Threat3.png');
+  threat4 = loadImage('Threat4.png');
+  threat5 = loadImage('Threat5.png');
 }
 
 
@@ -106,12 +124,12 @@ function enemyLvl1(){
 
     if (enemyX1 <= -30) {
         enemyX1 = random(800, 900)
-        enemyY1 = random(50, 550)
+        enemyY1 = random(115, 550)
         score = score - 100
     }
     if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40) {
         enemyX1 = random(800, 900)
-        enemyY1 = random(50, 550)
+        enemyY1 = random(115, 550)
         score = score + int(random(59, 217))
     }
 }
@@ -148,12 +166,12 @@ function enemyLvl2(){
 
     if (enemyX2 <= -30) {
         enemyX2 = random(800, 900)
-        enemyY2 = random(50, 550)
+        enemyY2 = random(115, 550)
         score = score - 100
     }
     if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40) {
         enemyX2 = random(800, 900)
-        enemyY2 = random(50, 550)
+        enemyY2 = random(115, 550)
         score = score + int(random(59, 217))
     }
 }
@@ -190,12 +208,12 @@ function enemyLvl3(){
 
     if (enemyX3 <= -30) {
         enemyX3 = random(800, 900)
-        enemyY3 = random(50, 550)
+        enemyY3 = random(115, 550)
         score = score - 100
     }
     if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40) {
         enemyX3 = random(800, 900)
-        enemyY3 = random(50, 550)
+        enemyY3 = random(115, 550)
         score = score + int(random(59, 217))
     }
 }
@@ -209,7 +227,6 @@ function setup() {
             
             //Video Setup
             lost = createVideo(['LoseVid.mp4']);
-            lost.size(800, 600);
             lost.hide()
             song.setVolume(1)
             lost.volume(1)
@@ -237,22 +254,22 @@ function setup() {
             enemyY1 = random(50, 550)
             enemyBulletX1 = enemyX1
             enemyBulletY1 = enemyY1
-            enemyXSpeed1 = 5
-            enemyBulletXSpeed1 = 10
+            enemyXSpeed1 = 2
+            enemyBulletXSpeed1 = 8
 
             enemyX2 = random(850, 900)
             enemyY2 = random(50, 550)
             enemyBulletX2 = enemyX2
             enemyBulletY2 = enemyY2
-            enemyXSpeed2 = 5
-            enemyBulletXSpeed2 = 10
+            enemyXSpeed2 = 2
+            enemyBulletXSpeed2 = 8
 
             enemyX3 = random(850, 900)
             enemyY3 = random(50, 550)
             enemyBulletX3 = enemyX3
             enemyBulletY3 = enemyY3
-            enemyXSpeed3 = 5
-            enemyBulletXSpeed3 = 10
+            enemyXSpeed3 = 2
+            enemyBulletXSpeed3 = 8
 
             background(0, 0, 50)
             stars()
@@ -270,7 +287,6 @@ function setup() {
                     playerBulletY = shipy
                     pewpewSound.play()
                 }
-                console.log("YES")
                 fill(255)
             }
 
@@ -388,14 +404,17 @@ function setup() {
                 else if (score <= 5000) {
                     text("Your skills are lacking, cadet!", 215, 575)
                 }
-                else if (score <= 10000) {
+                else if (score <= 11000) {
                     text("Better luck next time, rookie!", 215, 575)
                 }
-                else if (score <= 15000) {
+                else if (score <= 18000) {
                     text("At least you can aim, marine!", 215, 575)
                 }
-                else if (score <= 20000) {
-                    text("Very good work, comrade", 240, 575)
+                else if (score <= 26000) {
+                    text("Very good work, comrade!", 240, 575)
+                }
+                else if (score <= 35000) {
+                    text("I expected nothing less from an ACE!", 200, 575)
                 }
                 else {
                     text("I can  go as far as to say I underestimated you, legend!", 40, 575)
@@ -415,7 +434,7 @@ function setup() {
                 songtracker = 1
             }
             else {
-                //console.log("It's not m fam")
+                
             }
         }
 
@@ -567,6 +586,101 @@ function setup() {
             }
             //HealthBox End
         }
+
+        function difficulty() {
+
+            if(score < 5000){                                   //VLRT (Very Low-Risk Targets)
+                strokeWeight(0);
+                stroke(0);
+                fill(0,255,0);
+                text("VLRT", 615, 60);
+                
+                threat0.resize(100,100);
+                image(threat0, 680, 15);
+                
+                strokeWeight(2);
+
+                enemyXSpeed1 = 2;
+                enemyLvl1();
+            }else if(score >= 5000 && score < 11000){           //LRT (Low-Risk Targets)
+                strokeWeight(0);
+                stroke(0);
+                fill(0,175,0);
+                text("LRT", 615, 60);
+                
+                threat1.resize(100,100);
+                image(threat1, 680, 15);
+                
+                strokeWeight(2);
+
+                enemyXSpeed1 = 5;
+                enemyLvl1();
+            }else if(score >= 11000 && score < 18000){          //MRT (Moderate-Risk Targets)
+                strokeWeight(0);
+                stroke(0);
+                fill(175,175,0);
+                text("MRT", 615, 60);
+                
+                threat2.resize(100,100);
+                image(threat2, 680, 15);
+                
+                strokeWeight(2);
+
+                enemyXSpeed1 = 5;
+                enemyXSpeed2 = 2;
+                enemyLvl1();
+                enemyLvl2();
+            }else if(score >= 18000 && score < 26000){          //HRT (High-Risk Targets)
+                strokeWeight(0);
+                stroke(0);
+                fill(175,0,0);
+                text("HRT", 615, 60);
+
+                threat3.resize(100,100);
+                image(threat3, 680, 15);
+
+                strokeWeight(2);
+
+                enemyXSpeed1 = 5;
+                enemyXSpeed2 = 5;
+                enemyLvl1();
+                enemyLvl2();
+            }else if(score >= 26000 && score < 35000){          //VHRT (Very High-Risk Targets)
+                strokeWeight(0);
+                stroke(0);
+                fill(255,0,0);
+                text("VHRT", 615, 60);
+                
+                threat4.resize(100,100);
+                image(threat4, 680, 15);
+
+                strokeWeight(2);
+
+                enemyXSpeed1 = 5;
+                enemyXSpeed2 = 5;
+                enemyXSpeed3 = 2;
+                enemyLvl1();
+                enemyLvl2();
+                enemyLvl3();
+            }else if(score >= 35000){                           //ERT (Extreme-Risk Targets)
+                strokeWeight(0);
+                stroke(0);
+                fill(255,128,0);
+                text("ERT", 615, 60);
+                
+                threat5.resize(100,100);
+                image(threat5, 680, 15);
+                
+                strokeWeight(2);
+
+                enemyXSpeed1 = 5;
+                enemyXSpeed2 = 5;
+                enemyXSpeed3 = 5;
+                enemyLvl1();
+                enemyLvl2();
+                enemyLvl3();
+            }
+        }
         
         //Chaos in a can. Used to create the arcade screen and the ending text.
         function draw() {
@@ -582,9 +696,10 @@ function setup() {
                 //Plays death animation (requires beefy computer)
                 if (health == 0) {
                     image(lost, 0, 75)
+                    lost.size(800, 600);
                     lost.play()
                     timing += 0.017
-                    lifeboxX = 1000
+                    lifeboxX = -1000
                     lifeboxX -= 0
                     
                     enemyX1 = 1000
@@ -629,16 +744,13 @@ function setup() {
                 hitReg2 = constrain(hitReg2, 0, 1)
                 hitReg3 = constrain(hitReg3, 0, 1)
 
-                enemyLvl1();
-                enemyLvl2();
-                enemyLvl3();
+                difficulty();
 
                 healthPack();
 
                 strokeWeight(1)
                 stroke(0)
                 rectMode(CORNER)
-                //console.log(hitReg1)
                 fill(255, 0, 0)
                 textSize(20)
                 if (health == 1) {
@@ -647,8 +759,6 @@ function setup() {
                 fill(255)
             }
             reticle()
-
-            console.log(timing)
 
         }
 
@@ -685,5 +795,16 @@ function setup() {
     [X]    EnemyBlaster.bullet = rect.rectangle-brightred.moveleft=always
     [X]    EnemyBlaster.bullet-logic = bullet.create in enemy gun, always moving left. if(bullet < canvas.left || hit player.Ship){enemyfire}. Bullet always respawns at the cannon of enemy ship.
     [X]    EnemyShip.logic = if(player.bullet = hit EnemyShip || EnemyShip < canvas.left){cannon+body = respawn && score + 1}
-        
+
+
+    ////////////////////////////////////
+        CAPSTONE COURSE WORK CHANGELOG
+    ////////////////////////////////////
+    [X]    Move all possible code to its own functions, and call the functions back in main. This is to make the code neater in the draw() function.
+    [X]    Create a difficulty feature by:
+            +Keep track of current difficulty level (Threat Level) with the score number. Set increments.
+            +Increase amount of enemies (max 3) and their speed on-screen.
+                -Follow this metric: Enemy 1, Enemy 1 speed up, Enemy 1 + 2, Enemy 2 speed up, Enemy 1 + 2 + 3, Enemy 3 speed up
+                -Score increments for this: 0, 5000, 11000, 18000, 26000, 35000
+
         */
