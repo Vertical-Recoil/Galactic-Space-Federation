@@ -20,9 +20,9 @@ var timing;             //Stops the game after a couple seconds when the video s
 //NEW VARIABLES
 var invinboxX;          //Invincibility box
 var invinboxY;          //Invincibility box
-var invincible;
-var invincibilityEndTime;
-var duration;
+var invincible;         //bool for invincibility
+var invincibilityEndTime;   //timer
+var duration;           //timer
 
 
 /*
@@ -102,6 +102,7 @@ function enemyLvl1() {
 
     if (enemyBulletX1 >= shipx - 10 && enemyBulletX1 <= shipx + 35 && enemyBulletY1 >= shipy - 35 && enemyBulletY1 <= shipy + 10) {
         if (hitReg1 == true) {
+            //only affect health if not invincible
             if (!invincible) {
                 health--
                 hitReg1 = 0
@@ -146,6 +147,7 @@ function enemyLvl2() {
 
     if (enemyBulletX2 >= shipx - 10 && enemyBulletX2 <= shipx + 35 && enemyBulletY2 >= shipy - 35 && enemyBulletY2 <= shipy + 10) {
         if (hitReg2 == true) {
+            //only affect health if not invincible
             if (!invincible) {
                 health--
                 hitReg2 = 0
@@ -190,6 +192,7 @@ function enemyLvl3() {
 
     if (enemyBulletX3 >= shipx - 10 && enemyBulletX3 <= shipx + 35 && enemyBulletY3 >= shipy - 35 && enemyBulletY3 <= shipy + 10) {
         if (hitReg3 == true) {
+            //only affect health if not invincible
             if (!invincible) {
                 health--
                 hitReg3 = 0
@@ -244,7 +247,7 @@ function setup() {
     lifeboxX = 1500
     lifeboxY = random(50, 550)
 
-    invinboxX = 3000
+    invinboxX = 3000                    //set up for invincibility box
     invinboxY = random(50, 550)
 
     ty = 600
@@ -562,7 +565,7 @@ function shipMove() {
     }
 }
 
-
+//sets invincibility duration
 function setInvincibility(duration) {
     invincible = true;
     invincibilityEndTime = millis() + duration;
@@ -658,13 +661,17 @@ function draw() {
         }
         // //Health box end
 
-        //invicinvilty box
+        //invincibilty box
 
-        strokeWeight(5)
-        stroke(255)
-        fill(0, 255, 255)
-        rectMode(CENTER)
-        rect(invinboxX, invinboxY, 50, 50)
+        strokeWeight(5);
+        stroke(255);
+        fill(0, 255, 255);
+        beginShape();
+        vertex(invinboxX, invinboxY - 25);
+        vertex(invinboxX + 25, invinboxY);
+        vertex(invinboxX, invinboxY + 25);
+        vertex(invinboxX - 25, invinboxY);
+        endShape(CLOSE);
         invinboxX -= 2
         if (invinboxX <= -25) {
             invinboxX = random(3000, 4000)
@@ -747,7 +754,7 @@ final variant: if(var.health = 0){(rect.rectangle.red-0x.sidebyside = 0) + text(
 [X]    EnemyBlaster.bullet-logic = bullet.create in enemy gun, always moving left. if(bullet < canvas.left || hit player.Ship){enemyfire}. Bullet always respawns at the cannon of enemy ship.
 [X]    EnemyShip.logic = if(player.bullet = hit EnemyShip || EnemyShip < canvas.left){cannon+body = respawn && score + 1}
  
-[ ]    Add invurenablity
+[X]    Add invurenablity
 [ ]    Add 
  
 */
