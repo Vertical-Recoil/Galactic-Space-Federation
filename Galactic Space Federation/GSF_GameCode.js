@@ -66,6 +66,7 @@ function preload() {
   soundFormats('ogg', 'mp3');
   song = loadSound("GameMusic.mp3");
   pewpewSound = loadSound("LaserBlaster.mp3");
+  pewpewSound = pewpewSound.setVolume(0.2);
 }
 
 
@@ -563,8 +564,21 @@ function setup() {
                     lifeboxX -= 0
                     enemyX1 = 1000
                     enemyX1 -= 0
+                    
+                    enemyX2 = 1000
+                    enemyXSpeed2 = 0
+
+                    enemyX3 = 1000
+                    enemyXSpeed3 = 0
+
                     enemyBulletX1 = 1000
-                    enemyBulletX1 -= 0
+                    enemyBulletXSpeed1 = 0
+                    
+                    enemyBulletX2 = 1000
+                    enemyBulletXSpeed2 = 0
+
+                    enemyBulletX3 = 1000
+                    enemyBulletXSpeed3 = 0
                     if (timing >= 7.9) {
                         text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
                         noLoop()
