@@ -665,13 +665,24 @@ function draw() {
 
         strokeWeight(5);
         stroke(255);
-        fill(0, 255, 255);
+        fill(192, 192, 192);
         beginShape();
         vertex(invinboxX, invinboxY - 25);
         vertex(invinboxX + 25, invinboxY);
         vertex(invinboxX, invinboxY + 25);
         vertex(invinboxX - 25, invinboxY);
         endShape(CLOSE);
+
+        noStroke();
+        // Draw smaller blue diamond inside
+        fill(0, 160, 255);
+        beginShape();
+        vertex(invinboxX, invinboxY - 10);
+        vertex(invinboxX + 10, invinboxY);
+        vertex(invinboxX, invinboxY + 10);
+        vertex(invinboxX - 10, invinboxY);
+        endShape(CLOSE);
+
         invinboxX -= 2
         if (invinboxX <= -25) {
             invinboxX = random(3000, 4000)
@@ -701,6 +712,12 @@ function draw() {
         fill(255)
         //invulerable box end
 
+        //multishot
+        // strokeWeight(5);
+        // stroke(255);
+        // fill(255, 255, 0);
+        // ellipseMode(CENTER);
+        // ellipse(invinboxX, invinboxY, 50, 50);
 
 
         strokeWeight(1)
@@ -710,7 +727,7 @@ function draw() {
         fill(255, 0, 0)
         textSize(20)
         if (health == 1) {
-            text("Critical Hull Warning!!!", 25, 100)
+            text("Critical Hull Warning!!!", 75, 50)
         }
         fill(255)
     }
@@ -755,6 +772,40 @@ final variant: if(var.health = 0){(rect.rectangle.red-0x.sidebyside = 0) + text(
 [X]    EnemyShip.logic = if(player.bullet = hit EnemyShip || EnemyShip < canvas.left){cannon+body = respawn && score + 1}
  
 [X]    Add invurenablity
-[ ]    Add 
+[ ]    Add multishot
  
+*/
+
+
+
+/*================================================================
+
+
+The game will be expanded by introducing:
+
+-Working Difficulty functions:
+  These functions will scale the game up as it progresses.
+  Players will notice an increase of enemy movement speed and count.
+  Players will notice an increase of enemy health and laser speeds.
+    -These can be implemented by tracking session lifetime, or player score and increasing
+     the proper parameters as either of those tracked metrics increase
+
+-Working Upgrade functions:
+  These functions will balance the difficulty.
+  Players can get temporary time based power ups that enchances their gameplay.
+  These can be in the form of:
+    -Invulnerability (Player will interact with the enemy bullet, but not take damage)
+    -Multi-Shot      (Player will fire 2 or 3 rounds instead of 1)
+    -Quick-Shot      (Player will fire a laser that is faster than normal)
+    -ChronoSphere    (Slows down time, aka enemy movement speeds)
+  The upgrades can have visuals applied to their ship to dictate that they have the aforementioned upgrade.
+  The upgrades can have their names be displayed in big letters on the screen shortly to tell the player what they got.
+  The upgrades can have a bar near the health that will decrease and dicatate how long they have the effect for.
+
+-Working Ammo function (MAYBE):
+  Players only have a pool of 5 ammo.
+  Players will generate 1 ammo per 1.5 to 2 seconds.
+  Players will not be able to fire their laser if they have no ammo left.
+  A new "upgrade" called "Recharge" will recharge the ammo pool.
+  A new "upgrade" called "Overcharge" will cause the player to use NO ammo when firing for a short time.
 */
