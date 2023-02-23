@@ -1,4 +1,4 @@
-import { db } from "index.html";
+import { db } from "./firebase-config.js";
 import {
     collection,
     getDocs,
@@ -10,9 +10,9 @@ import {
 
 const statsCollectionRef = collection(db, "stats");
 
-async function asyncCall() {
+async function getStats() {
     const data = await getDocs(statsCollectionRef);
     console.log(data);
   }
   
-  asyncCall();
+  getStats();
