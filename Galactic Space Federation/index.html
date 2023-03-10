@@ -1,37 +1,54 @@
 <!DOCTYPE html>
-<html lang="">
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galactic Space Federation</title>
-  <style>
-    body {
-      padding: 0;
-      margin: 0;
-      background-color: #1b1b1b;
-    }
-  </style>
-  <script src="p5.js"></script>
-  <script src="p5.sound.min.js"></script>
-  <script src="p5.sound.js"></script>
-  <script src="GSF_GameCode.js"></script>
-  <script src="firebase-config.js"></script>
-  <div>
-    <p>hello</p>
-  </div>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Space Federation: Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: #494949;
+            background-image: url('homepagebg.jpg');
+            /*background-repeat: no-repeat;*/
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+        tr,td{
+            border:6px ridge rgb(133, 133, 133);
+        }
+        td{
+            height: 50px;
+            width: 1000px;
+            background-color: rgb(109, 109, 109);
+        }
+        #titleFontSpec {
+            margin-top: 50px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(235, 235, 235)
+        }
+
+    </style>
+    <script src="firebase-config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
 </head>
-
 <body>
-  <main>
+    <div class="overlay1"></div>
 
-  </main>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
-  <script src="firebase-config.js"></script> 
+    <h1 style="text-align:center" id="titleFontSpec" >
+        Galactic Space Federation: Home Page
+    </h1>
+    
+    <div class="button-container">
+        <button class="home-to-game-button" onclick="window.location.href='GSF_GamePage.html'">Save the World</button>
+    </div>
 
-  <button onclick=""></button>
+    <div class="button-container">
+        <button class="home-to-leaderboard-button" onclick="window.location.href='GSF_Leaderboards.html'">Hall of Fame</button>
+    </div>
 </body>
-
 </html>

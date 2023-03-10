@@ -4,46 +4,83 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Galactic Space Federation: Cadet Hall of Fame</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: #494949;
+            background-image: url('homepagebg.jpg');
+            /*background-repeat: no-repeat;*/
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
         tr,td{
-            border:1px;
-            border-style: solid;
+            border:6px ridge rgb(133, 133, 133);
         }
         td{
             height: 50px;
             width: 1000px;
-            background-color: white;
+            background-color: rgb(109, 109, 109);
         }
+        #titleFontSpec {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(235, 235, 235)
+        }
+        #thFontSize {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: xx-large;
+            color: rgb(255, 0, 0)
+        }
+        #tdFontSize {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: xx-large;
+            text-align: center;
+            color: rgb(255, 0, 0)
+        }
+
     </style>
 </head>
 <body>
-    <h1 style="text-align:center">LEADER BOARD !</h1>
+    <div class="overlay1"></div>
+    <h1 style="text-align:center" id="titleFontSpec">
+        Galactic Space Federation: Cadet Hall of Fame
+    </h1>
     <table id="grid" style="margin-left:auto;margin-right:auto;">
         <tr>
-          <th>Name</th>
-          <th>Score</th>
+          <th id="thFontSize">Name</th>
+          <th id="thFontSize">Score</th>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
+          <td id="tdFontSize"></td>
+          <td id="tdFontSize"></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
+          <td id="tdFontSize"></td>
+          <td id="tdFontSize"></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
+            <td id="tdFontSize"></td>
+            <td id="tdFontSize"></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
+            <td id="tdFontSize"></td>
+            <td id="tdFontSize"></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
+            <td id="tdFontSize"></td>
+            <td id="tdFontSize"></td>
         </tr>  
       </table>
+
+      <div class="button-container">
+        <button class="leaderboard-to-home-button" onclick="window.location.href='index.html'">Home Page</button>
+      </div>
+    
+      <div class="button-container">
+        <button class="leaderboard-to-game-button" onclick="window.location.href='GSF_GamePage.html'">Save the World</button>
+      </div>
+      
 </body>
 </html>

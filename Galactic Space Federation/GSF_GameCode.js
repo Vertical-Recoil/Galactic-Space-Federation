@@ -246,7 +246,16 @@ function enemyLvl3(){
 */
 
 function setup() {
-            createCanvas(800, 600);
+            let canvas = createCanvas(800, 600);
+
+            // Calculate the x and y position of the canvas to center it
+            let canvasX = (windowWidth - width) / 2;
+            let canvasY = (windowHeight - height) / 5;
+  
+            // Set the position of the canvas using the style() function
+            canvas.style('position', 'absolute');
+            canvas.style('left', canvasX + 'px');
+            canvas.style('top', canvasY + 'px');
             
             //Video Setup
             lost = createVideo(['LoseVid.mp4']);
