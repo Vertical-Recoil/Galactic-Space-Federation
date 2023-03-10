@@ -6,8 +6,6 @@ var health;             //Player Health Counter
 var score;              //Player Score Counter
 var playerBulletX;      //Player Laser Postion X
 var playerBulletY;      //Player Laser Postion Y
-var lifeboxX;           //Life Pool top left X
-var lifeboxY;           //Life Pool top left Y
 var song;               //Variable that stores the soundtrack
 var songtracker;        //Boolean that only allows the song to play once (no overlap)
 var pewpewSound;        //Variable that stores the blaster sound effect
@@ -15,6 +13,15 @@ var begin;              //Boolean that determines the launch of the actual game 
 var ty;                 //String that holds the title screen location mesh
 var keydown;            //Variable that determines whether a key is pressed
 var lost;               //Lose condition video storage variable
+
+//Ship Hull colors
+var hullR;
+var hullG;
+var hullB;
+//Ship Engine colors
+var engineR;
+var engineG;
+var engineB;
 
 var threat0;            //VLRT Image
 var threat1;            //LRT Image
@@ -28,6 +35,18 @@ var threattextbox;      //Variable that creates a buffer for how long the level 
 
 var timing;             //Stops the game after a couple seconds when the video stops playing
 
+//Power-Up Variables START
+//Health
+var lifeboxX;           //Life Pool top left X
+var lifeboxY;           //Life Pool top left Y
+
+//
+var iddqd;              //Variable that determines whether or not the user has invulnerability (Doom easter egg)
+var iddqdX;             //Variable that determines the X location of the invulnerability power-up
+var iddqdY;             //Variable that determines the Y location of the invulnerability power-up
+var iddqdT;             //Variable that determines how long iddqd has left;
+
+//Power-Up Variables END
 /*
     ALL ENEMY VARIABLES START
 
@@ -89,7 +108,9 @@ function preload() {
 
 
 /*
+-----------------------------------------
     ALL ENEMY LOGIC START
+-----------------------------------------
 */
 
 function enemyLvl1(){
@@ -111,7 +132,7 @@ function enemyLvl1(){
     }
 
     if (enemyBulletX1 >= shipx - 10 && enemyBulletX1 <= shipx + 35 && enemyBulletY1 >= shipy - 35 && enemyBulletY1 <= shipy + 10) {
-        if (hitReg1 == true) {
+        if (hitReg1 == true && iddqd == false) {
             health--
             hitReg1 = 0
         }
@@ -153,7 +174,7 @@ function enemyLvl2(){
     }
 
     if (enemyBulletX2 >= shipx - 10 && enemyBulletX2 <= shipx + 35 && enemyBulletY2 >= shipy - 35 && enemyBulletY2 <= shipy + 10) {
-        if (hitReg2 == true) {
+        if (hitReg2 == true && iddqd == false) {
             health--
             hitReg2 = 0
         }
@@ -195,7 +216,7 @@ function enemyLvl3(){
     }
 
     if (enemyBulletX3 >= shipx - 10 && enemyBulletX3 <= shipx + 35 && enemyBulletY3 >= shipy - 35 && enemyBulletY3 <= shipy + 10) {
-        if (hitReg3 == true) {
+        if (hitReg3 == true && iddqd == false) {
             health--
             hitReg3 = 0
         }
@@ -219,7 +240,9 @@ function enemyLvl3(){
 }
 
 /*
+-----------------------------------------
     ALL ENEMY LOGIC END
+-----------------------------------------
 */
 
 function setup() {
@@ -232,9 +255,17 @@ function setup() {
             lost.volume(1)
             
             
-            //Variables
+        //Variables
+            //Ship Variables
             shipx = 100
             shipy = 300
+            hullR = 120
+            hullG = 120
+            hullB = 120
+            engineR = 0
+            engineG = 80
+            engineB = 0
+
             x = 400
             y = 300
             health = 5
@@ -244,8 +275,6 @@ function setup() {
             score = 0
             playerBulletY = shipy
             playerBulletX = 800
-            lifeboxX = 1500
-            lifeboxY = random(50, 550)
             ty = 600
             timing = 0
             songtracker = 0
@@ -270,6 +299,17 @@ function setup() {
             enemyBulletY3 = enemyY3
             enemyXSpeed3 = 2
             enemyBulletXSpeed3 = 8
+
+            //Power-Up Default Values
+            //Health
+            lifeboxX = 1500
+            lifeboxY = random(50, 550)
+
+            //Invulnerability
+            iddqd = false;
+            iddqdX = 1500
+            iddqdY = random(50, 550)
+            iddqdT = 0
 
             background(0, 0, 50)
             stars()
@@ -296,13 +336,16 @@ function setup() {
         //Your Millenium Falcon :D (Visuals)
         function ship() {
 
-            fill(120)
+            //Hull Color and Shape
+            fill(hullR, hullG, hullB);
             triangle(shipx - 25, shipy + 25, shipx - 25, shipy - 25, shipx + 30, shipy)
 
-            fill(0, 80, 0)
+            //Engine Color and Shape
+            fill(engineR, engineG, engineB)
             rect(shipx - 30, shipy - 19, 40, 10)
             rect(shipx - 30, shipy + 8, 40, 10)
 
+            //Reset Color
             fill(255)
 
 
@@ -563,18 +606,23 @@ function setup() {
             }
         }
 
+        //HealthBox Start
         function healthPack() {
-            //HealthBox Start
+            //Healthbox visuals
             strokeWeight(5)
             stroke(255)
             fill(0, 255, 0)
             rectMode(CENTER)
+
+            //Healthbox location logic
             rect(lifeboxX, lifeboxY, 50, 50)
             lifeboxX -= 2
             if (lifeboxX <= -25) {
                 lifeboxX = random(1200, 2000)
                 lifeboxY = random(50, 550)
             }
+
+            //Healthbox utility logic
             if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25) {
                 if (health == 5) {
                     score = score + 1000
@@ -584,8 +632,51 @@ function setup() {
                 lifeboxY = random(50, 550)
 
             }
-            //HealthBox End
-        }
+            
+        }//HealthBox End
+
+        //Invulnerability Start
+        function invuln() {
+            //invuln visuals
+            strokeWeight(5)
+            stroke(128)
+            fill(255, 195, 0)
+            rectMode(CENTER)
+
+            //invuln location logic
+            rect(iddqdX, iddqdY, 50, 50)
+            iddqdX -= 2
+            if (iddqdX <= -25) {
+                iddqdX = random(1200, 2000)
+                iddqdY = random(50, 550)
+            }
+
+            //invuln utility logic
+            if (playerBulletX >= iddqdX - 25 && playerBulletX <= iddqdX + 25 && playerBulletY >= iddqdY - 25 && playerBulletY <= iddqdY + 25) {
+                iddqdT = iddqdT + 900;
+                iddqdT = constrain(iddqdT, 0, 900);
+                iddqdX = random(1200, 2000);
+                iddqdY = random(50, 550);
+
+            }
+            
+            //invuln activity logic
+            if(iddqdT > 0){
+                hullR = 255;
+                hullG = 140;
+                hullB = 0;
+                iddqd = true; //While timer of invuln has juice, give player invuln, decrease timer by 60 per second.
+                iddqdT--;
+
+                rectMode(CORNER)
+                rect(10, 550, iddqdT/10, 25)
+            }else{
+                hullR = 120;
+                hullG = 120;
+                hullB = 120;
+                iddqd = false;
+            }
+        }//Invulnerability End
 
         function difficulty() {
 
@@ -729,6 +820,12 @@ function setup() {
 
 
                 playerBulletX += 20
+
+                //if statement will move bullet out of bounds so that it does not interact with anything offscreen
+                if(playerBulletX > 800){
+                    playerBulletY = -10;
+                }
+
                 stars()
                 ship()
                 textEffect()
@@ -747,6 +844,8 @@ function setup() {
                 difficulty();
 
                 healthPack();
+                invuln();
+                console.log(iddqdT);
 
                 strokeWeight(1)
                 stroke(0)
@@ -800,11 +899,15 @@ function setup() {
     ////////////////////////////////////
         CAPSTONE COURSE WORK CHANGELOG
     ////////////////////////////////////
-    [X]    Move all possible code to its own functions, and call the functions back in main. This is to make the code neater in the draw() function.
-    [X]    Create a difficulty feature by:
-            +Keep track of current difficulty level (Threat Level) with the score number. Set increments.
-            +Increase amount of enemies (max 3) and their speed on-screen.
+    [X]     Move all possible code to its own functions, and call the functions back in main. This is to make the code neater in the draw() function.
+    [X]     Create a difficulty feature by:
+             +Keep track of current difficulty level (Threat Level) with the score number. Set increments.
+             +Increase amount of enemies (max 3) and their speed on-screen.
                 -Follow this metric: Enemy 1, Enemy 1 speed up, Enemy 1 + 2, Enemy 2 speed up, Enemy 1 + 2 + 3, Enemy 3 speed up
                 -Score increments for this: 0, 5000, 11000, 18000, 26000, 35000
-
+    [ ]     Create a variety of upgrades:
+        [X]     Invulnerability (Player will not take damage when interacting with enemy laser fire)
+        [ ]     Multi-Shot      (Player will fire multiple lasers rather than one)
+        [ ]     Quick-Shot      (Player laser speed will be increased)
+        [ ]     ChronoSphere    (Slows down time, decreases enemy movement speed, decreases enemy laser movement speed, decreases background stars movement speed)
         */
