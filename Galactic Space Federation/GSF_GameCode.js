@@ -1,3 +1,8 @@
+
+//CANNOT IMPORT DUE TO NOT MODULE IN GAMEPAGE.html
+//CANNO MODULE DUE TO p5js constricitons
+//import { getStats, db } from "./CRUD.js";
+
 var shipx;              //ship position X
 var shipy;              //ship position Y
 var x;                  //Stars alignment X
