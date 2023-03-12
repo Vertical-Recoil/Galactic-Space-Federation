@@ -1,7 +1,7 @@
 
 //CANNOT IMPORT DUE TO NOT MODULE IN GAMEPAGE.html
 //CANNO MODULE DUE TO p5js constricitons
-//import { getStats, db } from "./CRUD.js";
+import { getStats, db } from "./CRUD.js";
 
 var shipx;              //ship position X
 var shipy;              //ship position Y
@@ -18,6 +18,8 @@ var begin;              //Boolean that determines the launch of the actual game 
 var ty;                 //String that holds the title screen location mesh
 var keydown;            //Variable that determines whether a key is pressed
 var lost;               //Lose condition video storage variable
+var assetsLoaded = false;       //condition to see when preload is done
+var loadAssetBuffer;
 
 //Ship Hull colors
 var hullR;
@@ -109,8 +111,15 @@ function preload() {
   threat3 = loadImage('Threat3.png');
   threat4 = loadImage('Threat4.png');
   threat5 = loadImage('Threat5.png');
-}
 
+  //Video Setup
+  lost = createVideo(['LoseVid.mp4']);
+  lost.hide()
+  song.setVolume(1)
+  lost.volume(1)
+
+  return Promise.all([song]);
+}
 
 /*
 -----------------------------------------
@@ -251,99 +260,98 @@ function enemyLvl3(){
 */
 
 function setup() {
-            let canvas = createCanvas(800, 600);
+            preload();
+            if (assetsLoaded) {
+                // Do something with the loaded assets
+                let canvas = createCanvas(800, 600);
 
-            // Calculate the x and y position of the canvas to center it
-            let canvasX = (windowWidth - width) / 2;
-            let canvasY = (windowHeight - height) / 5;
-  
-            // Set the position of the canvas using the style() function
-            canvas.style('position', 'absolute');
-            canvas.style('left', canvasX + 'px');
-            canvas.style('top', canvasY + 'px');
-            
-            //Video Setup
-            lost = createVideo(['LoseVid.mp4']);
-            lost.hide()
-            song.setVolume(1)
-            lost.volume(1)
-            
-            
-        //Variables
-            //Ship Variables
-            shipx = 100
-            shipy = 300
-            hullR = 120
-            hullG = 120
-            hullB = 120
-            engineR = 0
-            engineG = 80
-            engineB = 0
+                // Calculate the x and y position of the canvas to center it
+                let canvasX = (windowWidth - width) / 2;
+                let canvasY = (windowHeight - height) / 5;
+    
+                // Set the position of the canvas using the style() function
+                canvas.style('position', 'absolute');
+                canvas.style('left', canvasX + 'px');
+                canvas.style('top', canvasY + 'px');
+                
+            //Variables
+                //Ship Variables
+                shipx = 100
+                shipy = 300
+                hullR = 120
+                hullG = 120
+                hullB = 120
+                engineR = 0
+                engineG = 80
+                engineB = 0
 
-            x = 400
-            y = 300
-            health = 5
-            hitReg1 = true
-            hitReg2 = true
-            hitReg3 = true
-            score = 0
-            playerBulletY = shipy
-            playerBulletX = 800
-            ty = 600
-            timing = 0
-            songtracker = 0
+                x = 400
+                y = 300
+                health = 5
+                hitReg1 = 0
+                hitReg2 = 0
+                hitReg3 = 0
+                score = 0
+                playerBulletY = shipy
+                playerBulletX = 800
+                ty = 600
+                timing = 0
+                songtracker = 0
+                loadAssetBuffer = 300;
 
-            enemyX1 = random(850, 900)
-            enemyY1 = random(50, 550)
-            enemyBulletX1 = enemyX1
-            enemyBulletY1 = enemyY1
-            enemyXSpeed1 = 2
-            enemyBulletXSpeed1 = 8
+                enemyX1 = random(850, 900)
+                enemyY1 = random(50, 550)
+                enemyBulletX1 = enemyX1
+                enemyBulletY1 = enemyY1
+                enemyXSpeed1 = 2
+                enemyBulletXSpeed1 = 8
 
-            enemyX2 = random(850, 900)
-            enemyY2 = random(50, 550)
-            enemyBulletX2 = enemyX2
-            enemyBulletY2 = enemyY2
-            enemyXSpeed2 = 2
-            enemyBulletXSpeed2 = 8
+                enemyX2 = random(850, 900)
+                enemyY2 = random(50, 550)
+                enemyBulletX2 = enemyX2
+                enemyBulletY2 = enemyY2
+                enemyXSpeed2 = 2
+                enemyBulletXSpeed2 = 8
 
-            enemyX3 = random(850, 900)
-            enemyY3 = random(50, 550)
-            enemyBulletX3 = enemyX3
-            enemyBulletY3 = enemyY3
-            enemyXSpeed3 = 2
-            enemyBulletXSpeed3 = 8
+                enemyX3 = random(850, 900)
+                enemyY3 = random(50, 550)
+                enemyBulletX3 = enemyX3
+                enemyBulletY3 = enemyY3
+                enemyXSpeed3 = 2
+                enemyBulletXSpeed3 = 8
 
             //Power-Up Default Values
-            //Health
-            lifeboxX = 1500
-            lifeboxY = random(50, 550)
+                //Health
+                lifeboxX = 1500
+                lifeboxY = random(50, 550)
 
-            //Invulnerability
-            iddqd = false;
-            iddqdX = 1500
-            iddqdY = random(50, 550)
-            iddqdT = 0
+                //Invulnerability
+                iddqd = false;
+                iddqdX = 1500
+                iddqdY = random(50, 550)
+                iddqdT = 0
 
-            background(0, 0, 50)
-            stars()
-
+                background(0, 0, 50)
+                stars()
+              } else {
+                // Assets are still loading
+              }
 
         }
 
         //Shoots laser when mouse is pressed
         function mousePressed() {
 
-            if (mousePressed) {
-                if (playerBulletX >= 800) {
-                    fill(0, 255, 0)
-                    playerBulletX = shipx
-                    playerBulletY = shipy
-                    pewpewSound.play()
+            document.addEventListener('mousedown', (event) => {
+                if (event.button === 0) {
+                    if (playerBulletX >= 800) {
+                        fill(0, 255, 0)
+                        playerBulletX = shipx
+                        playerBulletY = shipy
+                        pewpewSound.play()
+                    }
                 }
-                fill(255)
-            }
-
+              });
         }
 
         
@@ -486,12 +494,16 @@ function setup() {
 
         //If you press M, music plays (requires beefy computer)
         function keyPressed() {
-            if (keyCode == 77 && songtracker == 0) {
-                song.loop()
-                songtracker = 1
-            }
-            else {
-                
+            if(loadAssetBuffer <= 0){
+                if (keyCode == 77 && songtracker == 0) {
+                    song.loop()
+                    songtracker = 1
+                }
+                else {
+                    
+                }
+            }else{
+
             }
         }
 
@@ -535,9 +547,10 @@ function setup() {
             text("W = Up, S = Down", 260, ty + 350)
             text("A = Left, D = Right", 260, ty + 400)
             text("LMB = Fire", 290, ty + 450)
-            text("M = Music (PRESS ONCE)", 220, ty + 500)
+            text("M = Music", 295, ty + 500)
             text("Insert Coin (Q) to start!", 240, ty + 550)
             text("1 Credit: $1.25", 280, ty + 700)
+            text("Please wait for reticle on screen to play", 210, ty + 730)
 
             //Arcade Screen
             fill(0, 0, 0, 0)
@@ -789,93 +802,107 @@ function setup() {
         
         //Chaos in a can. Used to create the arcade screen and the ending text.
         function draw() {
-            titleScreen()
-
-            if (keyCode == 81) {
-                begin = true
-            }
-            if (begin) {
-
-                background(0, 0, 50)
-
-                //Plays death animation (requires beefy computer)
-                if (health == 0) {
-                    image(lost, 0, 75)
-                    lost.size(800, 600);
-                    lost.play()
-                    timing += 0.017
-                    lifeboxX = -1000
-                    lifeboxX -= 0
-                    
-                    enemyX1 = 1000
-                    enemyXSpeed1 = 0
-
-                    enemyX2 = 1000
-                    enemyXSpeed2 = 0
-
-                    enemyX3 = 1000
-                    enemyXSpeed3 = 0
-
-                    enemyBulletX1 = 1000
-                    enemyBulletXSpeed1 = 0
-                    
-                    enemyBulletX2 = 1000
-                    enemyBulletXSpeed2 = 0
-
-                    enemyBulletX3 = 1000
-                    enemyBulletXSpeed3 = 0
-
-                    if (timing >= 7.9) {
-                        text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
-                        noLoop()
+            titleScreen();
+            loadAssetBuffer = constrain(loadAssetBuffer, 1, 300);
+            loadAssetBuffer--;
+            console.log(keyCode);
+            if (loadAssetBuffer > 0){
+                keyCode = 0;
+            }else if (loadAssetBuffer <= 0){
+                if (keyCode == 81) {
+                    begin = true
+                }
+                if (begin) {
+    
+                    background(0, 0, 50)
+                    keyPressed();
+                    mousePressed();
+    
+                    //Plays death animation (requires beefy computer)
+                    if (health == 0) {
+                        image(lost, 0, 75)
+                        lost.size(800, 600);
+                        lost.play()
+                        timing += 0.017
+                        lifeboxX = -1000
+                        lifeboxX -= 0
+                        
+                        enemyX1 = 1000
+                        enemyXSpeed1 = 0
+    
+                        enemyX2 = 1000
+                        enemyXSpeed2 = 0
+    
+                        enemyX3 = 1000
+                        enemyXSpeed3 = 0
+    
+                        enemyBulletX1 = 1000
+                        enemyBulletXSpeed1 = 0
+                        
+                        enemyBulletX2 = 1000
+                        enemyBulletXSpeed2 = 0
+    
+                        enemyBulletX3 = 1000
+                        enemyBulletXSpeed3 = 0
+    
+                        if (timing >= 7.9) {
+                            text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
+                            noLoop()
+                        }
                     }
+    
+    
+    
+                    playerBulletX += 20
+    
+                    //if statement will move bullet out of bounds so that it does not interact with anything offscreen
+                    if(playerBulletX > 800){
+                        playerBulletY = -10;
+                    }
+    
+                    stars()
+                    ship()
+                    textEffect()
+                    shipMove()
+    
+    
+                    //Boolet
+                    rect(playerBulletX, playerBulletY - 8, 30, 15)
+                    shipx = constrain(shipx, 10, 790)
+                    shipy = constrain(shipy, 10, 590)
+                    health = constrain(health, 0, 5)
+                    hitReg1 = constrain(hitReg1, 0, 1)
+                    hitReg2 = constrain(hitReg2, 0, 1)
+                    hitReg3 = constrain(hitReg3, 0, 1)
+    
+                    difficulty();
+    
+                    healthPack();
+                    invuln();
+    
+                    strokeWeight(1)
+                    stroke(0)
+                    rectMode(CORNER)
+                    fill(255, 0, 0)
+                    textSize(20)
+                    if (health == 1) {
+                        text("Critical Hull Warning!!!", 25, 100)
+                    }
+                    fill(255)
                 }
-
-
-
-                playerBulletX += 20
-
-                //if statement will move bullet out of bounds so that it does not interact with anything offscreen
-                if(playerBulletX > 800){
-                    playerBulletY = -10;
-                }
-
-                stars()
-                ship()
-                textEffect()
-                shipMove()
-
-
-                //Boolet
-                rect(playerBulletX, playerBulletY - 8, 30, 15)
-                shipx = constrain(shipx, 10, 790)
-                shipy = constrain(shipy, 10, 590)
-                health = constrain(health, 0, 5)
-                hitReg1 = constrain(hitReg1, 0, 1)
-                hitReg2 = constrain(hitReg2, 0, 1)
-                hitReg3 = constrain(hitReg3, 0, 1)
-
-                difficulty();
-
-                healthPack();
-                invuln();
-                console.log(iddqdT);
-
-                strokeWeight(1)
-                stroke(0)
-                rectMode(CORNER)
-                fill(255, 0, 0)
-                textSize(20)
-                if (health == 1) {
-                    text("Critical Hull Warning!!!", 25, 100)
-                }
-                fill(255)
+                reticle()
+            }else{
+                begin = false;
             }
-            reticle()
 
         }
 
+        Promise.all([song]).then(() => {
+            assetsLoaded = true;
+          });
 
+        window.setup = setup;
+        window.draw = draw;
 
 
 
