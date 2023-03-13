@@ -1,7 +1,13 @@
+import { getStats, addStat, db } from "./CRUD.js";
 
-//CANNOT IMPORT DUE TO NOT MODULE IN GAMEPAGE.html
-//CANNO MODULE DUE TO p5js constricitons
-import { getStats, db } from "./CRUD.js";
+// Parse the query string to extract the username value
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const username = urlParams.get('username');
+
+// Use the username value as needed
+console.log(`Welcome, ${username}!`);
+
 
 var shipx;              //ship position X
 var shipy;              //ship position Y
@@ -20,6 +26,9 @@ var keydown;            //Variable that determines whether a key is pressed
 var lost;               //Lose condition video storage variable
 var assetsLoaded = false;       //condition to see when preload is done
 var loadAssetBuffer;
+
+//Database counter
+var dataBaseLockVar = false;
 
 //Ship Hull colors
 var hullR;
@@ -322,12 +331,12 @@ function setup() {
 
             //Power-Up Default Values
                 //Health
-                lifeboxX = 1500
+                lifeboxX = random(1500, 2000)
                 lifeboxY = random(50, 550)
 
                 //Invulnerability
                 iddqd = false;
-                iddqdX = 1500
+                iddqdX = random(1500, 2000)
                 iddqdY = random(50, 550)
                 iddqdT = 0
 
@@ -845,9 +854,19 @@ function setup() {
                         enemyBulletX3 = 1000
                         enemyBulletXSpeed3 = 0
     
+
+                        if(dataBaseLockVar == false){
+                            addStat(db, username, score);
+                            console.log(getStats(db));
+                            dataBaseLockVar = true;
+                        }else{
+                            
+                        }
                         if (timing >= 7.9) {
                             text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
                             noLoop()
+                        }else{
+
                         }
                     }
     
@@ -903,11 +922,6 @@ function setup() {
 
         window.setup = setup;
         window.draw = draw;
-
-
-
-
-
 
         /*
         

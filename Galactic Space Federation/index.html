@@ -29,22 +29,59 @@
             font-family: Verdana, Geneva, Tahoma, sans-serif;
             color: rgb(235, 235, 235)
         }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(235, 235, 235)
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
     </style>
 </head>
 <body>
-
     <script src="firebase-config.js" type="module"></script>
     <script src="CRUD.js" type="module"></script>
-    
-    <div class="overlay1"></div>
 
     <h1 style="text-align:center" id="titleFontSpec" >
         Galactic Space Federation: Home Page
     </h1>
-    
-    <div class="button-container">
-        <button class="home-to-game-button" onclick="window.location.href='GSF_GamePage.html'">Save the World</button>
+
+    <div class="box">
+        <h2>Welcome to flash games reborn!</h2>
+        <p>Our vision is to recreate an old space scroller and<br>
+            shooter-esque game! We will be achieving this by utilizing<br>
+            the P5.js repository, that allows for the creation of<br>
+            onscreen visuals using a canvas. This allows for a multitude<br>
+            of uses, but in our case we will be creating a game!<br><br>
+        
+            The idea came from the depracation of software such as<br>
+            Adobe Flash Player, which means that many flash games<br>
+            that we know and love will no longer be playable unless<br>
+            they are ported over to other engines. But we have an idea<br><br>
+        
+            We will use P5.js to create a memento, to a time when being<br>
+            able to play and compete with friends online was as simple<br>
+            as coming home, launching a web browser, pasting a link,<br>
+            and getting competitive!
+        </p>
+        <h4>We hope you enjoy our playing and competing<br>as much as we did creating!</h4>
+    </div>
+
+    <div class="container">
+        <form class="home-to-game-button" action="GSF_GamePage.html" method="GET">
+            <label for="username">Please enter your name!</label>
+            <br>
+            <input type="text" id="username" name="username" required>
+            <br>
+            <input type="submit" value="Save the World!">
+          </form>
     </div>
 
     <div class="button-container">
