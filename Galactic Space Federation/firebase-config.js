@@ -1,13 +1,11 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-analytics.js";
-import { getFirestore } from "../@firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
+import { collection, getDocs, addDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
+import { query, orderBy, limit, where, onSnapshot } from "https://www.gstatic.com/firebasejs/9.1.1/firebase-firestore.js"
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseApp = firebase.initializeApp({
+// TODO: Replace the following with your app's Firebase project configuration
+const firebaseConfig = {
     apiKey: "AIzaSyDKQ5ipDBCsyx4H0SkLMV7RaMNjXXSt00o",
     authDomain: "galactic-space-federation.firebaseapp.com",
     projectId: "galactic-space-federation",
@@ -15,13 +13,12 @@ const firebaseApp = firebase.initializeApp({
     messagingSenderId: "1006285148519",
     appId: "1:1006285148519:web:f0ffb11524a38df0839fc2",
     measurementId: "G-DWMZXZ7F9N"
+};
 
-});
-
-
-  
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const db = getFirestore(app);
 
-const db = firebaseApp.firestore();
+export { app, db, collection, getDocs, Timestamp, addDoc };
+
+//you might not even need this. you can delete this line once you are sure
+export { query, orderBy, limit, where, onSnapshot };
