@@ -100,6 +100,40 @@
     background-color: #3e8e41; /* Change the background color when hovering */
   }
 
+  .home-to-changelog-button {
+    position: absolute;
+    top: 890px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .home-to-changelog-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .changelog-to-home-button {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .changelog-to-home-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
   .button-container {
     text-align: center; /* Center the button horizontally */
   }
@@ -130,6 +164,19 @@
     padding: 20px;
     border: none; /* Remove the button border */
     border-radius: 5px; /* Add rounded corners */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(181, 255, 187)
+  }
+
+  .changelog {
+    background-color: #585858;
+    width: 35%;
+    margin: auto;
+    margin-top: 70px;
+    text-align: center;
+    padding: 10px;
+    border: none; /* Remove the button border */
+    border-radius: 20px; /* Add rounded corners */
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: rgb(181, 255, 187)
   }
