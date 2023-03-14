@@ -4,46 +4,136 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>GSF_Leaderboards</title>
+=======
+    <title>Galactic Space Federation: Cadet Hall of Fame</title>
+    <link rel="stylesheet" href="styles.css">
+>>>>>>> 240acb3a93034487181fcaa284a07ae595622f38
     <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: #494949;
+            background-image: url('homepagebg.jpg');
+            /*background-repeat: no-repeat;*/
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
         tr,td{
-            border:1px;
-            border-style: solid;
+            border:6px ridge rgb(133, 133, 133);
         }
         td{
             height: 50px;
             width: 1000px;
-            background-color: white;
+            background-color: rgb(109, 109, 109);
         }
+        #titleFontSpec {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(235, 235, 235)
+        }
+        #thFontSize {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: xxx-large;
+            color: rgb(255, 0, 0)
+        }
+
     </style>
 </head>
 <body>
-    <h1 style="text-align:center">LEADER BOARD !</h1>
+
+    <script src="firebase-config.js" type="module"></script>
+    <script src="CRUD.js" type="module"></script>
+
+    <div class="overlay1"></div>
+    <h1 style="text-align:center" id="titleFontSpec">
+        Galactic Space Federation: Cadet Hall of Fame!
+    </h1>
+
+    <script type="module">
+        import { getStats, db } from "./CRUD.js";
+        
+        const stat = await getStats(db, 0); // Retrieve the first document in the array
+        console.log(stat.id); // Do something with the ID property of the document
+        console.log(stat.name); // Do something with the variable1 property of the document
+        console.log(stat.score); // Do something with the variable2 property of the document
+
+        var statList = await getStats(db); // Retrieve all the documents in the array
+        console.log(statList[0].id); // Do something with the ID property of the first document
+        console.log(statList[0].name); // Do something with the variable1 property of the first document
+        console.log(statList[0].score); // Do something with the variable2 property of the first document
+
+        statList = statList.sort((a,b) => {return b.score - a.score})
+
+        var name1 = document.querySelector("#username1")
+        name1.innerHTML = statList[0].name;
+
+        var score1 = document.querySelector("#userscore1")
+        score1.innerHTML = statList[0].score;
+
+        var name2 = document.querySelector("#username2")
+        name2.innerHTML = statList[1].name;
+
+        var score2 = document.querySelector("#userscore2")
+        score2.innerHTML = statList[1].score;
+
+        var name3 = document.querySelector("#username3")
+        name3.innerHTML = statList[2].name;
+
+        var score3 = document.querySelector("#userscore3")
+        score3.innerHTML = statList[2].score;
+
+        var name4 = document.querySelector("#username4")
+        name4.innerHTML = statList[3].name;
+
+        var score4 = document.querySelector("#userscore4")
+        score4.innerHTML = statList[3].score;
+
+        var name5 = document.querySelector("#username5")
+        name5.innerHTML = statList[4].name;
+
+        var score5 = document.querySelector("#userscore5")
+        score5.innerHTML = statList[4].score;
+    </script>
+
     <table id="grid" style="margin-left:auto;margin-right:auto;">
         <tr>
-          <th>Name</th>
-          <th>Score</th>
+          <th id="thFontSize">Name</th>
+          <th id="thFontSize">Score</th>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
+          <td class="tdFontSize" id="username1"></td>
+          <td class="tdFontSize" id="userscore1"></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
+          <td class="tdFontSize" id="username2"></td>
+          <td class="tdFontSize" id="userscore2"></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
+            <td class="tdFontSize" id="username3"></td>
+            <td class="tdFontSize" id="userscore3"></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
+            <td class="tdFontSize" id="username4"></td>
+            <td class="tdFontSize" id="userscore4"></td>
         </tr>
         <tr>
-            <td></td>
-            <td></td>
+            <td class="tdFontSize" id="username5"></td>
+            <td class="tdFontSize" id="userscore5"></td>
         </tr>  
       </table>
+
+      <div class="button-container">
+        <button class="leaderboard-to-home-button" onclick="window.location.href='index.html'">Home Page</button>
+      </div>
+    
+      <!--
+
+        <div class="button-container">
+            <button class="leaderboard-to-game-button" onclick="window.location.href='GSF_GamePage.html'">Save the World</button>
+        </div>
+
+      -->
+      
 </body>
 </html>
