@@ -16,7 +16,10 @@ var y;                  //Stars alignment Y
 var health;             //Player Health Counter
 var score;              //Player Score Counter
 var playerBulletX;      //Player Laser Postion X
+var playerBulletX2;      //Player Laser Postion X2
+var playerBulletX3;      //Player Laser Postion X3
 var playerBulletY;      //Player Laser Postion Y
+var playerBulletXSpeed; //Player Laser Speed
 var song;               //Variable that stores the soundtrack
 var songtracker;        //Boolean that only allows the song to play once (no overlap)
 var pewpewSound;        //Variable that stores the blaster sound effect
@@ -61,6 +64,12 @@ var iddqd;              //Variable that determines whether or not the user has i
 var iddqdX;             //Variable that determines the X location of the invulnerability power-up
 var iddqdY;             //Variable that determines the Y location of the invulnerability power-up
 var iddqdT;             //Variable that determines how long iddqd has left;
+
+//
+var quick;              //Variable that determines whether of not the user has quickshot
+var quickX;             //Variable that determines the X location of the quickshot power-up
+var quickY;             //Variable that determines the Y location of the quickshot power-up
+var quickT;             //Variable that determines how long quick has left
 
 //Power-Up Variables END
 /*
@@ -303,6 +312,8 @@ function setup() {
                 score = 0
                 playerBulletY = shipy
                 playerBulletX = 800
+                playerBulletX2 = 800
+                playerBulletX3 = 800
                 ty = 600
                 timing = 0
                 songtracker = 0
@@ -339,6 +350,12 @@ function setup() {
                 iddqdX = random(1500, 2000)
                 iddqdY = random(50, 550)
                 iddqdT = 0
+                
+                //Quick-shot
+                quick =false;
+                quickX = random(1500, 2000)
+                quickY = random(50, 550)
+                quickT = 0
 
                 background(0, 0, 50)
                 stars()
@@ -353,6 +370,7 @@ function setup() {
 
             document.addEventListener('mousedown', (event) => {
                 if (event.button === 0) {
+                    //playerBulletX -= playerBulletXSpeed
                     if (playerBulletX >= 800) {
                         fill(0, 255, 0)
                         playerBulletX = shipx
@@ -713,6 +731,55 @@ function setup() {
                 iddqd = false;
             }
         }//Invulnerability End
+        
+        //quickshot start
+        function quickshot(){
+             //quickshot visuals
+             strokeWeight(5)
+             stroke(128)
+             fill(255, 255, 0)
+             rectMode(CENTER)
+
+             //quickshot location logic
+            rect(quickX, quickY, 50, 50)
+            quickX -= 2
+            if (quickX <= -25) {
+                quickX = random(1200, 2000)
+                quickY = random(50, 550)
+            }
+
+            //quickshot utility logic
+            if (playerBulletX >= quickX - 25 && playerBulletX <= quickX + 25 && playerBulletY >= quickY - 25 && playerBulletY <= quickY + 25) {
+                quickT = quickT + 900;
+                quickT = constrain(quickT, 0, 900);
+                quickX = random(1200, 2000);
+                quickY = random(50, 550);
+
+            }
+            
+            //quickshot activity logic
+            if(quickT > 0){
+                hullR = 255;
+                hullG = 255;
+                hullB = 0;
+                quick = true; //While timer of quickshot has juice, give player quickshot, decrease timer by 60 per second.
+                quickT--;
+
+                playerBulletX += 40
+
+                rectMode(CORNER)
+                rect(10, 500, quickT/10, 25)
+            }else{
+                hullR = 120;
+                hullG = 120;
+                hullB = 120;
+                //playerBulletXSpeed = 0;
+                quick = false;
+
+                playerBulletX += 20
+            }
+
+        }//quickshot end
 
         function difficulty() {
 
@@ -870,10 +937,6 @@ function setup() {
                         }
                     }
     
-    
-    
-                    playerBulletX += 20
-    
                     //if statement will move bullet out of bounds so that it does not interact with anything offscreen
                     if(playerBulletX > 800){
                         playerBulletY = -10;
@@ -898,6 +961,7 @@ function setup() {
     
                     healthPack();
                     invuln();
+                    quickshot();
     
                     strokeWeight(1)
                     stroke(0)
@@ -962,7 +1026,8 @@ function setup() {
                 -Score increments for this: 0, 5000, 11000, 18000, 26000, 35000
     [ ]     Create a variety of upgrades:
         [X]     Invulnerability (Player will not take damage when interacting with enemy laser fire)
-        [ ]     Multi-Shot      (Player will fire multiple lasers rather than one)
-        [ ]     Quick-Shot      (Player laser speed will be increased)
+        [ ]     Multi-Shot      (Player will fire multiple lasers rather than one) 
+        -- need to add 2 more y and x bullet axis (bullet top and bottom). top +20 on y, bottom -20 ony 
+        [X]     Quick-Shot      (Player laser speed will be increased)
         [ ]     ChronoSphere    (Slows down time, decreases enemy movement speed, decreases enemy laser movement speed, decreases background stars movement speed)
         */
