@@ -19,8 +19,6 @@ var playerBulletX;      //Player Laser Postion X
 var playerBulletX2;      //Player Laser Postion X2
 var playerBulletX3;      //Player Laser Postion X3
 var playerBulletY;      //Player Laser Postion Y
-var playerBulletY2;   //Player Laser Postion Y Top
-var playerBulletY3;//Player Laser Postion Y Bottom
 var playerBulletXSpeed; //Player Laser Speed
 var song;               //Variable that stores the soundtrack
 var songtracker;        //Boolean that only allows the song to play once (no overlap)
@@ -72,12 +70,6 @@ var quick;              //Variable that determines whether of not the user has q
 var quickX;             //Variable that determines the X location of the quickshot power-up
 var quickY;             //Variable that determines the Y location of the quickshot power-up
 var quickT;             //Variable that determines how long quick has left
-
-//
-var mult;               //Variable that determines whether of not the user has multishop
-var multX;              //Variable that determines the X location of the multishot power-up
-var multY;              //Variable that determines the Y location of the multishot power-up
-var multT;              //Variable that determines how long multishot has left
 
 //Power-Up Variables END
 /*
@@ -188,7 +180,7 @@ function enemyLvl1(){
         enemyY1 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40 || (layerBulletX2 >= enemyX1 && playerBulletX2 <= enemyX1 + 40 && playerBulletYTop >= enemyY1 && playerBulletYTop <= enemyY1 + 40) || (layerBulletX3 >= enemyX1 && playerBulletX3 <= enemyX1 + 40 && playerBulletYBottom >= enemyY1 && playerBulletYBottom <= enemyY1 + 40)) {
+    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40) {
         enemyX1 = random(800, 900)
         enemyY1 = random(115, 550)
         score = score + int(random(59, 217))
@@ -230,7 +222,7 @@ function enemyLvl2(){
         enemyY2 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40 || (layerBulletX2 >= enemyX2 && playerBulletX2 <= enemyX2 + 40 && playerBulletYTop >= enemyY2 && playerBulletYTop <= enemyY2 + 40) || (layerBulletX3 >= enemyX2 && playerBulletX3 <= enemyX2 + 40 && playerBulletYBottom >= enemyY2 && playerBulletYBottom <= enemyY2 + 40)) {
+    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40) {
         enemyX2 = random(800, 900)
         enemyY2 = random(115, 550)
         score = score + int(random(59, 217))
@@ -272,7 +264,7 @@ function enemyLvl3(){
         enemyY3 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40 || (layerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyY3 + 40) || (layerBulletX3 >= enemyX3 && playerBulletX3 <= enemyX3 + 40 && playerBulletYBottom >= enemyY3 && playerBulletYBottom <= enemyY3 + 40)) {
+    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40) {
         enemyX3 = random(800, 900)
         enemyY3 = random(115, 550)
         score = score + int(random(59, 217))
@@ -282,6 +274,8 @@ function enemyLvl3(){
 /*
 -----------------------------------------
     ALL ENEMY LOGIC END
+
+    SETUP PHASE START (RUNS ONCE AT BEGINNING)
 -----------------------------------------
 */
 
@@ -319,8 +313,6 @@ function setup() {
                 hitReg3 = 0
                 score = 0
                 playerBulletY = shipy
-                playerBulletY2 = 0
-                playerBulletY3 = 0
                 playerBulletX = 800
                 playerBulletX2 = 800
                 playerBulletX3 = 800
@@ -375,691 +367,643 @@ function setup() {
 
         }
 
-        //Shoots laser when mouse is pressed
-        function mousePressed() {
+/*
+-----------------------------------------
+    SETUP PHASE END
 
-            document.addEventListener('mousedown', (event) => {
-                if (event.button === 0) {
-                    //playerBulletX -= playerBulletXSpeed
-                    if (playerBulletX >= 800) {
-                        fill(0, 255, 0)
-                        playerBulletX = shipx
-                        playerBulletY = shipy
-                        
-                        // if(quick = true){
-                        //     playerBulletX2 = shipx
-                        //     playerBulletX3 = shipx
-                        //     playerBulletYTop = shipy+20
-                        //     playerBulletYBottom = shipy-20
-                        // }
-                        pewpewSound.play()
-                    }
-                }
-              });
+    CORE FUNCTIONS START
+-----------------------------------------
+*/
+
+//Shoots laser when mouse is pressed
+function mousePressed() {
+
+    document.addEventListener('mousedown', (event) => {
+        if (event.button === 0) {
+            //playerBulletX -= playerBulletXSpeed
+            if (playerBulletX >= 800) {
+                fill(0, 255, 0)
+                playerBulletX = shipx
+                playerBulletY = shipy
+                pewpewSound.play()
+            }
         }
+        });
+}
 
+
+//Your Millenium Falcon :D (Visuals)
+function ship() {
+
+    //Hull Color and Shape
+    fill(hullR, hullG, hullB);
+    triangle(shipx - 25, shipy + 25, shipx - 25, shipy - 25, shipx + 30, shipy)
+
+    //Engine Color and Shape
+    fill(engineR, engineG, engineB)
+    rect(shipx - 30, shipy - 19, 40, 10)
+    rect(shipx - 30, shipy + 8, 40, 10)
+
+    //Reset Color
+    fill(255)
+
+
+}
+
+
+//An assortment of stars... just chillin
+function stars() {
+    fill(255)
+    //left -400
+    ellipse(x - 250, y + 111, 5, 5)
+    ellipse(x - 300, y - 247, 5, 5)
+    ellipse(x - 350, y - 167, 5, 5)
+    ellipse(x - 800, y + 198, 5, 5)
+    ellipse(x - 450, y - 216, 5, 5)
+    ellipse(x - 500, y + 82, 5, 5)
+    ellipse(x - 550, y - 122, 5, 5)
+
+    //center do not touch
+    ellipse(x + 150, y + 111, 5, 5)
+    ellipse(x + 100, y - 247, 5, 5)
+    ellipse(x + 50, y - 167, 5, 5)
+    ellipse(x - 400, y + 198, 5, 5)
+    ellipse(x - 50, y - 216, 5, 5)
+    ellipse(x - 100, y + 82, 5, 5)
+    ellipse(x - 150, y - 122, 5, 5)
+
+    //right +400
+    ellipse(x + 550, y + 111, 5, 5)
+    ellipse(x + 500, y - 247, 5, 5)
+    ellipse(x + 450, y - 167, 5, 5)
+    ellipse(x, y + 198, 5, 5)
+    ellipse(x + 350, y - 216, 5, 5)
+    ellipse(x + 300, y + 82, 5, 5)
+    ellipse(x + 250, y - 122, 5, 5)
+
+    //farright +800
+    ellipse(x + 950, y + 111, 5, 5)
+    ellipse(x + 900, y - 247, 5, 5)
+    ellipse(x + 850, y - 167, 5, 5)
+    ellipse(x + 400, y + 198, 5, 5)
+    ellipse(x + 750, y - 216, 5, 5)
+    ellipse(x + 700, y + 82, 5, 5)
+    ellipse(x + 650, y - 122, 5, 5)
+
+    x--
+
+    if (x <= 0) {
+        x = x + 400
+    }
+}
+
+
+//All the code for your health and what not. Also causes Game Over to work
+function textEffect() {
+    text("Score: " + score, 600, 575)
+    strokeWeight(5)
+    stroke(255)
+    if (health >= 5) {
+        fill(37, 189, 0)
+        rect(25, 25, 40, 40)
+        rect(85, 25, 40, 40)
+        rect(145, 25, 40, 40)
+        rect(205, 25, 40, 40)
+        rect(265, 25, 40, 40)
+    }
+    else if (health == 4) {
+        fill(37, 189, 0)
+        rect(25, 25, 40, 40)
+        rect(85, 25, 40, 40)
+        rect(145, 25, 40, 40)
+        rect(205, 25, 40, 40)
+    }
+    else if (health == 3) {
+        fill(225, 160, 0)
+        rect(25, 25, 40, 40)
+        rect(85, 25, 40, 40)
+        rect(145, 25, 40, 40)
+    }
+    else if (health == 2) {
+        fill(225, 160, 0)
+        rect(25, 25, 40, 40)
+        rect(85, 25, 40, 40)
+    }
+    else if (health == 1) {
+        fill(179, 0, 0)
+        rect(25, 25, 40, 40)
+    }
+    else {
+        song.pause()
+
+        stroke(0)
+        strokeWeight(1)
+        fill(255, 0, 0)
+        textSize(20)
+        if (score <= 0) {
+            text("Who put YOU in the pilot seat!", 215, 575)
+        }
+        else if (score <= 5000) {
+            text("Your skills are lacking, cadet!", 215, 575)
+        }
+        else if (score <= 11000) {
+            text("Better luck next time, rookie!", 215, 575)
+        }
+        else if (score <= 18000) {
+            text("At least you can aim, marine!", 215, 575)
+        }
+        else if (score <= 26000) {
+            text("Very good work, comrade!", 240, 575)
+        }
+        else if (score <= 35000) {
+            text("I expected nothing less from an ACE!", 200, 575)
+        }
+        else {
+            text("I can  go as far as to say I underestimated you, legend!", 40, 575)
+        }
+        text("Your score was: " + score, 250, 550)
+
+
+    }
+    stroke(0)
+    strokeWeight(1)
+}
+
+//If you press M, music plays (requires beefy computer)
+function keyPressed() {
+    if(loadAssetBuffer <= 0){
+        if (keyCode == 77 && songtracker == 0) {
+            song.loop()
+            songtracker = 1
+        }
+        else {
+            
+        }
+    }else{
+
+    }
+}
+
+function reticle() {
+    //Spaceship Aim Down Sight Reticle.
+    fill(0, 255, 0)
+    noCursor()
+    strokeWeight(5)
+    stroke(0, 255, 0)
+    point(mouseX, mouseY)
+    strokeWeight(1)
+    stroke(0, 0, 0, 0)
+    
+    rectMode(CENTER)
+    rect(mouseX - 10, mouseY - 12.5, 10, 3)
+    rect(mouseX + 10, mouseY - 12.5, 10, 3)
+    rect(mouseX - 10, mouseY + 12.5, 10, 3)
+    rect(mouseX + 10, mouseY + 12.5, 10, 3)
+
+    rect(mouseX - 12.5, mouseY - 10, 3, 10)
+    rect(mouseX - 12.5, mouseY + 10, 3, 10)
+    rect(mouseX + 12.5, mouseY - 10, 3, 10)
+    rect(mouseX + 12.5, mouseY + 10, 3, 10)
+    rectMode(CORNER)
+}
+
+function titleScreen() {
+    background(0, 0, 50);
+
+    ty -= 1
+    ty = constrain(ty, -150, 600)
+    textSize(25)
+    fill(255, 255, 0)
+    
+    //Arcade Text
+    text("In a land far, far away,", 250, ty)
+    text("In the year 2178,", 280, ty + 50)
+    text("An alien colony attacks Earth,", 220, ty + 100)
+    text("You must defend Earth from them!", 195, ty + 150)
+    text("Controls:", 315, ty + 300)
+    text("W = Up, S = Down", 260, ty + 350)
+    text("A = Left, D = Right", 260, ty + 400)
+    text("LMB = Fire", 290, ty + 450)
+    text("M = Music", 295, ty + 500)
+    text("Insert Coin (Q) to start!", 240, ty + 550)
+    text("1 Credit: $1.25", 280, ty + 700)
+    text("Please wait for reticle on screen to play", 210, ty + 730)
+
+    //Arcade Screen
+    fill(0, 0, 0, 0)
+    stroke(0, 255, 0)
+    strokeWeight(20)
+    rect(0, 0, 800, 600)
+    strokeWeight(10)
+    stroke(255)
+    fill(255, 0, 0)
+    rect(30, 50, 200, 50)
+    fill(255, 255, 0)
+    stroke(0)
+    rect(550, 50, 20, 50)
+    rect(590, 50, 20, 50)
+    rect(630, 50, 20, 50)
+    rect(670, 50, 20, 50)
+    rect(710, 50, 20, 50)
+    fill(150)
+    strokeWeight(1)
+    ellipse(100, 500, 160, 160)
+    strokeWeight(5)
+    line(100, 420, 100, 580)
+    line(20, 500, 180, 500)
+    strokeWeight(7)
+    stroke(255, 0, 0)
+    point(80, 460)
+    point(165, 525)
+    point(50, 540)
+    strokeWeight(1)
+    stroke(0)
+    fill(255, 0, 0)
+    text("Health", 35, 130)
+    text("Radar", 35, 400)
+    text("Enemy", 600, 260)
+    fill(255, 255, 0)
+    text("Galacti-Tron", 600, 500)
+    text("Arcade", 600, 525)
+    textSize(10)
+    text("TM", 680, 515)
+    textSize(25)
+    text("Ammo", 655, 130)
+    fill(0, 255, 0)
+    text("YOU", 70, 260)
+    text("Medkit", 600, 335)
+    fill(255)
+    ship()
+
+    fill(190, 0, 0)
+    rect(700, 230, 40, 40)
+    fill(120)
+    rect(700 - 10, 230 + 13, 35, 12)
+    fill(0, 255, 0)
+    stroke(255)
+    strokeWeight(5)
+    rect(695, 300, 50, 50)
+    stroke(0)
+    strokeWeight(1)
+}
+
+//Ship Movement
+function shipMove() {
+    if (keyIsDown(65)) {
+        shipx -= 5;
+
+    }
+
+    if (keyIsDown(68)) {
+        shipx += 5;
+
+    }
+
+    if (keyIsDown(87)) {
+        shipy -= 5;
+        //playerBulletY += 5
+    }
+
+    if (keyIsDown(83)) {
+        shipy += 5;
+        //playerBulletY -= 5
+    }
+}
+
+/*
+-----------------------------------------
+    CORE FUNCTIONS END
+
+    PLAYER BUFFS START
+-----------------------------------------
+*/
+
+//HealthBox Start
+function healthPack() {
+    //Healthbox visuals
+    strokeWeight(5)
+    stroke(255)
+    fill(0, 255, 0)
+    rectMode(CENTER)
+
+    //Healthbox location logic
+    rect(lifeboxX, lifeboxY, 50, 50)
+    lifeboxX -= 2
+    if (lifeboxX <= -25) {
+        lifeboxX = random(1200, 2000)
+        lifeboxY = random(50, 550)
+    }
+
+    //Healthbox utility logic
+    if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25) {
+        if (health == 5) {
+            score = score + 1000
+        }
+        health = health + 1
+        lifeboxX = random(1200, 2000)
+        lifeboxY = random(50, 550)
+
+    }
+    
+}//HealthBox End
+
+//Invulnerability Start
+function invuln() {
+    //invuln visuals
+    strokeWeight(5)
+    stroke(128)
+    fill('rgba(0, 0, 255, 1)')
+    rectMode(CENTER)
+    //invuln location logic
+    rect(iddqdX, iddqdY, 50, 50)
+    iddqdX -= 2
+    
+    if (iddqdX <= -25) {
+        iddqdX = random(1200, 2000)
+        iddqdY = random(50, 550)
+    }
+
+    //invuln utility logic
+    if (playerBulletX >= iddqdX - 25 && playerBulletX <= iddqdX + 25 && playerBulletY >= iddqdY - 25 && playerBulletY <= iddqdY + 25) {
+        iddqdT = iddqdT + 900;
+        iddqdT = constrain(iddqdT, 0, 900);
+        iddqdX = random(1200, 2000);
+        iddqdY = random(50, 550);
+
+    }
+    
+    //invuln activity logic
+    if(iddqdT > 0){
+        strokeWeight(1)
+        stroke(0, 0, 255)
+        fill('rgba(0, 0, 255, 0.25)')
+        circle(shipx, shipy, 100)
+        iddqd = true; //While timer of invuln has juice, give player invuln, decrease timer by 60 per second.
+        iddqdT--;
+
+        strokeWeight(5)
+        stroke(128)
+        fill('rgba(0, 0, 255, 1)')
+        rectMode(CORNER)
+        rect(10, 550, iddqdT/10, 25)
+    }else{
+        iddqd = false;
+    }
+}//Invulnerability End
+
+//Quickshot start
+function quickshot(){
+    //quickshot visuals
+    strokeWeight(5)
+    stroke(128)
+    fill(255, 155, 0)
+    rectMode(CENTER)
+    //quickshot location logic
+    rect(quickX, quickY, 50, 50)
+    quickX -= 2
+    
+    if (quickX <= -25) {
+        quickX = random(1200, 2000)
+        quickY = random(50, 550)
+    }
+
+    //quickshot utility logic
+    if (playerBulletX >= quickX - 25 && playerBulletX <= quickX + 25 && playerBulletY >= quickY - 25 && playerBulletY <= quickY + 25) {
+        quickT = quickT + 900;
+        quickT = constrain(quickT, 0, 900);
+        quickX = random(1200, 2000);
+        quickY = random(50, 550);
+
+    }
+    
+    //quickshot activity logic
+    if(quickT > 0){
+        hullR = 255;
+        hullG = 155;
+        hullB = 0;
+        quick = true; //While timer of quickshot has juice, give player quickshot, decrease timer by 60 per second.
+        quickT--;
+
+        playerBulletX += 40
+
+        rectMode(CORNER)
+        rect(10, 515, quickT/10, 25)
+    }else{
+        hullR = 120;
+        hullG = 120;
+        hullB = 120;
+        //playerBulletXSpeed = 0;
+        quick = false;
+
+        playerBulletX += 20
+    }
+}//Quickshot end
+
+function difficulty() {
+
+    if(score < 5000){                                   //VLRT (Very Low-Risk Targets)
+        strokeWeight(0);
+        stroke(0);
+        fill(0,255,0);
+        text("VLRT", 615, 60);
         
-        //Your Millenium Falcon :D (Visuals)
-        function ship() {
-
-            //Hull Color and Shape
-            fill(hullR, hullG, hullB);
-            triangle(shipx - 25, shipy + 25, shipx - 25, shipy - 25, shipx + 30, shipy)
-
-            //Engine Color and Shape
-            fill(engineR, engineG, engineB)
-            rect(shipx - 30, shipy - 19, 40, 10)
-            rect(shipx - 30, shipy + 8, 40, 10)
-
-            //Reset Color
-            fill(255)
-
-
-        }
+        threat0.resize(100,100);
+        image(threat0, 680, 15);
         
+        strokeWeight(2);
+
+        enemyXSpeed1 = 2;
+        enemyLvl1();
+    }else if(score >= 5000 && score < 11000){           //LRT (Low-Risk Targets)
+        strokeWeight(0);
+        stroke(0);
+        fill(0,175,0);
+        text("LRT", 615, 60);
         
-        //An assortment of stars... just chillin
-        function stars() {
-            fill(255)
-            //left -400
-            ellipse(x - 250, y + 111, 5, 5)
-            ellipse(x - 300, y - 247, 5, 5)
-            ellipse(x - 350, y - 167, 5, 5)
-            ellipse(x - 800, y + 198, 5, 5)
-            ellipse(x - 450, y - 216, 5, 5)
-            ellipse(x - 500, y + 82, 5, 5)
-            ellipse(x - 550, y - 122, 5, 5)
+        threat1.resize(100,100);
+        image(threat1, 680, 15);
+        
+        strokeWeight(2);
 
-            //center do not touch
-            ellipse(x + 150, y + 111, 5, 5)
-            ellipse(x + 100, y - 247, 5, 5)
-            ellipse(x + 50, y - 167, 5, 5)
-            ellipse(x - 400, y + 198, 5, 5)
-            ellipse(x - 50, y - 216, 5, 5)
-            ellipse(x - 100, y + 82, 5, 5)
-            ellipse(x - 150, y - 122, 5, 5)
+        enemyXSpeed1 = 5;
+        enemyLvl1();
+    }else if(score >= 11000 && score < 18000){          //MRT (Moderate-Risk Targets)
+        strokeWeight(0);
+        stroke(0);
+        fill(175,175,0);
+        text("MRT", 615, 60);
+        
+        threat2.resize(100,100);
+        image(threat2, 680, 15);
+        
+        strokeWeight(2);
 
-            //right +400
-            ellipse(x + 550, y + 111, 5, 5)
-            ellipse(x + 500, y - 247, 5, 5)
-            ellipse(x + 450, y - 167, 5, 5)
-            ellipse(x, y + 198, 5, 5)
-            ellipse(x + 350, y - 216, 5, 5)
-            ellipse(x + 300, y + 82, 5, 5)
-            ellipse(x + 250, y - 122, 5, 5)
+        enemyXSpeed1 = 5;
+        enemyXSpeed2 = 2;
+        enemyLvl1();
+        enemyLvl2();
+    }else if(score >= 18000 && score < 26000){          //HRT (High-Risk Targets)
+        strokeWeight(0);
+        stroke(0);
+        fill(175,0,0);
+        text("HRT", 615, 60);
 
-            //farright +800
-            ellipse(x + 950, y + 111, 5, 5)
-            ellipse(x + 900, y - 247, 5, 5)
-            ellipse(x + 850, y - 167, 5, 5)
-            ellipse(x + 400, y + 198, 5, 5)
-            ellipse(x + 750, y - 216, 5, 5)
-            ellipse(x + 700, y + 82, 5, 5)
-            ellipse(x + 650, y - 122, 5, 5)
+        threat3.resize(100,100);
+        image(threat3, 680, 15);
 
-            x--
+        strokeWeight(2);
 
-            if (x <= 0) {
-                x = x + 400
-            }
+        enemyXSpeed1 = 5;
+        enemyXSpeed2 = 5;
+        enemyLvl1();
+        enemyLvl2();
+    }else if(score >= 26000 && score < 35000){          //VHRT (Very High-Risk Targets)
+        strokeWeight(0);
+        stroke(0);
+        fill(255,0,0);
+        text("VHRT", 615, 60);
+        
+        threat4.resize(100,100);
+        image(threat4, 680, 15);
+
+        strokeWeight(2);
+
+        enemyXSpeed1 = 5;
+        enemyXSpeed2 = 5;
+        enemyXSpeed3 = 2;
+        enemyLvl1();
+        enemyLvl2();
+        enemyLvl3();
+    }else if(score >= 35000){                           //ERT (Extreme-Risk Targets)
+        strokeWeight(0);
+        stroke(0);
+        fill(255,128,0);
+        text("ERT", 615, 60);
+        
+        threat5.resize(100,100);
+        image(threat5, 680, 15);
+        
+        strokeWeight(2);
+
+        enemyXSpeed1 = 5;
+        enemyXSpeed2 = 5;
+        enemyXSpeed3 = 5;
+        enemyLvl1();
+        enemyLvl2();
+        enemyLvl3();
+    }
+}
+
+//Chaos in a can. Used to create the arcade screen and the ending text.
+function draw() {
+    titleScreen();
+    loadAssetBuffer = constrain(loadAssetBuffer, 1, 300);
+    loadAssetBuffer--;
+    console.log(keyCode);
+    if (loadAssetBuffer > 0){
+        keyCode = 0;
+    }else if (loadAssetBuffer <= 0){
+        if (keyCode == 81) {
+            begin = true
         }
+        if (begin) {
+
+            background(0, 0, 50)
+            keyPressed();
+            mousePressed();
+
+            //Plays death animation (requires beefy computer)
+            if (health == 0) {
+                image(lost, 0, 75)
+                lost.size(800, 600);
+                lost.play()
+                timing += 0.017
+                lifeboxX = -1000
+                lifeboxX -= 0
+                
+                enemyX1 = 1000
+                enemyXSpeed1 = 0
+
+                enemyX2 = 1000
+                enemyXSpeed2 = 0
+
+                enemyX3 = 1000
+                enemyXSpeed3 = 0
+
+                enemyBulletX1 = 1000
+                enemyBulletXSpeed1 = 0
+                
+                enemyBulletX2 = 1000
+                enemyBulletXSpeed2 = 0
+
+                enemyBulletX3 = 1000
+                enemyBulletXSpeed3 = 0
 
 
-        //All the code for your health and what not. Also causes Game Over to work
-        function textEffect() {
-            text("Score: " + score, 600, 575)
-            strokeWeight(5)
-            stroke(255)
-            if (health >= 5) {
-                fill(37, 189, 0)
-                rect(25, 25, 40, 40)
-                rect(85, 25, 40, 40)
-                rect(145, 25, 40, 40)
-                rect(205, 25, 40, 40)
-                rect(265, 25, 40, 40)
-            }
-            else if (health == 4) {
-                fill(37, 189, 0)
-                rect(25, 25, 40, 40)
-                rect(85, 25, 40, 40)
-                rect(145, 25, 40, 40)
-                rect(205, 25, 40, 40)
-            }
-            else if (health == 3) {
-                fill(225, 160, 0)
-                rect(25, 25, 40, 40)
-                rect(85, 25, 40, 40)
-                rect(145, 25, 40, 40)
-            }
-            else if (health == 2) {
-                fill(225, 160, 0)
-                rect(25, 25, 40, 40)
-                rect(85, 25, 40, 40)
-            }
-            else if (health == 1) {
-                fill(179, 0, 0)
-                rect(25, 25, 40, 40)
-            }
-            else {
-                song.pause()
-
-                stroke(0)
-                strokeWeight(1)
-                fill(255, 0, 0)
-                textSize(20)
-                if (score <= 0) {
-                    text("Who put YOU in the pilot seat!", 215, 575)
-                }
-                else if (score <= 5000) {
-                    text("Your skills are lacking, cadet!", 215, 575)
-                }
-                else if (score <= 11000) {
-                    text("Better luck next time, rookie!", 215, 575)
-                }
-                else if (score <= 18000) {
-                    text("At least you can aim, marine!", 215, 575)
-                }
-                else if (score <= 26000) {
-                    text("Very good work, comrade!", 240, 575)
-                }
-                else if (score <= 35000) {
-                    text("I expected nothing less from an ACE!", 200, 575)
-                }
-                else {
-                    text("I can  go as far as to say I underestimated you, legend!", 40, 575)
-                }
-                text("Your score was: " + score, 250, 550)
-
-
-            }
-            stroke(0)
-            strokeWeight(1)
-        }
-
-        //If you press M, music plays (requires beefy computer)
-        function keyPressed() {
-            if(loadAssetBuffer <= 0){
-                if (keyCode == 77 && songtracker == 0) {
-                    song.loop()
-                    songtracker = 1
-                }
-                else {
+                if(dataBaseLockVar == false){
+                    addStat(db, username, score);
+                    console.log(getStats(db));
+                    dataBaseLockVar = true;
+                }else{
                     
                 }
-            }else{
+                if (timing >= 7.9) {
+                    text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
+                    noLoop()
+                }else{
 
+                }
             }
-        }
 
-        function reticle() {
-            //Spaceship Aim Down Sight Reticle.
-            fill(0, 255, 0)
-            noCursor()
-            strokeWeight(5)
-            stroke(0, 255, 0)
-            point(mouseX, mouseY)
-            strokeWeight(1)
-            stroke(0, 0, 0, 0)
-            
-            rectMode(CENTER)
-            rect(mouseX - 10, mouseY - 12.5, 10, 3)
-            rect(mouseX + 10, mouseY - 12.5, 10, 3)
-            rect(mouseX - 10, mouseY + 12.5, 10, 3)
-            rect(mouseX + 10, mouseY + 12.5, 10, 3)
+            //if statement will move bullet out of bounds so that it does not interact with anything offscreen
+            if(playerBulletX > 800){
+                playerBulletY = -10;
+            }
 
-            rect(mouseX - 12.5, mouseY - 10, 3, 10)
-            rect(mouseX - 12.5, mouseY + 10, 3, 10)
-            rect(mouseX + 12.5, mouseY - 10, 3, 10)
-            rect(mouseX + 12.5, mouseY + 10, 3, 10)
-            rectMode(CORNER)
-        }
-
-        function titleScreen() {
-            background(0, 0, 50);
-
-            ty -= 1
-            ty = constrain(ty, -150, 600)
-            textSize(25)
-            fill(255, 255, 0)
-            
-            //Arcade Text
-            text("In a land far, far away,", 250, ty)
-            text("In the year 2178,", 280, ty + 50)
-            text("An alien colony attacks Earth,", 220, ty + 100)
-            text("You must defend Earth from them!", 195, ty + 150)
-            text("Controls:", 315, ty + 300)
-            text("W = Up, S = Down", 260, ty + 350)
-            text("A = Left, D = Right", 260, ty + 400)
-            text("LMB = Fire", 290, ty + 450)
-            text("M = Music", 295, ty + 500)
-            text("Insert Coin (Q) to start!", 240, ty + 550)
-            text("1 Credit: $1.25", 280, ty + 700)
-            text("Please wait for reticle on screen to play", 210, ty + 730)
-
-            //Arcade Screen
-            fill(0, 0, 0, 0)
-            stroke(0, 255, 0)
-            strokeWeight(20)
-            rect(0, 0, 800, 600)
-            strokeWeight(10)
-            stroke(255)
-            fill(255, 0, 0)
-            rect(30, 50, 200, 50)
-            fill(255, 255, 0)
-            stroke(0)
-            rect(550, 50, 20, 50)
-            rect(590, 50, 20, 50)
-            rect(630, 50, 20, 50)
-            rect(670, 50, 20, 50)
-            rect(710, 50, 20, 50)
-            fill(150)
-            strokeWeight(1)
-            ellipse(100, 500, 160, 160)
-            strokeWeight(5)
-            line(100, 420, 100, 580)
-            line(20, 500, 180, 500)
-            strokeWeight(7)
-            stroke(255, 0, 0)
-            point(80, 460)
-            point(165, 525)
-            point(50, 540)
-            strokeWeight(1)
-            stroke(0)
-            fill(255, 0, 0)
-            text("Health", 35, 130)
-            text("Radar", 35, 400)
-            text("Enemy", 600, 260)
-            fill(255, 255, 0)
-            text("Galacti-Tron", 600, 500)
-            text("Arcade", 600, 525)
-            textSize(10)
-            text("TM", 680, 515)
-            textSize(25)
-            text("Ammo", 655, 130)
-            fill(0, 255, 0)
-            text("YOU", 70, 260)
-            text("Medkit", 600, 335)
-            fill(255)
+            stars()
             ship()
+            textEffect()
+            shipMove()
 
-            fill(190, 0, 0)
-            rect(700, 230, 40, 40)
-            fill(120)
-            rect(700 - 10, 230 + 13, 35, 12)
-            fill(0, 255, 0)
-            stroke(255)
-            strokeWeight(5)
-            rect(695, 300, 50, 50)
-            stroke(0)
+
+            //Boolet
+            rect(playerBulletX, playerBulletY - 8, 30, 15)
+            shipx = constrain(shipx, 10, 790)
+            shipy = constrain(shipy, 10, 590)
+            health = constrain(health, 0, 5)
+            hitReg1 = constrain(hitReg1, 0, 1)
+            hitReg2 = constrain(hitReg2, 0, 1)
+            hitReg3 = constrain(hitReg3, 0, 1)
+
+            difficulty();
+
+            healthPack();
+            invuln();
+            quickshot();
+
             strokeWeight(1)
+            stroke(0)
+            rectMode(CORNER)
+            fill(255, 0, 0)
+            textSize(20)
+            if (health == 1) {
+                text("Critical Hull Warning!!!", 25, 100)
+            }
+            fill(255)
         }
+        reticle()
+    }else{
+        begin = false;
+    }
 
-        //Ship Movement
-        function shipMove() {
-            if (keyIsDown(65)) {
-                shipx -= 5;
+}
 
-            }
+Promise.all([song]).then(() => {
+    assetsLoaded = true;
+    });
 
-            if (keyIsDown(68)) {
-                shipx += 5;
-
-            }
-
-            if (keyIsDown(87)) {
-                shipy -= 5;
-                //playerBulletY += 5
-            }
-
-            if (keyIsDown(83)) {
-                shipy += 5;
-                //playerBulletY -= 5
-            }
-        }
-
-        //HealthBox Start
-        function healthPack() {
-            //Healthbox visuals
-            strokeWeight(5)
-            stroke(255)
-            fill(0, 255, 0)
-            rectMode(CENTER)
-
-            //Healthbox location logic
-            rect(lifeboxX, lifeboxY, 50, 50)
-            lifeboxX -= 2
-            if (lifeboxX <= -25) {
-                lifeboxX = random(1200, 2000)
-                lifeboxY = random(50, 550)
-            }
-
-            //Healthbox utility logic
-            if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25) {
-                if (health == 5) {
-                    score = score + 1000
-                }
-                health = health + 1
-                lifeboxX = random(1200, 2000)
-                lifeboxY = random(50, 550)
-
-            }
-            
-        }//HealthBox End
-
-        //Invulnerability Start
-        function invuln() {
-            //invuln visuals
-            strokeWeight(5)
-            stroke(128)
-            fill(255, 195, 0)
-            rectMode(CENTER)
-
-            //invuln location logic
-            rect(iddqdX, iddqdY, 50, 50)
-            iddqdX -= 2
-            if (iddqdX <= -25) {
-                iddqdX = random(1200, 2000)
-                iddqdY = random(50, 550)
-            }
-
-            //invuln utility logic
-            if (playerBulletX >= iddqdX - 25 && playerBulletX <= iddqdX + 25 && playerBulletY >= iddqdY - 25 && playerBulletY <= iddqdY + 25) {
-                iddqdT = iddqdT + 900;
-                iddqdT = constrain(iddqdT, 0, 900);
-                iddqdX = random(1200, 2000);
-                iddqdY = random(50, 550);
-
-            }
-            
-            //invuln activity logic
-            if(iddqdT > 0){
-                hullR = 255;
-                hullG = 140;
-                hullB = 0;
-                iddqd = true; //While timer of invuln has juice, give player invuln, decrease timer by 60 per second.
-                iddqdT--;
-
-                rectMode(CORNER)
-                rect(10, 550, iddqdT/10, 25)
-            }else{
-                hullR = 120;
-                hullG = 120;
-                hullB = 120;
-                iddqd = false;
-            }
-        }//Invulnerability End
-        
-        //quickshot start
-        function quickshot(){
-             //quickshot visuals
-             strokeWeight(5)
-             stroke(128)
-             fill(255, 255, 0)
-             rectMode(CENTER)
-
-             //quickshot location logic
-            rect(quickX, quickY, 50, 50)
-            quickX -= 2
-            if (quickX <= -25) {
-                quickX = random(1200, 2000)
-                quickY = random(50, 550)
-            }
-
-            //quickshot utility logic
-            if (playerBulletX >= quickX - 25 && playerBulletX <= quickX + 25 && playerBulletY >= quickY - 25 && playerBulletY <= quickY + 25) {
-                quickT = quickT + 900;
-                quickT = constrain(quickT, 0, 900);
-                quickX = random(1200, 2000);
-                quickY = random(50, 550);
-
-            }
-            
-            //quickshot activity logic
-            if(quickT > 0){
-                hullR = 255;
-                hullG = 255;
-                hullB = 0;
-                quick = true; //While timer of quickshot has juice, give player quickshot, decrease timer by 60 per second.
-                quickT--;
-
-                playerBulletX += 40
-
-                rectMode(CORNER)
-                rect(10, 500, quickT/10, 25)
-            }else{
-                hullR = 120;
-                hullG = 120;
-                hullB = 120;
-                //playerBulletXSpeed = 0;
-                quick = false;
-
-                playerBulletX += 20
-            }
-
-        }//quickshot end
-
-        //multishot start
-        function multishot(){
-            //multishot visuals
-            strokeWeight(5)
-            stroke(128)
-            fill(120, 120, 120)
-            rectMode(CENTER)
-
-            //multishot location logic
-           rect(multX, multY, 50, 50)
-           multX -= 2
-           if (multX <= -25) {
-               multX = random(1200, 2000)
-               multY = random(50, 550)
-           }
-
-           //quickshot utility logic
-           if (playerBulletX >= multX - 25 && playerBulletX <= multX + 25 && playerBulletY >= multY - 25 && playerBulletY <= multY + 25/n) {
-            multT = multT + 900;
-            multT = constrain(multT, 0, 900);
-            multX = random(1200, 2000);
-            multY = random(50, 550);
-
-            }
-
-            //quickshot activity logic
-            if(multT > 0){
-                hullR = 255;
-                hullG = 255;
-                hullB = 0;
-                mult = true; //While timer of multishot has juice, give player multishot, decrease timer by 60 per second.
-                multT--;
-
-                rect(playerBulletX2, playerBulletYTop - 8, 30, 15)
-                rect(playerBulletX3, playerBulletYBottom - 8, 30, 15)
-                playerBulletX += 20
-                playertBulletx2 += 20
-                playerBulletX3 += 20
-
-                rectMode(CORNER)
-                rect(10, 500, quickT/10, 25)
-            }else{
-                hullR = 120;
-                hullG = 120;
-                hullB = 120;
-                //playerBulletXSpeed = 0;
-                quick = false;
-
-                playerBulletX += 20
-                playerBulletX2 = 800
-                playerBulletX3 = 800
-
-            }
-
-        }//multishot end
-
-        function difficulty() {
-
-            if(score < 5000){                                   //VLRT (Very Low-Risk Targets)
-                strokeWeight(0);
-                stroke(0);
-                fill(0,255,0);
-                text("VLRT", 615, 60);
-                
-                threat0.resize(100,100);
-                image(threat0, 680, 15);
-                
-                strokeWeight(2);
-
-                enemyXSpeed1 = 2;
-                enemyLvl1();
-            }else if(score >= 5000 && score < 11000){           //LRT (Low-Risk Targets)
-                strokeWeight(0);
-                stroke(0);
-                fill(0,175,0);
-                text("LRT", 615, 60);
-                
-                threat1.resize(100,100);
-                image(threat1, 680, 15);
-                
-                strokeWeight(2);
-
-                enemyXSpeed1 = 5;
-                enemyLvl1();
-            }else if(score >= 11000 && score < 18000){          //MRT (Moderate-Risk Targets)
-                strokeWeight(0);
-                stroke(0);
-                fill(175,175,0);
-                text("MRT", 615, 60);
-                
-                threat2.resize(100,100);
-                image(threat2, 680, 15);
-                
-                strokeWeight(2);
-
-                enemyXSpeed1 = 5;
-                enemyXSpeed2 = 2;
-                enemyLvl1();
-                enemyLvl2();
-            }else if(score >= 18000 && score < 26000){          //HRT (High-Risk Targets)
-                strokeWeight(0);
-                stroke(0);
-                fill(175,0,0);
-                text("HRT", 615, 60);
-
-                threat3.resize(100,100);
-                image(threat3, 680, 15);
-
-                strokeWeight(2);
-
-                enemyXSpeed1 = 5;
-                enemyXSpeed2 = 5;
-                enemyLvl1();
-                enemyLvl2();
-            }else if(score >= 26000 && score < 35000){          //VHRT (Very High-Risk Targets)
-                strokeWeight(0);
-                stroke(0);
-                fill(255,0,0);
-                text("VHRT", 615, 60);
-                
-                threat4.resize(100,100);
-                image(threat4, 680, 15);
-
-                strokeWeight(2);
-
-                enemyXSpeed1 = 5;
-                enemyXSpeed2 = 5;
-                enemyXSpeed3 = 2;
-                enemyLvl1();
-                enemyLvl2();
-                enemyLvl3();
-            }else if(score >= 35000){                           //ERT (Extreme-Risk Targets)
-                strokeWeight(0);
-                stroke(0);
-                fill(255,128,0);
-                text("ERT", 615, 60);
-                
-                threat5.resize(100,100);
-                image(threat5, 680, 15);
-                
-                strokeWeight(2);
-
-                enemyXSpeed1 = 5;
-                enemyXSpeed2 = 5;
-                enemyXSpeed3 = 5;
-                enemyLvl1();
-                enemyLvl2();
-                enemyLvl3();
-            }
-        }
-        
-        //Chaos in a can. Used to create the arcade screen and the ending text.
-        function draw() {
-            titleScreen();
-            loadAssetBuffer = constrain(loadAssetBuffer, 1, 300);
-            loadAssetBuffer--;
-            console.log(keyCode);
-            if (loadAssetBuffer > 0){
-                keyCode = 0;
-            }else if (loadAssetBuffer <= 0){
-                if (keyCode == 81) {
-                    begin = true
-                }
-                if (begin) {
-    
-                    background(0, 0, 50)
-                    keyPressed();
-                    mousePressed();
-    
-                    //Plays death animation (requires beefy computer)
-                    if (health == 0) {
-                        image(lost, 0, 75)
-                        lost.size(800, 600);
-                        lost.play()
-                        timing += 0.017
-                        lifeboxX = -1000
-                        lifeboxX -= 0
-                        
-                        enemyX1 = 1000
-                        enemyXSpeed1 = 0
-    
-                        enemyX2 = 1000
-                        enemyXSpeed2 = 0
-    
-                        enemyX3 = 1000
-                        enemyXSpeed3 = 0
-    
-                        enemyBulletX1 = 1000
-                        enemyBulletXSpeed1 = 0
-                        
-                        enemyBulletX2 = 1000
-                        enemyBulletXSpeed2 = 0
-    
-                        enemyBulletX3 = 1000
-                        enemyBulletXSpeed3 = 0
-    
-
-                        if(dataBaseLockVar == false){
-                            addStat(db, username, score);
-                            console.log(getStats(db));
-                            dataBaseLockVar = true;
-                        }else{
-                            
-                        }
-                        if (timing >= 7.9) {
-                            text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
-                            noLoop()
-                        }else{
-
-                        }
-                    }
-    
-                    //if statement will move bullet out of bounds so that it does not interact with anything offscreen
-                    if(playerBulletX > 800){
-                        playerBulletY = -10;
-                    }
-    
-                    stars()
-                    ship()
-                    textEffect()
-                    shipMove()
-    
-    
-                    //Boolet
-                    rect(playerBulletX, playerBulletY - 8, 30, 15)
-                    shipx = constrain(shipx, 10, 790)
-                    shipy = constrain(shipy, 10, 590)
-                    health = constrain(health, 0, 5)
-                    hitReg1 = constrain(hitReg1, 0, 1)
-                    hitReg2 = constrain(hitReg2, 0, 1)
-                    hitReg3 = constrain(hitReg3, 0, 1)
-    
-                    difficulty();
-    
-                    healthPack();
-                    invuln();
-                    quickshot();
-                    multishot();
-    
-                    strokeWeight(1)
-                    stroke(0)
-                    rectMode(CORNER)
-                    fill(255, 0, 0)
-                    textSize(20)
-                    if (health == 1) {
-                        text("Critical Hull Warning!!!", 25, 100)
-                    }
-                    fill(255)
-                }
-                reticle()
-            }else{
-                begin = false;
-            }
-
-        }
-
-        Promise.all([song]).then(() => {
-            assetsLoaded = true;
-          });
-
-        window.setup = setup;
-        window.draw = draw;
+window.setup = setup;
+window.draw = draw;
 
         /*
         
