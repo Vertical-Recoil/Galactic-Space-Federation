@@ -193,12 +193,6 @@ function enemyLvl1(){
         enemyY1 = random(115, 550)
         score = score + int(random(59, 217))
     }
-    // if(playerBulletX2 >= enemyX1 && playerBulletX2 <= enemyX1 + 40 && playerBulletYTop >= enemyY1 && playerBulletYTop <= enemyY1 + 40){
-    //     enemyX1 = random(800, 900)
-    //     enemyY1 = random(115, 550)
-    //     score = score + int(random(59, 217))
-    // }
-
 }
 
 function enemyLvl2(){
