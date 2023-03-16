@@ -19,6 +19,8 @@ var playerBulletX;      //Player Laser Postion X
 var playerBulletX2;      //Player Laser Postion X2
 var playerBulletX3;      //Player Laser Postion X3
 var playerBulletY;      //Player Laser Postion Y
+var playerBulletY2;   //Player Laser Postion Y Top
+var playerBulletY3;//Player Laser Postion Y Bottom
 var playerBulletXSpeed; //Player Laser Speed
 var song;               //Variable that stores the soundtrack
 var songtracker;        //Boolean that only allows the song to play once (no overlap)
@@ -70,6 +72,12 @@ var quick;              //Variable that determines whether of not the user has q
 var quickX;             //Variable that determines the X location of the quickshot power-up
 var quickY;             //Variable that determines the Y location of the quickshot power-up
 var quickT;             //Variable that determines how long quick has left
+
+//
+var mult;               //Variable that determines whether of not the user has multishop
+var multX;              //Variable that determines the X location of the multishot power-up
+var multY;              //Variable that determines the Y location of the multishot power-up
+var multT;              //Variable that determines how long multishot has left
 
 //Power-Up Variables END
 /*
@@ -180,7 +188,7 @@ function enemyLvl1(){
         enemyY1 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40) {
+    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40 || (layerBulletX2 >= enemyX1 && playerBulletX2 <= enemyX1 + 40 && playerBulletYTop >= enemyY1 && playerBulletYTop <= enemyY1 + 40) || (layerBulletX3 >= enemyX1 && playerBulletX3 <= enemyX1 + 40 && playerBulletYBottom >= enemyY1 && playerBulletYBottom <= enemyY1 + 40)) {
         enemyX1 = random(800, 900)
         enemyY1 = random(115, 550)
         score = score + int(random(59, 217))
@@ -222,7 +230,7 @@ function enemyLvl2(){
         enemyY2 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40) {
+    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40 || (layerBulletX2 >= enemyX2 && playerBulletX2 <= enemyX2 + 40 && playerBulletYTop >= enemyY2 && playerBulletYTop <= enemyY2 + 40) || (layerBulletX3 >= enemyX2 && playerBulletX3 <= enemyX2 + 40 && playerBulletYBottom >= enemyY2 && playerBulletYBottom <= enemyY2 + 40)) {
         enemyX2 = random(800, 900)
         enemyY2 = random(115, 550)
         score = score + int(random(59, 217))
@@ -264,7 +272,7 @@ function enemyLvl3(){
         enemyY3 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40) {
+    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40 || (layerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyY3 + 40) || (layerBulletX3 >= enemyX3 && playerBulletX3 <= enemyX3 + 40 && playerBulletYBottom >= enemyY3 && playerBulletYBottom <= enemyY3 + 40)) {
         enemyX3 = random(800, 900)
         enemyY3 = random(115, 550)
         score = score + int(random(59, 217))
@@ -311,6 +319,8 @@ function setup() {
                 hitReg3 = 0
                 score = 0
                 playerBulletY = shipy
+                playerBulletY2 = 0
+                playerBulletY3 = 0
                 playerBulletX = 800
                 playerBulletX2 = 800
                 playerBulletX3 = 800
@@ -375,6 +385,13 @@ function setup() {
                         fill(0, 255, 0)
                         playerBulletX = shipx
                         playerBulletY = shipy
+                        
+                        // if(quick = true){
+                        //     playerBulletX2 = shipx
+                        //     playerBulletX3 = shipx
+                        //     playerBulletYTop = shipy+20
+                        //     playerBulletYBottom = shipy-20
+                        // }
                         pewpewSound.play()
                     }
                 }
@@ -781,6 +798,62 @@ function setup() {
 
         }//quickshot end
 
+        //multishot start
+        function multishot(){
+            //multishot visuals
+            strokeWeight(5)
+            stroke(128)
+            fill(120, 120, 120)
+            rectMode(CENTER)
+
+            //multishot location logic
+           rect(multX, multY, 50, 50)
+           multX -= 2
+           if (multX <= -25) {
+               multX = random(1200, 2000)
+               multY = random(50, 550)
+           }
+
+           //quickshot utility logic
+           if (playerBulletX >= multX - 25 && playerBulletX <= multX + 25 && playerBulletY >= multY - 25 && playerBulletY <= multY + 25/n) {
+            multT = multT + 900;
+            multT = constrain(multT, 0, 900);
+            multX = random(1200, 2000);
+            multY = random(50, 550);
+
+            }
+
+            //quickshot activity logic
+            if(multT > 0){
+                hullR = 255;
+                hullG = 255;
+                hullB = 0;
+                mult = true; //While timer of multishot has juice, give player multishot, decrease timer by 60 per second.
+                multT--;
+
+                rect(playerBulletX2, playerBulletYTop - 8, 30, 15)
+                rect(playerBulletX3, playerBulletYBottom - 8, 30, 15)
+                playerBulletX += 20
+                playertBulletx2 += 20
+                playerBulletX3 += 20
+
+                rectMode(CORNER)
+                rect(10, 500, quickT/10, 25)
+            }else{
+                hullR = 120;
+                hullG = 120;
+                hullB = 120;
+                //playerBulletXSpeed = 0;
+                quick = false;
+
+                playerBulletX += 20
+                playerBulletX2 = 800
+                playerBulletX3 = 800
+
+            }
+
+        }//multishot end
+
         function difficulty() {
 
             if(score < 5000){                                   //VLRT (Very Low-Risk Targets)
@@ -962,6 +1035,7 @@ function setup() {
                     healthPack();
                     invuln();
                     quickshot();
+                    multishot();
     
                     strokeWeight(1)
                     stroke(0)
