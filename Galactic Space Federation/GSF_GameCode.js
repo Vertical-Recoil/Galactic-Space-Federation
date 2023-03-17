@@ -1129,7 +1129,7 @@ window.draw = draw;
                 -Score increments for this: 0, 5000, 11000, 18000, 26000, 35000
     [ ]     Create a variety of upgrades:
         [X]     Invulnerability (Player will not take damage when interacting with enemy laser fire)
-        [ ]     Multi-Shot      (Player will fire multiple lasers rather than one) 
+        [X]     Multi-Shot      (Player will fire multiple lasers rather than one) 
         -- need to add 2 more y and x bullet axis (bullet top and bottom). top +20 on y, bottom -20 ony 
         [X]     Quick-Shot      (Player laser speed will be increased)
         [ ]     ChronoSphere    (Slows down time, decreases enemy movement speed, decreases enemy laser movement speed, decreases background stars movement speed)
