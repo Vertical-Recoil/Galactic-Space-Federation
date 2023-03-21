@@ -16,9 +16,11 @@ var y;                  //Stars alignment Y
 var health;             //Player Health Counter
 var score;              //Player Score Counter
 var playerBulletX;      //Player Laser Postion X
-var playerBulletX2;      //Player Laser Postion X2
-var playerBulletX3;      //Player Laser Postion X3
+var playerBulletX2;     //Player Laser Postion X2
+var playerBulletX3;     //Player Laser Postion X3
 var playerBulletY;      //Player Laser Postion Y
+var playerBulletYTop;   //Player Laser Postion Y Top
+var playerBulletYBottom;//Player Laser Postion Y Bottom
 var playerBulletXSpeed; //Player Laser Speed
 var song;               //Variable that stores the soundtrack
 var songtracker;        //Boolean that only allows the song to play once (no overlap)
@@ -70,6 +72,12 @@ var quick;              //Variable that determines whether of not the user has q
 var quickX;             //Variable that determines the X location of the quickshot power-up
 var quickY;             //Variable that determines the Y location of the quickshot power-up
 var quickT;             //Variable that determines how long quick has left
+
+//
+var mult;               //Variable that determines whether of not the user has multishop
+var multX;              //Variable that determines the X location of the multishot power-up
+var multY;              //Variable that determines the Y location of the multishot power-up
+var multT;              //Variable that determines how long multishot has left
 
 //Power-Up Variables END
 /*
@@ -180,7 +188,7 @@ function enemyLvl1(){
         enemyY1 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40) {
+    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40 || (playerBulletX2 >= enemyX1 && playerBulletX2 <= enemyX1 + 40 && playerBulletYTop >= enemyY1 && playerBulletYTop <= enemyY1 + 40) || (playerBulletX3 >= enemyX1 && playerBulletX3 <= enemyX1 + 40 && playerBulletYBottom >= enemyY1 && playerBulletYBottom <= enemyY1 + 40)) {
         enemyX1 = random(800, 900)
         enemyY1 = random(115, 550)
         score = score + int(random(59, 217))
@@ -222,7 +230,7 @@ function enemyLvl2(){
         enemyY2 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40) {
+    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40 || (playerBulletX2 >= enemyX2 && playerBulletX2 <= enemyX2 + 40 && playerBulletYTop >= enemyY2 && playerBulletYTop <= enemyY2 + 40) || (playerBulletX3 >= enemyX2 && playerBulletX3 <= enemyX2 + 40 && playerBulletYBottom >= enemyY2 && playerBulletYBottom <= enemyY2 + 40)) {
         enemyX2 = random(800, 900)
         enemyY2 = random(115, 550)
         score = score + int(random(59, 217))
@@ -264,7 +272,7 @@ function enemyLvl3(){
         enemyY3 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40) {
+    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40 || (playerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyY3 + 40) || (playerBulletX3 >= enemyX3 && playerBulletX3 <= enemyX3 + 40 && playerBulletYBottom >= enemyY3 && playerBulletYBottom <= enemyY3 + 40)) {
         enemyX3 = random(800, 900)
         enemyY3 = random(115, 550)
         score = score + int(random(59, 217))
@@ -313,6 +321,8 @@ function setup() {
                 hitReg3 = 0
                 score = 0
                 playerBulletY = shipy
+                playerBulletYTop = shipy +20
+                playerBulletYBottom = shipy -20
                 playerBulletX = 800
                 playerBulletX2 = 800
                 playerBulletX3 = 800
@@ -359,6 +369,12 @@ function setup() {
                 quickY = random(50, 550)
                 quickT = 0
 
+                //Multi-shot
+                mult = false;
+                multX = random(1500, 2000)
+                multY = random(50, 550)
+                multT = 0
+
                 background(0, 0, 50)
                 stars()
               } else {
@@ -385,6 +401,12 @@ function mousePressed() {
                 fill(0, 255, 0)
                 playerBulletX = shipx
                 playerBulletY = shipy
+                if(mult === true){
+                    playerBulletX2 = shipx
+                    playerBulletX3 = shipx
+                    playerBulletYTop = shipy+20
+                    playerBulletYBottom = shipy-20
+                }
                 pewpewSound.play()
             }
         }
@@ -695,7 +717,7 @@ function healthPack() {
     }
 
     //Healthbox utility logic
-    if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25) {
+    if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25 || (playerBulletX2 >= lifeboxX - 25 && playerBulletX2 <= lifeboxX + 25 && playerBulletYTop >= lifeboxY - 25 && playerBulletYTop <= lifeboxY + 25) || (playerBulletX3 >= lifeboxX - 25 && playerBulletX3 <= lifeboxX + 25 && playerBulletYBottom >= lifeboxY - 25 && playerBulletYBottom <= lifeboxY + 25)) {
         if (health == 5) {
             score = score + 1000
         }
@@ -724,7 +746,7 @@ function invuln() {
     }
 
     //invuln utility logic
-    if (playerBulletX >= iddqdX - 25 && playerBulletX <= iddqdX + 25 && playerBulletY >= iddqdY - 25 && playerBulletY <= iddqdY + 25) {
+    if (playerBulletX >= iddqdX - 25 && playerBulletX <= iddqdX + 25 && playerBulletY >= iddqdY - 25 && playerBulletY <= iddqdY + 25 || (playerBulletX2 >= iddqdX - 25 && playerBulletX2 <= iddqdX + 25 && playerBulletYTop >= iddqdY - 25 && playerBulletYTop <= iddqdY + 25) || (playerBulletX3 >= iddqdX - 25 && playerBulletX3 <= iddqdX + 25 && playerBulletYBottom >= iddqdY - 25 && playerBulletYBottom <= iddqdY + 25)) {
         iddqdT = iddqdT + 900;
         iddqdT = constrain(iddqdT, 0, 900);
         iddqdX = random(1200, 2000);
@@ -768,7 +790,7 @@ function quickshot(){
     }
 
     //quickshot utility logic
-    if (playerBulletX >= quickX - 25 && playerBulletX <= quickX + 25 && playerBulletY >= quickY - 25 && playerBulletY <= quickY + 25) {
+    if (playerBulletX >= quickX - 25 && playerBulletX <= quickX + 25 && playerBulletY >= quickY - 25 && playerBulletY <= quickY + 25 || (playerBulletX2 >= quickX - 25 && playerBulletX2 <= quickX + 25 && playerBulletYTop >= quickY - 25 && playerBulletYTop <= quickY + 25) || (playerBulletX3 >= quickX - 25 && playerBulletX3 <= quickX + 25 && playerBulletYBottom >= quickY - 25 && playerBulletYBottom <= quickY + 25)) {
         quickT = quickT + 900;
         quickT = constrain(quickT, 0, 900);
         quickX = random(1200, 2000);
@@ -785,6 +807,10 @@ function quickshot(){
         quickT--;
 
         playerBulletX += 40
+        if(mult){
+            playerBulletX2 +=40
+            playerBulletX3 +=40
+        }
 
         rectMode(CORNER)
         rect(10, 515, quickT/10, 25)
@@ -796,8 +822,62 @@ function quickshot(){
         quick = false;
 
         playerBulletX += 20
+        if(mult){
+            playerBulletX2 += 20
+            playerBulletX3 += 20
+        }
     }
 }//Quickshot end
+
+//multishot start
+function multishot(){
+    //multishot visuals
+    strokeWeight(5)
+    stroke(128)
+    fill(255, 120, 120)
+    rectMode(CENTER)
+
+    //multishot location logic
+   rect(multX, multY, 50, 50)
+   multX -= 2
+   if (multX <= -25) {
+       multX = random(1200, 2000)
+       multY = random(50, 550)
+   }
+
+   //multishot utility logic
+   if (playerBulletX >= multX - 25 && playerBulletX <= multX + 25 && playerBulletY >= multY - 25 && playerBulletY <= multY + 25 || (playerBulletX2 >= multX - 25 && playerBulletX2 <= multX + 25 && playerBulletYTop >= multY - 25 && playerBulletYTop <= multY + 25) || (playerBulletX3 >= multX - 25 && playerBulletX3 <= multX + 25 && playerBulletYBottom >= multY - 25 && playerBulletYBottom <= multY + 25)) {
+    multT = multT + 900;
+    multT = constrain(multT, 0, 900);
+    multX = random(1200, 2000);
+    multY = random(50, 550);
+   }
+    //multishot activity logic
+    if(multT > 0){
+        hullR = 255;
+        hullG = 120;
+        hullB = 120;
+        mult = true; //While timer of multishot has juice, give player multishot, decrease timer by 60 per second.
+        multT--;
+        console.log(multT);
+
+        playerBulletX +=20
+        playerBulletX2 +=20
+        playerBulletX3 +=20
+
+        rectMode(CORNER)
+        rect(10, 480, multT/10, 25)
+    }else{
+        hullR = 120;
+        hullG = 120;
+        hullB = 120;
+        //playerBulletXSpeed = 0;
+        mult = false;
+
+        playerBulletX2 = 800
+        playerBulletX3 = 800
+    }
+}//multishot end
 
 function difficulty() {
 
@@ -958,6 +1038,8 @@ function draw() {
             //if statement will move bullet out of bounds so that it does not interact with anything offscreen
             if(playerBulletX > 800){
                 playerBulletY = -10;
+                playerBulletYTop = -10;
+                playerBulletYBottom = -10;
             }
 
             stars()
@@ -968,6 +1050,8 @@ function draw() {
 
             //Boolet
             rect(playerBulletX, playerBulletY - 8, 30, 15)
+            rect(playerBulletX2, playerBulletYTop - 8, 30, 15)
+            rect(playerBulletX3, playerBulletYBottom - 8, 30, 15)
             shipx = constrain(shipx, 10, 790)
             shipy = constrain(shipy, 10, 590)
             health = constrain(health, 0, 5)
@@ -980,6 +1064,7 @@ function draw() {
             healthPack();
             invuln();
             quickshot();
+            multishot();
 
             strokeWeight(1)
             stroke(0)
@@ -1044,7 +1129,7 @@ window.draw = draw;
                 -Score increments for this: 0, 5000, 11000, 18000, 26000, 35000
     [ ]     Create a variety of upgrades:
         [X]     Invulnerability (Player will not take damage when interacting with enemy laser fire)
-        [ ]     Multi-Shot      (Player will fire multiple lasers rather than one) 
+        [X]     Multi-Shot      (Player will fire multiple lasers rather than one) 
         -- need to add 2 more y and x bullet axis (bullet top and bottom). top +20 on y, bottom -20 ony 
         [X]     Quick-Shot      (Player laser speed will be increased)
         [ ]     ChronoSphere    (Slows down time, decreases enemy movement speed, decreases enemy laser movement speed, decreases background stars movement speed)
