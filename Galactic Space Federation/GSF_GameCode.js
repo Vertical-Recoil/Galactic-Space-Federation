@@ -807,7 +807,7 @@ function quickshot(){
         quickT--;
 
         playerBulletX += 40
-        if(mult === true){
+        if(mult){
             playerBulletX2 +=40
             playerBulletX3 +=40
         }
@@ -822,7 +822,7 @@ function quickshot(){
         quick = false;
 
         playerBulletX += 20
-        if(mult === true){
+        if(mult){
             playerBulletX2 += 20
             playerBulletX3 += 20
         }
@@ -851,14 +851,15 @@ function multishot(){
     multT = constrain(multT, 0, 900);
     multX = random(1200, 2000);
     multY = random(50, 550);
-
+   }
     //multishot activity logic
     if(multT > 0){
         hullR = 255;
-        hullG = 155;
-        hullB = 0;
+        hullG = 120;
+        hullB = 120;
         mult = true; //While timer of multishot has juice, give player multishot, decrease timer by 60 per second.
         multT--;
+        console.log(multT);
 
         playerBulletX +=20
         playerBulletX2 +=20
@@ -876,7 +877,6 @@ function multishot(){
         playerBulletX2 = 800
         playerBulletX3 = 800
     }
-}
 }//multishot end
 
 function difficulty() {
