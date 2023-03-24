@@ -279,6 +279,49 @@ function enemyLvl3(){
     }
 }
 
+function enemyLvlSubBoss(){
+    fill(255, 165, 0); // orange rectangle
+    rect(enemyXSubBoss, enemyYSubBoss, 40, 40);
+    fill(0); // black rectangle
+    rect(enemyXSubBoss + 10, enemyYSubBoss + 13, 20, 12);
+    enemyXSubBoss -= enemyXSpeedSubBoss;
+    
+    fill(0, 0, 255); // blue laser
+    rectMode(CENTER);
+    rect(enemyBulletXSubBoss - 20, enemyBulletYSubBoss + 18, 30, 10);
+    rectMode(CORNER);
+    enemyBulletXSubBoss -= enemyBulletXSpeedSubBoss;
+    
+    if (enemyBulletXSubBoss <= -30) {
+      enemyBulletXSubBoss = enemyXSubBoss;
+      enemyBulletYSubBoss = enemyYSubBoss;
+    }
+    
+    if (enemyBulletXSubBoss >= shipx - 10 && enemyBulletXSubBoss <= shipx + 35 && enemyBulletYSubBoss >= shipy - 35 && enemyBulletYSubBoss <= shipy + 10) {
+      if (hitRegSubBoss == true && iddqd == false) {
+        health--;
+        hitRegSubBoss = 0;
+        playerSpeed -= 2; // decrease player movement speed
+      }
+    }
+    
+    if (enemyBulletXSubBoss == enemyXSubBoss) {
+      hitRegSubBoss = 1;
+    }
+    
+    if (enemyXSubBoss <= -30) {
+      enemyXSubBoss = random(1050, 1100);
+      enemyYSubBoss = random(115, 550);
+      score = score - 100;
+    }
+    
+    if (playerBulletX >= enemyXSubBoss && playerBulletX <= enemyXSubBoss + 40 && playerBulletY >= enemyYSubBoss && playerBulletY <= enemyYSubBoss + 40) {
+      enemyXSubBoss = random(1050, 1100);
+      enemyYSubBoss = random(115, 550);
+      score = score + int(random(59, 217));
+    }
+  }
+
 /*
 -----------------------------------------
     ALL ENEMY LOGIC END
@@ -351,7 +394,13 @@ function setup() {
                 enemyBulletY3 = enemyY3
                 enemyXSpeed3 = 2
                 enemyBulletXSpeed3 = 8
-
+                
+                enemyXSubBoss = random(1050, 1100);
+                enemyYSubBoss = random(50, 550);
+                enemyBulletXSubBoss = enemyXSubBoss;
+                enemyBulletYSubBoss = enemyYSubBoss;
+                enemyXSpeedSubBoss = 2;
+                enemyBulletXSpeedSubBoss = 8;
             //Power-Up Default Values
                 //Health
                 lifeboxX = random(1500, 2000)
@@ -920,8 +969,10 @@ function difficulty() {
 
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 2;
+        enemyXSpeedSubBoss = 2;
         enemyLvl1();
         enemyLvl2();
+        enemyLvlSubBoss();
     }else if(score >= 18000 && score < 26000){          //HRT (High-Risk Targets)
         strokeWeight(0);
         stroke(0);
@@ -935,8 +986,10 @@ function difficulty() {
 
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 5;
+        enemyXSpeedSubBoss = 2;
         enemyLvl1();
         enemyLvl2();
+        enemyLvlSubBoss();
     }else if(score >= 26000 && score < 35000){          //VHRT (Very High-Risk Targets)
         strokeWeight(0);
         stroke(0);
@@ -951,9 +1004,11 @@ function difficulty() {
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 5;
         enemyXSpeed3 = 2;
+        enemyXSpeedSubBoss = 2;
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
+        enemyLvlSubBoss();
     }else if(score >= 35000){                           //ERT (Extreme-Risk Targets)
         strokeWeight(0);
         stroke(0);
@@ -968,9 +1023,11 @@ function difficulty() {
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 5;
         enemyXSpeed3 = 5;
+        enemyXSpeedSubBoss = 3;
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
+        enemyLvlSubBoss();
     }
 }
 
