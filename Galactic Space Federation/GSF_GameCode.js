@@ -1,3 +1,14 @@
+import { getStats, addStat, db } from "./CRUD.js";
+
+// Parse the query string to extract the username value
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const username = urlParams.get('username');
+
+// Use the username value as needed
+console.log(`Welcome, ${username}!`);
+
+
 var shipx;              //ship position X
 var shipy;              //ship position Y
 var x;                  //Stars alignment X
@@ -5,9 +16,12 @@ var y;                  //Stars alignment Y
 var health;             //Player Health Counter
 var score;              //Player Score Counter
 var playerBulletX;      //Player Laser Postion X
+var playerBulletX2;     //Player Laser Postion X2
+var playerBulletX3;     //Player Laser Postion X3
 var playerBulletY;      //Player Laser Postion Y
-var lifeboxX;           //Life Pool top left X
-var lifeboxY;           //Life Pool top left Y
+var playerBulletYTop;   //Player Laser Postion Y Top
+var playerBulletYBottom;//Player Laser Postion Y Bottom
+var playerBulletXSpeed; //Player Laser Speed
 var song;               //Variable that stores the soundtrack
 var songtracker;        //Boolean that only allows the song to play once (no overlap)
 var pewpewSound;        //Variable that stores the blaster sound effect
@@ -15,18 +29,44 @@ var begin;              //Boolean that determines the launch of the actual game 
 var ty;                 //String that holds the title screen location mesh
 var keydown;            //Variable that determines whether a key is pressed
 var lost;               //Lose condition video storage variable
+var assetsLoaded = false;       //condition to see when preload is done
+var loadAssetBuffer;
+
+//Database counter
+var dataBaseLockVar = false;
+
+//Ship Hull colors
+var hullR;
+var hullG;
+var hullB;
+//Ship Engine colors
+var engineR;
+var engineG;
+var engineB;
+
+var threat0;            //VLRT Image
+var threat1;            //LRT Image
+var threat2;            //MRT Image
+var threat3;            //HRT Image
+var threat4;            //VHRT Image
+var threat5;            //ERT Image
+
+var ttextboxcounter;    //Variable that acts as a boolean, either letting or not letting the text screen play
+var threattextbox;      //Variable that creates a buffer for how long the level up screen should stay
+
 var timing;             //Stops the game after a couple seconds when the video stops playing
 
-//NEW VARIABLES
-var invinboxX;          //Invincibility box
-var invinboxY;          //Invincibility box
-var invincible;         //bool for invincibility
-var invincibilityEndTime;   //timer
-var duration;           //timer
+//Power-Up Variables START
+//Health
+var lifeboxX;           //Life Pool top left X
+var lifeboxY;           //Life Pool top left Y
 
+//
+var iddqd;              //Variable that determines whether or not the user has invulnerability (Doom easter egg)
+var iddqdX;             //Variable that determines the X location of the invulnerability power-up
+var iddqdY;             //Variable that determines the Y location of the invulnerability power-up
+var iddqdT;             //Variable that determines how long iddqd has left;
 
-<<<<<<< Updated upstream
-=======
 //
 var quick;              //Variable that determines whether of not the user has quickshot
 var quickX;             //Variable that determines the X location of the quickshot power-up
@@ -45,8 +85,8 @@ var empX;               //Variable that determines the X location of the emp pow
 var empY;               //Variable that determines the Y location of the emp power-up
 var empT;               //Variable that determines how long emp has left
 
+
 //Power-Up Variables END
->>>>>>> Stashed changes
 /*
     ALL ENEMY VARIABLES START
 
@@ -97,7 +137,6 @@ var e3hullR;
 var e3hullG;
 var e3hullB;
 
-
 /*
     ALL ENEMY VARIABLES END
 */
@@ -106,9 +145,6 @@ function preload() {
     soundFormats('ogg', 'mp3');
     song = loadSound("GameMusic.mp3");
     pewpewSound = loadSound("LaserBlaster.mp3");
-<<<<<<< Updated upstream
-    pewpewSound.setVolume(0.3);
-=======
     pewpewSound.setVolume(0.3)
 
     threat0 = loadImage('Threat0.png');
@@ -125,20 +161,16 @@ function preload() {
     lost.volume(1)
 
     return Promise.all([song]);
->>>>>>> Stashed changes
 }
 
-
 /*
+-----------------------------------------
     ALL ENEMY LOGIC START
+-----------------------------------------
 */
 
 function enemyLvl1() {
-<<<<<<< Updated upstream
-    fill(190, 0, 0)
-=======
     fill(e1hullR, e1hullG, e1hullB)
->>>>>>> Stashed changes
     rect(enemyX1, enemyY1, 40, 40)
 
     fill(120)
@@ -156,12 +188,9 @@ function enemyLvl1() {
     }
 
     if (enemyBulletX1 >= shipx - 10 && enemyBulletX1 <= shipx + 35 && enemyBulletY1 >= shipy - 35 && enemyBulletY1 <= shipy + 10) {
-        if (hitReg1 == true) {
-            //only affect health if not invincible
-            if (!invincible) {
-                health--
-                hitReg1 = 0
-            }
+        if (hitReg1 == true && iddqd == false) {
+            health--
+            hitReg1 = 0
         }
 
     }
@@ -172,22 +201,18 @@ function enemyLvl1() {
 
     if (enemyX1 <= -30) {
         enemyX1 = random(800, 900)
-        enemyY1 = random(50, 550)
+        enemyY1 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40) {
+    if (playerBulletX >= enemyX1 && playerBulletX <= enemyX1 + 40 && playerBulletY >= enemyY1 && playerBulletY <= enemyY1 + 40 || (playerBulletX2 >= enemyX1 && playerBulletX2 <= enemyX1 + 40 && playerBulletYTop >= enemyY1 && playerBulletYTop <= enemyY1 + 40) || (playerBulletX3 >= enemyX1 && playerBulletX3 <= enemyX1 + 40 && playerBulletYBottom >= enemyY1 && playerBulletYBottom <= enemyY1 + 40)) {
         enemyX1 = random(800, 900)
-        enemyY1 = random(50, 550)
+        enemyY1 = random(115, 550)
         score = score + int(random(59, 217))
     }
 }
 
 function enemyLvl2() {
-<<<<<<< Updated upstream
-    fill(0, 190, 0)
-=======
     fill(e2hullR, e2hullG, e2hullB)
->>>>>>> Stashed changes
     rect(enemyX2, enemyY2, 40, 40)
 
     fill(120)
@@ -205,12 +230,9 @@ function enemyLvl2() {
     }
 
     if (enemyBulletX2 >= shipx - 10 && enemyBulletX2 <= shipx + 35 && enemyBulletY2 >= shipy - 35 && enemyBulletY2 <= shipy + 10) {
-        if (hitReg2 == true) {
-            //only affect health if not invincible
-            if (!invincible) {
-                health--
-                hitReg2 = 0
-            }
+        if (hitReg2 == true && iddqd == false) {
+            health--
+            hitReg2 = 0
         }
 
     }
@@ -221,22 +243,18 @@ function enemyLvl2() {
 
     if (enemyX2 <= -30) {
         enemyX2 = random(800, 900)
-        enemyY2 = random(50, 550)
+        enemyY2 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40) {
+    if (playerBulletX >= enemyX2 && playerBulletX <= enemyX2 + 40 && playerBulletY >= enemyY2 && playerBulletY <= enemyY2 + 40 || (playerBulletX2 >= enemyX2 && playerBulletX2 <= enemyX2 + 40 && playerBulletYTop >= enemyY2 && playerBulletYTop <= enemyY2 + 40) || (playerBulletX3 >= enemyX2 && playerBulletX3 <= enemyX2 + 40 && playerBulletYBottom >= enemyY2 && playerBulletYBottom <= enemyY2 + 40)) {
         enemyX2 = random(800, 900)
-        enemyY2 = random(50, 550)
+        enemyY2 = random(115, 550)
         score = score + int(random(59, 217))
     }
 }
 
 function enemyLvl3() {
-<<<<<<< Updated upstream
-    fill(0, 0, 190)
-=======
     fill(e3hullR, e3hullG, e3hullB)
->>>>>>> Stashed changes
     rect(enemyX3, enemyY3, 40, 40)
 
     fill(120)
@@ -254,12 +272,9 @@ function enemyLvl3() {
     }
 
     if (enemyBulletX3 >= shipx - 10 && enemyBulletX3 <= shipx + 35 && enemyBulletY3 >= shipy - 35 && enemyBulletY3 <= shipy + 10) {
-        if (hitReg3 == true) {
-            //only affect health if not invincible
-            if (!invincible) {
-                health--
-                hitReg3 = 0
-            }
+        if (hitReg3 == true && iddqd == false) {
+            health--
+            hitReg3 = 0
         }
 
     }
@@ -270,80 +285,25 @@ function enemyLvl3() {
 
     if (enemyX3 <= -30) {
         enemyX3 = random(800, 900)
-        enemyY3 = random(50, 550)
+        enemyY3 = random(115, 550)
         score = score - 100
     }
-    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40) {
+    if (playerBulletX >= enemyX3 && playerBulletX <= enemyX3 + 40 && playerBulletY >= enemyY3 && playerBulletY <= enemyY3 + 40 || (playerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyY3 + 40) || (playerBulletX3 >= enemyX3 && playerBulletX3 <= enemyX3 + 40 && playerBulletYBottom >= enemyY3 && playerBulletYBottom <= enemyY3 + 40)) {
         enemyX3 = random(800, 900)
-        enemyY3 = random(50, 550)
+        enemyY3 = random(115, 550)
         score = score + int(random(59, 217))
     }
-
 }
 
 /*
+-----------------------------------------
     ALL ENEMY LOGIC END
+
+    SETUP PHASE START (RUNS ONCE AT BEGINNING)
+-----------------------------------------
 */
 
 function setup() {
-<<<<<<< Updated upstream
-    createCanvas(800, 600);
-
-    //Video Setup
-    lost = createVideo(['LoseVid.mp4']);
-    lost.size(800, 600);
-    lost.hide()
-    song.setVolume(1)
-    lost.volume(1)
-
-
-    //Variables
-    shipx = 100
-    shipy = 300
-    x = 400
-    y = 300
-    health = 5
-    hitReg1 = true
-    hitReg2 = true
-    hitReg3 = true
-    score = 0
-    playerBulletY = shipy
-    playerBulletX = 800
-    lifeboxX = 1500
-    lifeboxY = random(50, 550)
-
-    invinboxX = 3000                    //set up for invincibility box
-    invinboxY = random(50, 550)
-
-    ty = 600
-    timing = 0
-    songtracker = 0
-
-    enemyX1 = random(850, 900)
-    enemyY1 = random(50, 550)
-    enemyBulletX1 = enemyX1
-    enemyBulletY1 = enemyY1
-    enemyXSpeed1 = 5
-    enemyBulletXSpeed1 = 10
-
-    enemyX2 = random(1000, 1200)
-    enemyY2 = random(50, 550)
-    enemyBulletX2 = enemyX2
-    enemyBulletY2 = enemyY2
-    enemyXSpeed2 = 5
-    enemyBulletXSpeed2 = 10
-
-    enemyX3 = random(1300, 1500)
-    enemyY3 = random(50, 550)
-    enemyBulletX3 = enemyX3
-    enemyBulletY3 = enemyY3
-    enemyXSpeed3 = 5
-    enemyBulletXSpeed3 = 10
-
-    background(0, 0, 50)
-    stars()
-
-=======
     preload();
     if (assetsLoaded) {
         // Do something with the loaded assets
@@ -403,6 +363,9 @@ function setup() {
         enemyBulletY2 = enemyY2
         enemyXSpeed2 = 2
         enemyBulletXSpeed2 = 8
+        e2hullR = 0
+        e2hullG = 190
+        e2hullB = 0
 
         enemyX3 = random(850, 900)
         enemyY3 = random(50, 550)
@@ -410,6 +373,9 @@ function setup() {
         enemyBulletY3 = enemyY3
         enemyXSpeed3 = 2
         enemyBulletXSpeed3 = 8
+        e3hullR = 0
+        e3hullG = 0
+        e3hullB = 190
 
         //Power-Up Default Values
         //Health
@@ -447,26 +413,18 @@ function setup() {
     }
 
 }
->>>>>>> Stashed changes
 
-}
+/*
+-----------------------------------------
+    SETUP PHASE END
+
+    CORE FUNCTIONS START
+-----------------------------------------
+*/
 
 //Shoots laser when mouse is pressed
 function mousePressed() {
 
-<<<<<<< Updated upstream
-    if (mousePressed) {
-        if (playerBulletX >= 800) {
-            fill(0, 255, 0)
-            playerBulletX = shipx
-            playerBulletY = shipy
-            pewpewSound.play()
-        }
-        console.log("YES")
-        fill(255)
-    }
-
-=======
     document.addEventListener('mousedown', (event) => {
         if (event.button === 0) {
             //playerBulletX -= playerBulletXSpeed
@@ -484,20 +442,22 @@ function mousePressed() {
             }
         }
     });
->>>>>>> Stashed changes
 }
 
 
 //Your Millenium Falcon :D (Visuals)
 function ship() {
 
-    fill(120)
+    //Hull Color and Shape
+    fill(hullR, hullG, hullB);
     triangle(shipx - 25, shipy + 25, shipx - 25, shipy - 25, shipx + 30, shipy)
 
-    fill(0, 80, 0)
+    //Engine Color and Shape
+    fill(engineR, engineG, engineB)
     rect(shipx - 30, shipy - 19, 40, 10)
     rect(shipx - 30, shipy + 8, 40, 10)
 
+    //Reset Color
     fill(255)
 
 
@@ -599,14 +559,17 @@ function textEffect() {
         else if (score <= 5000) {
             text("Your skills are lacking, cadet!", 215, 575)
         }
-        else if (score <= 10000) {
+        else if (score <= 11000) {
             text("Better luck next time, rookie!", 215, 575)
         }
-        else if (score <= 15000) {
+        else if (score <= 18000) {
             text("At least you can aim, marine!", 215, 575)
         }
-        else if (score <= 20000) {
-            text("Very good work, comrade", 240, 575)
+        else if (score <= 26000) {
+            text("Very good work, comrade!", 240, 575)
+        }
+        else if (score <= 35000) {
+            text("I expected nothing less from an ACE!", 200, 575)
         }
         else {
             text("I can  go as far as to say I underestimated you, legend!", 40, 575)
@@ -621,14 +584,6 @@ function textEffect() {
 
 //If you press M, music plays (requires beefy computer)
 function keyPressed() {
-<<<<<<< Updated upstream
-    if (keyCode == 77 && songtracker == 0) {
-        song.loop()
-        songtracker = 1
-    }
-    else {
-        //console.log("It's not m fam")
-=======
     if (loadAssetBuffer <= 0) {
         if (keyCode == 77 && songtracker == 0) {
             song.loop()
@@ -639,7 +594,6 @@ function keyPressed() {
         }
     } else {
 
->>>>>>> Stashed changes
     }
 }
 
@@ -683,9 +637,10 @@ function titleScreen() {
     text("W = Up, S = Down", 260, ty + 350)
     text("A = Left, D = Right", 260, ty + 400)
     text("LMB = Fire", 290, ty + 450)
-    text("M = Music (PRESS ONCE)", 220, ty + 500)
+    text("M = Music", 295, ty + 500)
     text("Insert Coin (Q) to start!", 240, ty + 550)
     text("1 Credit: $1.25", 280, ty + 700)
+    text("Please wait for reticle on screen to play", 210, ty + 730)
 
     //Arcade Screen
     fill(0, 0, 0, 0)
@@ -768,12 +723,6 @@ function shipMove() {
     }
 }
 
-<<<<<<< Updated upstream
-//sets invincibility duration
-function setInvincibility(duration) {
-    invincible = true;
-    invincibilityEndTime = millis() + duration;
-=======
 /*
 -----------------------------------------
     CORE FUNCTIONS END
@@ -961,7 +910,6 @@ function multishot() {
     }
 }//multishot end
 
-
 //EMP Start
 function empbomb() {
     //EMP visuals
@@ -1008,7 +956,7 @@ function empbomb() {
         enemyBulletXSpeed1 = 0;
         enemyBulletXSpeed2 = 0;
         enemyBulletXSpeed3 = 0;
-        
+
         empT--;
         rectMode(CORNER)
         rect(10, 445, empT / 10, 25)
@@ -1031,7 +979,6 @@ function empbomb() {
         enemyBulletXSpeed3 = 8;
     }
 }//EMP End
-
 
 function difficulty() {
 
@@ -1126,18 +1073,10 @@ function difficulty() {
         enemyLvl2();
         enemyLvl3();
     }
->>>>>>> Stashed changes
 }
-
 
 //Chaos in a can. Used to create the arcade screen and the ending text.
 function draw() {
-<<<<<<< Updated upstream
-    titleScreen()
-
-    if (keyCode == 81) {
-        begin = true
-=======
     titleScreen();
     loadAssetBuffer = constrain(loadAssetBuffer, 1, 300);
     loadAssetBuffer--;
@@ -1242,240 +1181,10 @@ function draw() {
         reticle()
     } else {
         begin = false;
->>>>>>> Stashed changes
     }
-    if (begin) {
-
-        background(0, 0, 50)
-
-        //Plays death animation (requires beefy computer)
-        if (health == 0) {
-            image(lost, 0, 75)
-            lost.play()
-            timing += 0.017
-            lifeboxX = 1000
-            lifeboxX -= 0
-
-            invinboxX = 1000
-            invinboxX -= 0
-
-            enemyX1 = 1000
-            enemyXSpeed1 = 0
-
-            enemyX2 = 1000
-            enemyXSpeed2 = 0
-
-            enemyX3 = 1000
-            enemyXSpeed3 = 0
-
-            enemyBulletX1 = 1000
-            enemyBulletXSpeed1 = 0
-
-            enemyBulletX2 = 1000
-            enemyBulletXSpeed2 = 0
-
-            enemyBulletX3 = 1000
-            enemyBulletXSpeed3 = 0
-
-            if (timing >= 7.9) {
-                text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
-                noLoop()
-            }
-        }
-
-        // packets()
-
-        playerBulletX += 20
-        stars()
-        ship()
-        textEffect()
-        shipMove()
-
-
-        //Boolet
-        rect(playerBulletX, playerBulletY - 8, 30, 15)
-        shipx = constrain(shipx, 10, 790)
-        shipy = constrain(shipy, 10, 590)
-        health = constrain(health, 0, 5)
-        hitReg1 = constrain(hitReg1, 0, 1)
-        hitReg2 = constrain(hitReg2, 0, 1)
-        hitReg3 = constrain(hitReg3, 0, 1)
-
-        enemyLvl1();
-        enemyLvl2();
-        enemyLvl3();
-
-        //Health box
-        strokeWeight(5)
-        stroke(255)
-        fill(0, 255, 0)
-        rectMode(CENTER)
-        rect(lifeboxX, lifeboxY, 50, 50)
-        lifeboxX -= 2
-        if (lifeboxX <= -25) {
-            lifeboxX = random(1200, 2000)
-            lifeboxY = random(50, 550)
-        }
-        if (playerBulletX >= lifeboxX - 25 && playerBulletX <= lifeboxX + 25 && playerBulletY >= lifeboxY - 25 && playerBulletY <= lifeboxY + 25) {
-            if (health == 5) {
-                score = score + 1000
-            }
-            health = health + 1
-            lifeboxX = random(1200, 2000)
-            lifeboxY = random(50, 550)
-
-        }
-        // //Health box end
-
-        //invincibilty box
-
-        strokeWeight(5);
-        stroke(255);
-        fill(192, 192, 192);
-        beginShape();
-        vertex(invinboxX, invinboxY - 25);
-        vertex(invinboxX + 25, invinboxY);
-        vertex(invinboxX, invinboxY + 25);
-        vertex(invinboxX - 25, invinboxY);
-        endShape(CLOSE);
-
-        noStroke();
-        // Draw smaller blue diamond inside
-        fill(0, 160, 255);
-        beginShape();
-        vertex(invinboxX, invinboxY - 10);
-        vertex(invinboxX + 10, invinboxY);
-        vertex(invinboxX, invinboxY + 10);
-        vertex(invinboxX - 10, invinboxY);
-        endShape(CLOSE);
-
-        invinboxX -= 2
-        if (invinboxX <= -25) {
-            invinboxX = random(3000, 4000)
-            invinboxY = random(50, 550)
-        }
-        if (playerBulletX >= invinboxX - 25 && playerBulletX <= invinboxX + 25 && playerBulletY >= invinboxY - 25 && playerBulletY <= invinboxY + 25) {
-            setInvincibility(4000); // set invincibility for 5 seconds (5000 milliseconds)
-            invinboxX = random(4000, 5000)
-            invinboxY = random(50, 550)
-        }
-
-        if (invincible && millis() > invincibilityEndTime) {
-            invincible = false;
-        }
-
-        strokeWeight(1)
-        stroke(0)
-        rectMode(CORNER)
-        fill(0, 255, 255)
-        textSize(20)
-
-        if (invincible) {
-            // Display "Invincible" text with remaining time
-            let remainingTime = invincibilityEndTime - millis();
-            text(`Invincible (${Math.ceil(remainingTime / 100)}ds)`, 25, 100);
-        }
-        fill(255)
-        //invulerable box end
-
-        //multishot
-        // strokeWeight(5);
-        // stroke(255);
-        // fill(255, 255, 0);
-        // ellipseMode(CENTER);
-        // ellipse(invinboxX, invinboxY, 50, 50);
-
-
-        strokeWeight(1)
-        stroke(0)
-        rectMode(CORNER)
-        //console.log(hitReg1)
-        fill(255, 0, 0)
-        textSize(20)
-        if (health == 1) {
-            text("Critical Hull Warning!!!", 75, 50)
-        }
-        fill(255)
-    }
-    reticle()
-
-    console.log(timing)
 
 }
 
-<<<<<<< Updated upstream
-
-
-
-
-
-
-
-/*
- 
-[X]    background(dark_blue)
-[X]    backgroundeffect(stars.white-transparent.ellipse.circle.no-outline.small)
-[X]    texteffect(
-variant 1: if(var.health = 5){rect.rectangle.red-5x.sidebyside = 5}
-variant 2: if(var.health = 4){rect.rectangle.red-4x.sidebyside = 4}
-variant 3: if(var.health = 3){rect.rectangle.red-3x.sidebyside = 3}
-variant 4: if(var.health = 2){rect.rectangle.red-2x.sidebyside = 2}
-variant 5: if(var.health = 1){rect.rectangle.red-1x.sidebyside = 1}
-final variant: if(var.health = 0){(rect.rectangle.red-0x.sidebyside = 0) + text("Game Over, your score was " + score,centerscreen,centerscreen)})
- 
- 
-[X]    PlayerShape = triangle.triangle-faceright-grey
-[X]    PlayerBlaster = rect.rectangle-green.2x.symetrical
-[X]    PlayerBlaster.bullet = rect.rectangle-brightgreen.moveright=always
-[X]    PlayerBlaster.bullet-logic = in mousePressed - if(bullet > canvas.right){fire}
-[X]    PlayerHealth = if(enemyBullet = hit PlayerShip){life - 1}
-[X]    PlayerMove = w.up, s.down, a.left, d.right, (combo(w(a-d)) || combo(s(a-d)) = diagonal)
- 
- 
-[X]    EnemyShape = rect.Square-red
-[X]    EnemyBlaster = rect.rectangle-grey.1x.center
-[X]    EnemyBlaster.bullet = rect.rectangle-brightred.moveleft=always
-[X]    EnemyBlaster.bullet-logic = bullet.create in enemy gun, always moving left. if(bullet < canvas.left || hit player.Ship){enemyfire}. Bullet always respawns at the cannon of enemy ship.
-[X]    EnemyShip.logic = if(player.bullet = hit EnemyShip || EnemyShip < canvas.left){cannon+body = respawn && score + 1}
- 
-[X]    Add invurenablity
-[ ]    Add multishot
- 
-*/
-
-
-
-/*================================================================
-
-
-The game will be expanded by introducing:
-
--Working Difficulty functions:
-  These functions will scale the game up as it progresses.
-  Players will notice an increase of enemy movement speed and count.
-  Players will notice an increase of enemy health and laser speeds.
-    -These can be implemented by tracking session lifetime, or player score and increasing
-     the proper parameters as either of those tracked metrics increase
-
--Working Upgrade functions:
-  These functions will balance the difficulty.
-  Players can get temporary time based power ups that enchances their gameplay.
-  These can be in the form of:
-    -Invulnerability (Player will interact with the enemy bullet, but not take damage)
-    -Multi-Shot      (Player will fire 2 or 3 rounds instead of 1)
-    -Quick-Shot      (Player will fire a laser that is faster than normal)
-    -ChronoSphere    (Slows down time, aka enemy movement speeds)
-  The upgrades can have visuals applied to their ship to dictate that they have the aforementioned upgrade.
-  The upgrades can have their names be displayed in big letters on the screen shortly to tell the player what they got.
-  The upgrades can have a bar near the health that will decrease and dicatate how long they have the effect for.
-
--Working Ammo function (MAYBE):
-  Players only have a pool of 5 ammo.
-  Players will generate 1 ammo per 1.5 to 2 seconds.
-  Players will not be able to fire their laser if they have no ammo left.
-  A new "upgrade" called "Recharge" will recharge the ammo pool.
-  A new "upgrade" called "Overcharge" will cause the player to use NO ammo when firing for a short time.
-=======
 Promise.all([song]).then(() => {
     assetsLoaded = true;
 });
@@ -1526,5 +1235,4 @@ CAPSTONE COURSE WORK CHANGELOG
 -- need to add 2 more y and x bullet axis (bullet top and bottom). top +20 on y, bottom -20 ony 
 [X]     Quick-Shot      (Player laser speed will be increased)
 [ ]     ChronoSphere    (Slows down time, decreases enemy movement speed, decreases enemy laser movement speed, decreases background stars movement speed)
->>>>>>> Stashed changes
 */
