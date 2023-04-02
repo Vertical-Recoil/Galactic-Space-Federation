@@ -130,6 +130,7 @@ var enemyBulletYSubBoss;
 var enemyXSpeedSubBoss
 var enemyBulletXSpeedSubBoss;
 var hitRegSubBoss;
+var isSubBossDead;
 
 //LVL BOSS
 var enemyXBoss;
@@ -140,6 +141,7 @@ var enemyXSpeedBoss
 var enemyBulletXSpeedBoss;
 var hitRegBoss;
 var bossHealth;
+var isBossDead;
 
 //ENEMY DEBUFF
 var slowed;
@@ -317,9 +319,18 @@ function enemyLvlSubBoss(){
     enemyBulletXSubBoss -= enemyBulletXSpeedSubBoss;
     
     if (enemyBulletXSubBoss <= -30) {
-      enemyBulletXSubBoss = enemyXSubBoss;
-      enemyBulletYSubBoss = enemyYSubBoss;
-    }
+        if(isSubBossDead)
+        {
+          enemyBulletXSpeedSubBoss = 0;
+          enemyBulletXSubBoss = enemyXSubBoss;
+          enemyBulletYSubBoss = enemyYSubBoss;
+        }
+        else{
+          enemyBulletXSubBoss = enemyXSubBoss;
+          enemyBulletYSubBoss = enemyYSubBoss;
+        }
+        
+      }
     
     if (enemyBulletXSubBoss >= shipx - 10 && enemyBulletXSubBoss <= shipx + 35 && enemyBulletYSubBoss >= shipy - 35 && enemyBulletYSubBoss <= shipy + 10) {
       if (hitRegSubBoss == true && iddqd == false) {
@@ -340,41 +351,35 @@ function enemyLvlSubBoss(){
     }
     
     if (enemyXSubBoss <= -30) {
-        enemyXSubBoss = 850; // move SubBoss off screen
-        enemyYSubBoss = 115;
-        enemyBulletXSubBoss = 850
-        enemyBulletYSubBoss = 115;
+        isSubBossDead = true;
+        enemyXSubBoss = 850; //move subboss off screen
+        enemyYSubBoss = random(115, 550);
         enemyXSpeedSubBoss = 0;
-        enemyBulletXSpeedSubBoss = 0;
         setTimeout(function() {
+            isSubBossDead = false;
             enemyXSpeedSubBoss = 2;
             if(score >= 35000){
                 enemyXSpeedSubBoss = 3;
             }
             enemyBulletXSpeedSubBoss = 8;
-          enemyXSubBoss = random(800, 900);
-          enemyYSubBoss = random(115, 550);
           score = score + int(random(59, 217));
         }, 4000); // 4 seconds delay
       score = score - 100;
     }
     
     if (playerBulletX >= enemyXSubBoss && playerBulletX <= enemyXSubBoss + 40 && playerBulletY >= enemyYSubBoss && playerBulletY <= enemyYSubBoss + 40 || (playerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyYSubBoss + 40) || (playerBulletX3 >= enemyXSubBoss && playerBulletX3 <= enemyXSubBoss + 40 && playerBulletYBottom >= enemyYSubBoss && playerBulletYBottom <= enemyYSubBoss + 40)) {
-        enemyXSubBoss = 850; // move SubBoss off screen
-        enemyYSubBoss = 115;
-        enemyBulletXSubBoss = 850
-        enemyBulletYSubBoss = 115;
+        isSubBossDead = true;
+        enemyXSubBoss = 850; //move subboss off screen
+        enemyYSubBoss = random(115, 550);
         enemyXSpeedSubBoss = 0;
-        enemyBulletXSpeedSubBoss = 0;
+        score = score + int(random(59, 217));
         setTimeout(function() {
+            isSubBossDead = false;
             enemyXSpeedSubBoss = 2;
             if(score >= 35000){
                 enemyXSpeedSubBoss = 3;
             }
             enemyBulletXSpeedSubBoss = 8;
-          enemyXSubBoss = random(800, 900);
-          enemyYSubBoss = random(115, 550);
-          score = score + int(random(59, 217));
         }, 4000); // 4 seconds delay
     }
   }
@@ -406,8 +411,17 @@ function enemyLvlSubBoss(){
     }
 
     if (enemyBulletXBoss <= -30) {
-      enemyBulletXBoss = enemyXBoss;
-      enemyBulletYBoss = enemyYBoss;
+      if(isBossDead)
+      {
+        enemyBulletXSpeedBoss = 0;
+        enemyBulletXBoss = enemyXBoss;
+        enemyBulletYBoss = enemyYBoss;
+      }
+      else{
+        enemyBulletXBoss = enemyXBoss;
+        enemyBulletYBoss = enemyYBoss;
+      }
+      
     }
     
     if (enemyBulletXBoss >= shipx - 10 && enemyBulletXBoss <= shipx + 35 && enemyBulletYBoss >= shipy - 35 && enemyBulletYBoss <= shipy + 10) {
@@ -431,18 +445,15 @@ function enemyLvlSubBoss(){
     if (playerBulletX >= enemyXBoss && playerBulletX <= enemyXBoss + 40 && playerBulletY >= enemyYBoss && playerBulletY <= enemyYBoss + 40 || (playerBulletX2 >= enemyXBoss && playerBulletX2 <= enemyXBoss + 40 && playerBulletYTop >= enemyYBoss && playerBulletYTop <= enemyYBoss + 40) || (playerBulletX3 >= enemyXBoss && playerBulletX3 <= enemyXBoss + 40 && playerBulletYBottom >= enemyYBoss && playerBulletYBottom <= enemyYBoss + 40)) {
         bossHealth--;
         if (bossHealth <= 0){
+            isBossDead = true;
             enemyXBoss = 850; // move boss off screen
-            enemyYBoss = 115;
-            enemyBulletXBoss = 850
-            enemyBulletYBoss = 115;
-            enemyXSpeedBoss = -1;
-            enemyBulletXSpeedBoss = 0;
+            enemyYBoss = random(115, 550);
+            enemyXSpeedBoss = 0;
+            score = score + int(random(59, 217));
             setTimeout(function() {
+                isBossDead = false;
                 enemyXSpeedBoss = 2;
                 enemyBulletXSpeedBoss = 8;
-              enemyXBoss = random(800, 900);
-              enemyYBoss = random(115, 550);
-              score = score + int(random(59, 217));
               bossHealth = 5; //reset boss health
             }, 10000); // 10 seconds delay
           }
@@ -528,6 +539,7 @@ function setup() {
                 enemyBulletYSubBoss = enemyYSubBoss;
                 enemyXSpeedSubBoss = 2;
                 enemyBulletXSpeedSubBoss = 8;
+                isSubBossDead = false;
 
                 enemyXBoss = random(1050, 1100);
                 enemyYBoss = random(50, 550);
@@ -536,6 +548,7 @@ function setup() {
                 enemyXSpeedBoss = 1;
                 enemyBulletXSpeedBoss = 8;
                 bossHealth = 5;
+                isBossDead = false;
             //Debuff
                 slowed = false;
                 slowedDuration = 10;
@@ -1104,7 +1117,6 @@ function difficulty() {
 
         enemyXSpeed1 = 2;
         enemyLvl1();
-        enemyLvlBoss();
     }else if(score >= 5000 && score < 11000){           //LRT (Low-Risk Targets)
         strokeWeight(0);
         stroke(0);
