@@ -79,6 +79,13 @@ var multX;              //Variable that determines the X location of the multish
 var multY;              //Variable that determines the Y location of the multishot power-up
 var multT;              //Variable that determines how long multishot has left
 
+//
+var emp;                //Variable that determines whether of not the user has emp
+var empX;               //Variable that determines the X location of the emp power-up
+var empY;               //Variable that determines the Y location of the emp power-up
+var empT;               //Variable that determines how long emp has left
+
+
 //Power-Up Variables END
 /*
     ALL ENEMY VARIABLES START
@@ -102,6 +109,9 @@ var enemyBulletY1;
 var enemyXSpeed1;
 var enemyBulletXSpeed1;
 var hitReg1;
+var e1hullR;
+var e1hullG;
+var e1hullB;
 
 //LVL 2
 var enemyX2;
@@ -111,6 +121,9 @@ var enemyBulletY2;
 var enemyXSpeed2;
 var enemyBulletXSpeed2;
 var hitReg2;
+var e2hullR;
+var e2hullG;
+var e2hullB;
 
 //LVL 3
 var enemyX3;
@@ -120,31 +133,59 @@ var enemyBulletY3;
 var enemyXSpeed3;
 var enemyBulletXSpeed3;
 var hitReg3;
+var e3hullR;
+var e3hullG;
+var e3hullB;
+
+//LVL SUBBOSS
+var enemyXSubBoss;
+var enemyYSubBoss;
+var enemyBulletXSubBoss;
+var enemyBulletYSubBoss;
+var enemyXSpeedSubBoss
+var enemyBulletXSpeedSubBoss;
+var hitRegSubBoss;
+var isSubBossDead;
+
+//LVL BOSS
+var enemyXBoss;
+var enemyYBoss;
+var enemyBulletXBoss;
+var enemyBulletYBoss;
+var enemyXSpeedBoss
+var enemyBulletXSpeedBoss;
+var hitRegBoss;
+var bossHealth;
+var isBossDead;
+
+//ENEMY DEBUFF
+var slowed;
+var slowedDuration;
 
 /*
     ALL ENEMY VARIABLES END
 */
 
 function preload() {
-  soundFormats('ogg', 'mp3');
-  song = loadSound("GameMusic.mp3");
-  pewpewSound = loadSound("LaserBlaster.mp3");
-  pewpewSound.setVolume(0.3)
+    soundFormats('ogg', 'mp3');
+    song = loadSound("GameMusic.mp3");
+    pewpewSound = loadSound("LaserBlaster.mp3");
+    pewpewSound.setVolume(0.3)
 
-  threat0 = loadImage('Threat0.png');
-  threat1 = loadImage('Threat1.png');
-  threat2 = loadImage('Threat2.png');
-  threat3 = loadImage('Threat3.png');
-  threat4 = loadImage('Threat4.png');
-  threat5 = loadImage('Threat5.png');
+    threat0 = loadImage('Threat0.png');
+    threat1 = loadImage('Threat1.png');
+    threat2 = loadImage('Threat2.png');
+    threat3 = loadImage('Threat3.png');
+    threat4 = loadImage('Threat4.png');
+    threat5 = loadImage('Threat5.png');
 
-  //Video Setup
-  lost = createVideo(['LoseVid.mp4']);
-  lost.hide()
-  song.setVolume(1)
-  lost.volume(1)
+    //Video Setup
+    lost = createVideo(['LoseVid.mp4']);
+    lost.hide()
+    song.setVolume(1)
+    lost.volume(1)
 
-  return Promise.all([song]);
+    return Promise.all([song]);
 }
 
 /*
@@ -153,8 +194,8 @@ function preload() {
 -----------------------------------------
 */
 
-function enemyLvl1(){
-    fill(190, 0, 0)
+function enemyLvl1() {
+    fill(e1hullR, e1hullG, e1hullB)
     rect(enemyX1, enemyY1, 40, 40)
 
     fill(120)
@@ -195,8 +236,8 @@ function enemyLvl1(){
     }
 }
 
-function enemyLvl2(){
-    fill(0, 190, 0)
+function enemyLvl2() {
+    fill(e2hullR, e2hullG, e2hullB)
     rect(enemyX2, enemyY2, 40, 40)
 
     fill(120)
@@ -237,8 +278,8 @@ function enemyLvl2(){
     }
 }
 
-function enemyLvl3(){
-    fill(0, 0, 190)
+function enemyLvl3() {
+    fill(e3hullR, e3hullG, e3hullB)
     rect(enemyX3, enemyY3, 40, 40)
 
     fill(120)
@@ -279,6 +320,159 @@ function enemyLvl3(){
     }
 }
 
+function enemyLvlSubBoss(){
+    fill(255, 165, 0); // orange rectangle
+    rect(enemyXSubBoss, enemyYSubBoss, 40, 40);
+    fill(120);
+    rect(enemyXSubBoss - 10, enemyYSubBoss + 13, 35, 12);
+    enemyXSubBoss -= enemyXSpeedSubBoss;
+    
+    fill(0, 0, 255); // blue laser
+    rectMode(CENTER);
+    rect(enemyBulletXSubBoss - 20, enemyBulletYSubBoss + 18, 30, 10);
+    rectMode(CORNER);
+    enemyBulletXSubBoss -= enemyBulletXSpeedSubBoss;
+    
+    if (enemyBulletXSubBoss <= -30) {
+        if(isSubBossDead)
+        {
+          enemyBulletXSpeedSubBoss = 0;
+          enemyBulletXSubBoss = enemyXSubBoss;
+          enemyBulletYSubBoss = enemyYSubBoss;
+        }
+        else{
+          enemyBulletXSubBoss = enemyXSubBoss;
+          enemyBulletYSubBoss = enemyYSubBoss;
+        }
+        
+      }
+    
+    if (enemyBulletXSubBoss >= shipx - 10 && enemyBulletXSubBoss <= shipx + 35 && enemyBulletYSubBoss >= shipy - 35 && enemyBulletYSubBoss <= shipy + 10) {
+      if (hitRegSubBoss == true && iddqd == false) {
+        health--;
+        hitRegSubBoss = 0;
+        slowed = true; //set slowed to true
+      }
+    }
+    if (slowed){
+        setTimeout(function(){
+            slowed = false;
+        }, slowedDuration * 1000);
+    }
+    
+    if (enemyBulletXSubBoss == enemyXSubBoss) {
+      hitRegSubBoss = 1;
+    }
+    
+    if (enemyXSubBoss <= -30) {
+        isSubBossDead = true;
+        enemyXSubBoss = 850; //move subboss off screen
+        enemyYSubBoss = random(115, 550);
+        enemyXSpeedSubBoss = 0;
+        setTimeout(function() {
+            isSubBossDead = false;
+            enemyXSpeedSubBoss = 2;
+            if(score >= 35000){
+                enemyXSpeedSubBoss = 3;
+            }
+            enemyBulletXSpeedSubBoss = 8;
+          score = score + int(random(59, 217));
+        }, 4000); // 4 seconds delay
+      score = score - 100;
+
+      console.log("I LIVE!")
+    }
+    
+    if (playerBulletX >= enemyXSubBoss && playerBulletX <= enemyXSubBoss + 40 && playerBulletY >= enemyYSubBoss && playerBulletY <= enemyYSubBoss + 40 || (playerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyYSubBoss + 40) || (playerBulletX3 >= enemyXSubBoss && playerBulletX3 <= enemyXSubBoss + 40 && playerBulletYBottom >= enemyYSubBoss && playerBulletYBottom <= enemyYSubBoss + 40)) {
+        isSubBossDead = true;
+        enemyXSubBoss = 850; //move subboss off screen
+        enemyYSubBoss = random(115, 550);
+        enemyXSpeedSubBoss = 0;
+        score = score + int(random(59, 217));
+        setTimeout(function() {
+            isSubBossDead = false;
+            enemyXSpeedSubBoss = 2;
+            if(score >= 35000){
+                enemyXSpeedSubBoss = 3;
+            }
+            enemyBulletXSpeedSubBoss = 8;
+        }, 4000); // 4 seconds delay
+    }
+  }
+
+  function enemyLvlBoss(){
+    fill(255, 255, 255); // white rectangle
+    rect(enemyXBoss, enemyYBoss, 40, 40);
+    fill(120); 
+    rect(enemyXBoss - 10, enemyYBoss + 13, 35, 12);
+    enemyXBoss -= enemyXSpeedBoss;
+    
+    fill(255, 255, 255);; // white laser
+    rectMode(CENTER);
+    rect(enemyBulletXBoss - 20, enemyBulletYBoss + 18, 30, 10);
+    rectMode(CORNER);
+    enemyBulletXBoss -= enemyBulletXSpeedBoss;
+    
+    //Constraining the boss movement
+    enemyYBoss = constrain(enemyYBoss, 115,550);
+    enemyXBoss = constrain(enemyXBoss, 550,950);
+    //Move the boss up or down based on player
+    if (enemyYBoss < shipy){
+        enemyYBoss +=1;
+    }
+    else if(enemyYBoss > shipy)
+    {
+        enemyYBoss -=1;
+    }
+    if (enemyBulletXBoss <= -30) {
+      if(isBossDead)
+      {
+        enemyBulletXSpeedBoss = 0;
+        enemyBulletXBoss = enemyXBoss;
+        enemyBulletYBoss = enemyYBoss;
+      }
+      else{
+        enemyBulletXBoss = enemyXBoss;
+        enemyBulletYBoss = enemyYBoss;
+      }
+      
+    }
+    
+    if (enemyBulletXBoss >= shipx - 10 && enemyBulletXBoss <= shipx + 35 && enemyBulletYBoss >= shipy - 35 && enemyBulletYBoss <= shipy + 10) {
+      if (hitRegBoss == true && iddqd == false) {
+        health--;
+        hitRegBoss = 0;
+        slowed = true; //set slowed to true
+      }
+    }
+    if (slowed){
+        setTimeout(function(){
+            slowed = false;
+        }, slowedDuration * 1000);
+    }
+    
+    if (enemyBulletXBoss == enemyXBoss) {
+      hitRegBoss = 1;
+    }
+    
+    if (playerBulletX >= enemyXBoss && playerBulletX <= enemyXBoss + 40 && playerBulletY >= enemyYBoss && playerBulletY <= enemyYBoss + 40 || (playerBulletX2 >= enemyXBoss && playerBulletX2 <= enemyXBoss + 40 && playerBulletYTop >= enemyYBoss && playerBulletYTop <= enemyYBoss + 40) || (playerBulletX3 >= enemyXBoss && playerBulletX3 <= enemyXBoss + 40 && playerBulletYBottom >= enemyYBoss && playerBulletYBottom <= enemyYBoss + 40)) {
+        bossHealth--;
+        if (bossHealth <= 0){
+            isBossDead = true;
+            enemyXBoss = 850; // move boss off screen
+            enemyYBoss = random(115, 550);
+            enemyXSpeedBoss = 0;
+            score = score + int(random(59, 217));
+            setTimeout(function() {
+                isBossDead = false;
+                enemyXSpeedBoss = 2;
+                enemyBulletXSpeedBoss = 8;
+              bossHealth = 5; //reset boss health
+            }, 10000); // 10 seconds delay
+          }
+     
+    }
+  }
 /*
 -----------------------------------------
     ALL ENEMY LOGIC END
@@ -288,100 +482,135 @@ function enemyLvl3(){
 */
 
 function setup() {
-            preload();
-            if (assetsLoaded) {
-                // Do something with the loaded assets
-                let canvas = createCanvas(800, 600);
+    preload();
+    if (assetsLoaded) {
+        // Do something with the loaded assets
+        let canvas = createCanvas(800, 600);
 
-                // Calculate the x and y position of the canvas to center it
-                let canvasX = (windowWidth - width) / 2;
-                let canvasY = (windowHeight - height) / 5;
-    
-                // Set the position of the canvas using the style() function
-                canvas.style('position', 'absolute');
-                canvas.style('left', canvasX + 'px');
-                canvas.style('top', canvasY + 'px');
-                
-            //Variables
-                //Ship Variables
-                shipx = 100
-                shipy = 300
-                hullR = 120
-                hullG = 120
-                hullB = 120
-                engineR = 0
-                engineG = 80
-                engineB = 0
+        // Calculate the x and y position of the canvas to center it
+        let canvasX = (windowWidth - width) / 2;
+        let canvasY = (windowHeight - height) / 5;
 
-                x = 400
-                y = 300
-                health = 5
-                hitReg1 = 0
-                hitReg2 = 0
-                hitReg3 = 0
-                score = 0
-                playerBulletY = shipy
-                playerBulletYTop = shipy +20
-                playerBulletYBottom = shipy -20
-                playerBulletX = 800
-                playerBulletX2 = 800
-                playerBulletX3 = 800
-                ty = 600
-                timing = 0
-                songtracker = 0
-                loadAssetBuffer = 300;
+        // Set the position of the canvas using the style() function
+        canvas.style('position', 'absolute');
+        canvas.style('left', canvasX + 'px');
+        canvas.style('top', canvasY + 'px');
 
-                enemyX1 = random(850, 900)
-                enemyY1 = random(50, 550)
-                enemyBulletX1 = enemyX1
-                enemyBulletY1 = enemyY1
-                enemyXSpeed1 = 2
-                enemyBulletXSpeed1 = 8
+        //Variables
+        //Ship Variables
+        shipx = 100
+        shipy = 300
+        hullR = 120
+        hullG = 120
+        hullB = 120
+        engineR = 0
+        engineG = 80
+        engineB = 0
 
-                enemyX2 = random(850, 900)
-                enemyY2 = random(50, 550)
-                enemyBulletX2 = enemyX2
-                enemyBulletY2 = enemyY2
-                enemyXSpeed2 = 2
-                enemyBulletXSpeed2 = 8
+        x = 400
+        y = 300
+        health = 5
+        hitReg1 = 0
+        hitReg2 = 0
+        hitReg3 = 0
+        score = 0
+        playerBulletY = shipy
+        playerBulletYTop = shipy + 20
+        playerBulletYBottom = shipy - 20
+        playerBulletX = 800
+        playerBulletX2 = 800
+        playerBulletX3 = 800
+        ty = 600
+        timing = 0
+        songtracker = 0
+        loadAssetBuffer = 300;
 
-                enemyX3 = random(850, 900)
-                enemyY3 = random(50, 550)
-                enemyBulletX3 = enemyX3
-                enemyBulletY3 = enemyY3
-                enemyXSpeed3 = 2
-                enemyBulletXSpeed3 = 8
+        enemyX1 = random(850, 900)
+        enemyY1 = random(50, 550)
+        enemyBulletX1 = enemyX1
+        enemyBulletY1 = enemyY1
+        enemyXSpeed1 = 2
+        enemyBulletXSpeed1 = 8
+        e1hullR = 190
+        e1hullG = 0
+        e1hullB = 0
 
-            //Power-Up Default Values
-                //Health
-                lifeboxX = random(1500, 2000)
-                lifeboxY = random(50, 550)
+        enemyX2 = random(850, 900)
+        enemyY2 = random(50, 550)
+        enemyBulletX2 = enemyX2
+        enemyBulletY2 = enemyY2
+        enemyXSpeed2 = 2
+        enemyBulletXSpeed2 = 8
+        e2hullR = 0
+        e2hullG = 190
+        e2hullB = 0
 
-                //Invulnerability
-                iddqd = false;
-                iddqdX = random(1500, 2000)
-                iddqdY = random(50, 550)
-                iddqdT = 0
-                
-                //Quick-shot
-                quick =false;
-                quickX = random(1500, 2000)
-                quickY = random(50, 550)
-                quickT = 0
+        enemyX3 = random(850, 900)
+        enemyY3 = random(50, 550)
+        enemyBulletX3 = enemyX3
+        enemyBulletY3 = enemyY3
+        enemyXSpeed3 = 2
+        enemyBulletXSpeed3 = 8
+        e3hullR = 0
+        e3hullG = 0
+        e3hullB = 190
 
-                //Multi-shot
-                mult = false;
-                multX = random(1500, 2000)
-                multY = random(50, 550)
-                multT = 0
+        enemyXSubBoss = random(1050, 1100);
+        enemyYSubBoss = random(50, 550);
+        enemyBulletXSubBoss = enemyXSubBoss;
+        enemyBulletYSubBoss = enemyYSubBoss;
+        enemyXSpeedSubBoss = 2;
+        enemyBulletXSpeedSubBoss = 8;
+        isSubBossDead = false;
 
-                background(0, 0, 50)
-                stars()
-              } else {
-                // Assets are still loading
-              }
+        enemyXBoss = random(1050, 1100);
+        enemyYBoss = random(50, 550);
+        enemyBulletXBoss = enemyXSubBoss;
+        enemyBulletYBoss = enemyYSubBoss;
+        enemyXSpeedBoss = 1;
+        enemyBulletXSpeedBoss = 8;
+        bossHealth = 5;
+        isBossDead = false;
+        //Debuff
+        slowed = false;
+        slowedDuration = 10;
 
-        }
+        //Power-Up Default Values
+        //Health
+        lifeboxX = random(1500, 2000)
+        lifeboxY = random(50, 550)
+
+        //Invulnerability
+        iddqd = false;
+        iddqdX = random(1500, 2000)
+        iddqdY = random(50, 550)
+        iddqdT = 0
+
+        //Quick-shot
+        quick = false;
+        quickX = random(1500, 2000)
+        quickY = random(50, 550)
+        quickT = 0
+
+        //Multi-shot
+        mult = false;
+        multX = random(1500, 2000)
+        multY = random(50, 550)
+        multT = 0
+
+        //EMP
+        emp = false;
+        empX = random(1500, 2000)
+        empY = random(50, 550)
+        empT = 0
+
+        background(0, 0, 50)
+        stars()
+    } else {
+        // Assets are still loading
+    }
+
+}
 
 /*
 -----------------------------------------
@@ -401,16 +630,16 @@ function mousePressed() {
                 fill(0, 255, 0)
                 playerBulletX = shipx
                 playerBulletY = shipy
-                if(mult === true){
+                if (mult === true) {
                     playerBulletX2 = shipx
                     playerBulletX3 = shipx
-                    playerBulletYTop = shipy+20
-                    playerBulletYBottom = shipy-20
+                    playerBulletYTop = shipy + 20
+                    playerBulletYBottom = shipy - 20
                 }
                 pewpewSound.play()
             }
         }
-        });
+    });
 }
 
 
@@ -553,15 +782,15 @@ function textEffect() {
 
 //If you press M, music plays (requires beefy computer)
 function keyPressed() {
-    if(loadAssetBuffer <= 0){
+    if (loadAssetBuffer <= 0) {
         if (keyCode == 77 && songtracker == 0) {
             song.loop()
             songtracker = 1
         }
         else {
-            
+
         }
-    }else{
+    } else {
 
     }
 }
@@ -575,7 +804,7 @@ function reticle() {
     point(mouseX, mouseY)
     strokeWeight(1)
     stroke(0, 0, 0, 0)
-    
+
     rectMode(CENTER)
     rect(mouseX - 10, mouseY - 12.5, 10, 3)
     rect(mouseX + 10, mouseY - 12.5, 10, 3)
@@ -596,7 +825,7 @@ function titleScreen() {
     ty = constrain(ty, -150, 600)
     textSize(25)
     fill(255, 255, 0)
-    
+
     //Arcade Text
     text("In a land far, far away,", 250, ty)
     text("In the year 2178,", 280, ty + 50)
@@ -672,22 +901,41 @@ function titleScreen() {
 //Ship Movement
 function shipMove() {
     if (keyIsDown(65)) {
-        shipx -= 5;
-
+        if (slowed)
+        {
+            shipx -= 3;
+        }
+        else{
+            shipx -= 5;
+        }
     }
-
     if (keyIsDown(68)) {
-        shipx += 5;
-
+        if (slowed)
+        {
+            shipx += 3;
+        }
+        else{
+            shipx += 5;
+        }
     }
-
     if (keyIsDown(87)) {
-        shipy -= 5;
+        if (slowed)
+        {
+            shipy -= 3;
+        }
+        else{
+            shipy -= 5;
+        }
         //playerBulletY += 5
     }
-
     if (keyIsDown(83)) {
-        shipy += 5;
+        if (slowed)
+        {
+            shipy += 3;
+        }
+        else{
+            shipy += 5;
+        }
         //playerBulletY -= 5
     }
 }
@@ -726,7 +974,7 @@ function healthPack() {
         lifeboxY = random(50, 550)
 
     }
-    
+
 }//HealthBox End
 
 //Invulnerability Start
@@ -739,7 +987,7 @@ function invuln() {
     //invuln location logic
     rect(iddqdX, iddqdY, 50, 50)
     iddqdX -= 2
-    
+
     if (iddqdX <= -25) {
         iddqdX = random(1200, 2000)
         iddqdY = random(50, 550)
@@ -753,9 +1001,9 @@ function invuln() {
         iddqdY = random(50, 550);
 
     }
-    
+
     //invuln activity logic
-    if(iddqdT > 0){
+    if (iddqdT > 0) {
         strokeWeight(1)
         stroke(0, 0, 255)
         fill('rgba(0, 0, 255, 0.25)')
@@ -767,14 +1015,14 @@ function invuln() {
         stroke(128)
         fill('rgba(0, 0, 255, 1)')
         rectMode(CORNER)
-        rect(10, 550, iddqdT/10, 25)
-    }else{
+        rect(10, 550, iddqdT / 10, 25)
+    } else {
         iddqd = false;
     }
 }//Invulnerability End
 
 //Quickshot start
-function quickshot(){
+function quickshot() {
     //quickshot visuals
     strokeWeight(5)
     stroke(128)
@@ -783,7 +1031,7 @@ function quickshot(){
     //quickshot location logic
     rect(quickX, quickY, 50, 50)
     quickX -= 2
-    
+
     if (quickX <= -25) {
         quickX = random(1200, 2000)
         quickY = random(50, 550)
@@ -797,9 +1045,9 @@ function quickshot(){
         quickY = random(50, 550);
 
     }
-    
+
     //quickshot activity logic
-    if(quickT > 0){
+    if (quickT > 0) {
         hullR = 255;
         hullG = 155;
         hullB = 0;
@@ -807,14 +1055,14 @@ function quickshot(){
         quickT--;
 
         playerBulletX += 40
-        if(mult){
-            playerBulletX2 +=40
-            playerBulletX3 +=40
+        if (mult) {
+            playerBulletX2 += 40
+            playerBulletX3 += 40
         }
 
         rectMode(CORNER)
-        rect(10, 515, quickT/10, 25)
-    }else{
+        rect(10, 515, quickT / 10, 25)
+    } else {
         hullR = 120;
         hullG = 120;
         hullB = 120;
@@ -822,7 +1070,7 @@ function quickshot(){
         quick = false;
 
         playerBulletX += 20
-        if(mult){
+        if (mult) {
             playerBulletX2 += 20
             playerBulletX3 += 20
         }
@@ -830,7 +1078,7 @@ function quickshot(){
 }//Quickshot end
 
 //multishot start
-function multishot(){
+function multishot() {
     //multishot visuals
     strokeWeight(5)
     stroke(128)
@@ -838,36 +1086,36 @@ function multishot(){
     rectMode(CENTER)
 
     //multishot location logic
-   rect(multX, multY, 50, 50)
-   multX -= 2
-   if (multX <= -25) {
-       multX = random(1200, 2000)
-       multY = random(50, 550)
-   }
+    rect(multX, multY, 50, 50)
+    multX -= 2
+    if (multX <= -25) {
+        multX = random(1200, 2000)
+        multY = random(50, 550)
+    }
 
-   //multishot utility logic
-   if (playerBulletX >= multX - 25 && playerBulletX <= multX + 25 && playerBulletY >= multY - 25 && playerBulletY <= multY + 25 || (playerBulletX2 >= multX - 25 && playerBulletX2 <= multX + 25 && playerBulletYTop >= multY - 25 && playerBulletYTop <= multY + 25) || (playerBulletX3 >= multX - 25 && playerBulletX3 <= multX + 25 && playerBulletYBottom >= multY - 25 && playerBulletYBottom <= multY + 25)) {
-    multT = multT + 900;
-    multT = constrain(multT, 0, 900);
-    multX = random(1200, 2000);
-    multY = random(50, 550);
-   }
+    //multishot utility logic
+    if (playerBulletX >= multX - 25 && playerBulletX <= multX + 25 && playerBulletY >= multY - 25 && playerBulletY <= multY + 25 || (playerBulletX2 >= multX - 25 && playerBulletX2 <= multX + 25 && playerBulletYTop >= multY - 25 && playerBulletYTop <= multY + 25) || (playerBulletX3 >= multX - 25 && playerBulletX3 <= multX + 25 && playerBulletYBottom >= multY - 25 && playerBulletYBottom <= multY + 25)) {
+        multT = multT + 900;
+        multT = constrain(multT, 0, 900);
+        multX = random(1200, 2000);
+        multY = random(50, 550);
+    }
     //multishot activity logic
-    if(multT > 0){
+    if (multT > 0) {
         hullR = 255;
         hullG = 120;
         hullB = 120;
         mult = true; //While timer of multishot has juice, give player multishot, decrease timer by 60 per second.
         multT--;
-        console.log(multT);
+        //console.log(multT);
 
-        playerBulletX +=20
-        playerBulletX2 +=20
-        playerBulletX3 +=20
+        playerBulletX += 20
+        playerBulletX2 += 20
+        playerBulletX3 += 20
 
         rectMode(CORNER)
-        rect(10, 480, multT/10, 25)
-    }else{
+        rect(10, 480, multT / 10, 25)
+    } else {
         hullR = 120;
         hullG = 120;
         hullB = 120;
@@ -879,56 +1127,127 @@ function multishot(){
     }
 }//multishot end
 
+//EMP Start
+function empbomb() {
+    //EMP visuals
+    strokeWeight(5)
+    stroke(128)
+    fill(255, 255, 0)
+    rectMode(CENTER)
+
+    //EMP location logic
+    rect(empX, empY, 50, 50)
+    empX -= 2
+    if (empX <= -25) {
+        empX = random(1200, 2000)
+        empY = random(50, 550)
+    }
+
+    //EMP interaction
+    if (empT <= 0 && playerBulletX >= empX - 25 && playerBulletX <= empX + 25 && playerBulletY >= empY - 25 && playerBulletY <= empY + 25) {
+        empT = 500;
+        empT = constrain(empT, 0, 900);
+        empX = random(1200, 2000);
+        empY = random(50, 550);
+    }
+
+    //EMP activity logic
+    if (empT > 0) {
+        emp = true;
+        enemyBulletX1 = (0, 0)
+        enemyBulletX2 = (0, 0)
+        enemyBulletX3 = (0, 0)
+
+        e1hullR = 255
+        e1hullG = 255
+        e1hullB = 0
+
+        e2hullR = 255
+        e2hullG = 255
+        e2hullB = 0
+
+        e3hullR = 255
+        e3hullG = 255
+        e3hullB = 0
+
+        enemyBulletXSpeed1 = 0;
+        enemyBulletXSpeed2 = 0;
+        enemyBulletXSpeed3 = 0;
+
+        empT--;
+        rectMode(CORNER)
+        rect(10, 445, empT / 10, 25)
+    } else {
+        emp = false;
+        e1hullR = 190
+        e1hullG = 0
+        e1hullB = 0
+
+        e2hullR = 0
+        e2hullG = 190
+        e2hullB = 0
+
+        e3hullR = 0
+        e3hullG = 0
+        e3hullB = 190
+
+        enemyBulletXSpeed1 = 8;
+        enemyBulletXSpeed2 = 8;
+        enemyBulletXSpeed3 = 8;
+    }
+}//EMP End
+
 function difficulty() {
 
-    if(score < 5000){                                   //VLRT (Very Low-Risk Targets)
+    if (score < 5000) {                                   //VLRT (Very Low-Risk Targets)
         strokeWeight(0);
         stroke(0);
-        fill(0,255,0);
+        fill(0, 255, 0);
         text("VLRT", 615, 60);
-        
-        threat0.resize(100,100);
+
+        threat0.resize(100, 100);
         image(threat0, 680, 15);
-        
+
         strokeWeight(2);
 
         enemyXSpeed1 = 2;
         enemyLvl1();
-    }else if(score >= 5000 && score < 11000){           //LRT (Low-Risk Targets)
+    } else if (score >= 5000 && score < 11000) {           //LRT (Low-Risk Targets)
         strokeWeight(0);
         stroke(0);
-        fill(0,175,0);
+        fill(0, 175, 0);
         text("LRT", 615, 60);
-        
-        threat1.resize(100,100);
+
+        threat1.resize(100, 100);
         image(threat1, 680, 15);
-        
+
         strokeWeight(2);
 
         enemyXSpeed1 = 5;
         enemyLvl1();
-    }else if(score >= 11000 && score < 18000){          //MRT (Moderate-Risk Targets)
+    } else if (score >= 11000 && score < 18000) {          //MRT (Moderate-Risk Targets)
         strokeWeight(0);
         stroke(0);
-        fill(175,175,0);
+        fill(175, 175, 0);
         text("MRT", 615, 60);
-        
-        threat2.resize(100,100);
+
+        threat2.resize(100, 100);
         image(threat2, 680, 15);
-        
+
         strokeWeight(2);
 
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 2;
         enemyLvl1();
         enemyLvl2();
-    }else if(score >= 18000 && score < 26000){          //HRT (High-Risk Targets)
+        enemyLvlSubBoss();
+    } else if (score >= 18000 && score < 26000) {          //HRT (High-Risk Targets)
         strokeWeight(0);
         stroke(0);
-        fill(175,0,0);
+        fill(175, 0, 0);
         text("HRT", 615, 60);
 
-        threat3.resize(100,100);
+        threat3.resize(100, 100);
         image(threat3, 680, 15);
 
         strokeWeight(2);
@@ -937,13 +1256,14 @@ function difficulty() {
         enemyXSpeed2 = 5;
         enemyLvl1();
         enemyLvl2();
-    }else if(score >= 26000 && score < 35000){          //VHRT (Very High-Risk Targets)
+        enemyLvlSubBoss();
+    } else if (score >= 26000 && score < 35000) {          //VHRT (Very High-Risk Targets)
         strokeWeight(0);
         stroke(0);
-        fill(255,0,0);
+        fill(255, 0, 0);
         text("VHRT", 615, 60);
-        
-        threat4.resize(100,100);
+
+        threat4.resize(100, 100);
         image(threat4, 680, 15);
 
         strokeWeight(2);
@@ -954,15 +1274,16 @@ function difficulty() {
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
-    }else if(score >= 35000){                           //ERT (Extreme-Risk Targets)
+        enemyLvlSubBoss();
+    } else if (score >= 35000) {                           //ERT (Extreme-Risk Targets)
         strokeWeight(0);
         stroke(0);
-        fill(255,128,0);
+        fill(255, 128, 0);
         text("ERT", 615, 60);
-        
-        threat5.resize(100,100);
+
+        threat5.resize(100, 100);
         image(threat5, 680, 15);
-        
+
         strokeWeight(2);
 
         enemyXSpeed1 = 5;
@@ -971,6 +1292,8 @@ function difficulty() {
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
+        enemyLvlSubBoss();
+        enemyLvlBoss();
     }
 }
 
@@ -979,10 +1302,10 @@ function draw() {
     titleScreen();
     loadAssetBuffer = constrain(loadAssetBuffer, 1, 300);
     loadAssetBuffer--;
-    console.log(keyCode);
-    if (loadAssetBuffer > 0){
+    //console.log(keyCode);
+    if (loadAssetBuffer > 0) {
         keyCode = 0;
-    }else if (loadAssetBuffer <= 0){
+    } else if (loadAssetBuffer <= 0) {
         if (keyCode == 81) {
             begin = true
         }
@@ -1000,7 +1323,7 @@ function draw() {
                 timing += 0.017
                 lifeboxX = -1000
                 lifeboxX -= 0
-                
+
                 enemyX1 = 1000
                 enemyXSpeed1 = 0
 
@@ -1012,7 +1335,7 @@ function draw() {
 
                 enemyBulletX1 = 1000
                 enemyBulletXSpeed1 = 0
-                
+
                 enemyBulletX2 = 1000
                 enemyBulletXSpeed2 = 0
 
@@ -1020,23 +1343,23 @@ function draw() {
                 enemyBulletXSpeed3 = 0
 
 
-                if(dataBaseLockVar == false){
+                if (dataBaseLockVar == false) {
                     addStat(db, username, score);
                     console.log(getStats(db));
                     dataBaseLockVar = true;
-                }else{
-                    
+                } else {
+
                 }
                 if (timing >= 7.9) {
                     text("Thanks for playing Galacti-tron Space Federation!", 20, 50)
                     noLoop()
-                }else{
+                } else {
 
                 }
             }
 
             //if statement will move bullet out of bounds so that it does not interact with anything offscreen
-            if(playerBulletX > 800){
+            if (playerBulletX > 800) {
                 playerBulletY = -10;
                 playerBulletYTop = -10;
                 playerBulletYBottom = -10;
@@ -1065,6 +1388,7 @@ function draw() {
             invuln();
             quickshot();
             multishot();
+            empbomb();
 
             strokeWeight(1)
             stroke(0)
@@ -1077,7 +1401,7 @@ function draw() {
             fill(255)
         }
         reticle()
-    }else{
+    } else {
         begin = false;
     }
 
@@ -1085,52 +1409,52 @@ function draw() {
 
 Promise.all([song]).then(() => {
     assetsLoaded = true;
-    });
+});
 
 window.setup = setup;
 window.draw = draw;
 
-        /*
-        
-    [X]    background(dark_blue)
-    [X]    backgroundeffect(stars.white-transparent.ellipse.circle.no-outline.small)
-    [X]    texteffect(
-        variant 1: if(var.health = 5){rect.rectangle.red-5x.sidebyside = 5}
-        variant 2: if(var.health = 4){rect.rectangle.red-4x.sidebyside = 4}
-        variant 3: if(var.health = 3){rect.rectangle.red-3x.sidebyside = 3}
-        variant 4: if(var.health = 2){rect.rectangle.red-2x.sidebyside = 2}
-        variant 5: if(var.health = 1){rect.rectangle.red-1x.sidebyside = 1}
-        final variant: if(var.health = 0){(rect.rectangle.red-0x.sidebyside = 0) + text("Game Over, your score was " + score,centerscreen,centerscreen)})
-        
-        
-    [X]    PlayerShape = triangle.triangle-faceright-grey
-    [X]    PlayerBlaster = rect.rectangle-green.2x.symetrical
-    [X]    PlayerBlaster.bullet = rect.rectangle-brightgreen.moveright=always
-    [X]    PlayerBlaster.bullet-logic = in mousePressed - if(bullet > canvas.right){fire}
-    [X]    PlayerHealth = if(enemyBullet = hit PlayerShip){life - 1}
-    [X]    PlayerMove = w.up, s.down, a.left, d.right, (combo(w(a-d)) || combo(s(a-d)) = diagonal)
-        
-        
-    [X]    EnemyShape = rect.Square-red
-    [X]    EnemyBlaster = rect.rectangle-grey.1x.center
-    [X]    EnemyBlaster.bullet = rect.rectangle-brightred.moveleft=always
-    [X]    EnemyBlaster.bullet-logic = bullet.create in enemy gun, always moving left. if(bullet < canvas.left || hit player.Ship){enemyfire}. Bullet always respawns at the cannon of enemy ship.
-    [X]    EnemyShip.logic = if(player.bullet = hit EnemyShip || EnemyShip < canvas.left){cannon+body = respawn && score + 1}
+/*
+ 
+[X]    background(dark_blue)
+[X]    backgroundeffect(stars.white-transparent.ellipse.circle.no-outline.small)
+[X]    texteffect(
+variant 1: if(var.health = 5){rect.rectangle.red-5x.sidebyside = 5}
+variant 2: if(var.health = 4){rect.rectangle.red-4x.sidebyside = 4}
+variant 3: if(var.health = 3){rect.rectangle.red-3x.sidebyside = 3}
+variant 4: if(var.health = 2){rect.rectangle.red-2x.sidebyside = 2}
+variant 5: if(var.health = 1){rect.rectangle.red-1x.sidebyside = 1}
+final variant: if(var.health = 0){(rect.rectangle.red-0x.sidebyside = 0) + text("Game Over, your score was " + score,centerscreen,centerscreen)})
+ 
+ 
+[X]    PlayerShape = triangle.triangle-faceright-grey
+[X]    PlayerBlaster = rect.rectangle-green.2x.symetrical
+[X]    PlayerBlaster.bullet = rect.rectangle-brightgreen.moveright=always
+[X]    PlayerBlaster.bullet-logic = in mousePressed - if(bullet > canvas.right){fire}
+[X]    PlayerHealth = if(enemyBullet = hit PlayerShip){life - 1}
+[X]    PlayerMove = w.up, s.down, a.left, d.right, (combo(w(a-d)) || combo(s(a-d)) = diagonal)
+ 
+ 
+[X]    EnemyShape = rect.Square-red
+[X]    EnemyBlaster = rect.rectangle-grey.1x.center
+[X]    EnemyBlaster.bullet = rect.rectangle-brightred.moveleft=always
+[X]    EnemyBlaster.bullet-logic = bullet.create in enemy gun, always moving left. if(bullet < canvas.left || hit player.Ship){enemyfire}. Bullet always respawns at the cannon of enemy ship.
+[X]    EnemyShip.logic = if(player.bullet = hit EnemyShip || EnemyShip < canvas.left){cannon+body = respawn && score + 1}
 
 
-    ////////////////////////////////////
-        CAPSTONE COURSE WORK CHANGELOG
-    ////////////////////////////////////
-    [X]     Move all possible code to its own functions, and call the functions back in main. This is to make the code neater in the draw() function.
-    [X]     Create a difficulty feature by:
-             +Keep track of current difficulty level (Threat Level) with the score number. Set increments.
-             +Increase amount of enemies (max 3) and their speed on-screen.
-                -Follow this metric: Enemy 1, Enemy 1 speed up, Enemy 1 + 2, Enemy 2 speed up, Enemy 1 + 2 + 3, Enemy 3 speed up
-                -Score increments for this: 0, 5000, 11000, 18000, 26000, 35000
-    [ ]     Create a variety of upgrades:
-        [X]     Invulnerability (Player will not take damage when interacting with enemy laser fire)
-        [X]     Multi-Shot      (Player will fire multiple lasers rather than one) 
-        -- need to add 2 more y and x bullet axis (bullet top and bottom). top +20 on y, bottom -20 ony 
-        [X]     Quick-Shot      (Player laser speed will be increased)
-        [ ]     ChronoSphere    (Slows down time, decreases enemy movement speed, decreases enemy laser movement speed, decreases background stars movement speed)
-        */
+////////////////////////////////////
+CAPSTONE COURSE WORK CHANGELOG
+////////////////////////////////////
+[X]     Move all possible code to its own functions, and call the functions back in main. This is to make the code neater in the draw() function.
+[X]     Create a difficulty feature by:
+     +Keep track of current difficulty level (Threat Level) with the score number. Set increments.
+     +Increase amount of enemies (max 3) and their speed on-screen.
+        -Follow this metric: Enemy 1, Enemy 1 speed up, Enemy 1 + 2, Enemy 2 speed up, Enemy 1 + 2 + 3, Enemy 3 speed up
+        -Score increments for this: 0, 5000, 11000, 18000, 26000, 35000
+[ ]     Create a variety of upgrades:
+[X]     Invulnerability (Player will not take damage when interacting with enemy laser fire)
+[X]     Multi-Shot      (Player will fire multiple lasers rather than one) 
+-- need to add 2 more y and x bullet axis (bullet top and bottom). top +20 on y, bottom -20 ony 
+[X]     Quick-Shot      (Player laser speed will be increased)
+[ ]     ChronoSphere    (Slows down time, decreases enemy movement speed, decreases enemy laser movement speed, decreases background stars movement speed)
+*/
