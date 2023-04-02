@@ -79,10 +79,11 @@ var multX;              //Variable that determines the X location of the multish
 var multY;              //Variable that determines the Y location of the multishot power-up
 var multT;              //Variable that determines how long multishot has left
 
-var chronoX             //Variable that determines the X location of the chrono power-up
-var chronoY             //Variable that determines the Y location of the chrono power-up           
+var chronoX;            //Variable that determines the X location of the chrono power-up
+var chronoY;            //Variable that determines the Y location of the chrono power-up           
 var chrono;             //Variable that determines whether of not the user has chrono_sphere power-up
 var chronoT;            //Variable that determines how long chrono has left
+var chronoS = 1;        //Variable that determines how much the enemy slow
 
 //Power-Up Variables END
 /*
@@ -379,6 +380,12 @@ function setup() {
                 multX = random(1500, 2000)
                 multY = random(50, 550)
                 multT = 0
+                
+                //chrono-sphere
+                chrono = false;
+                chronoX = random(1500, 2000)
+                chronoY = random(50, 550)
+                chronoT = 0
 
                 background(0, 0, 50)
                 stars()
@@ -909,14 +916,18 @@ function chrono_sphere(){
 
    if(chronoT > 0){
     chrono = true;
-    enemyXSpeed1 -= 2;
-    enemyXSpeed2 -= 2;
-    enemyXSpeed3 -= 2; 
+    enemyXSpeed1 -= chronoS;
+    enemyXSpeed2 -= chronoS;
+    enemyXSpeed3 -= chronoS;
+    enemyBulletXSpeed1 -= chronoS;
+    enemyBulletXSpeed2 -= chronoS;
+    enemyBulletXSpeed3 -= chronoS;
+    x -= 0.5;
+
     fill(153, 255, 255);
     ellipse(enemyX1, enemyY1, 60, 60)
     ellipse(enemyX2, enemyY2, 60, 60)
     ellipse(enemyX3, enemyY3, 60, 60)
-
 
     chronoT--;
     console.log(chronoT);
@@ -925,9 +936,13 @@ function chrono_sphere(){
     rect(10, 480, chronoT/10, 25)
    }else{
     chrono = false;
-    enemyXSpeed1 += 2;
-    enemyXSpeed2 += 2;
-    enemyXSpeed3 += 2; 
+    enemyXSpeed1 += chronoS;
+    enemyXSpeed2 += chronoS;
+    enemyXSpeed3 += chronoS; 
+    enemyBulletXSpeed1 += chronoS;
+    enemyBulletXSpeed2 += chronoS;
+    enemyBulletXSpeed3 += chronoS;
+    x += 0.5;
 
     fill(255);
     ellipse(enemyX1, enemyY1, 60, 60)
@@ -936,6 +951,7 @@ function chrono_sphere(){
    }
 }
 //chrono_sphere end
+
 function difficulty() {
 
     if(score < 5000){                                   //VLRT (Very Low-Risk Targets)
