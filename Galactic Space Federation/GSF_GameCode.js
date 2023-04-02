@@ -340,15 +340,42 @@ function enemyLvlSubBoss(){
     }
     
     if (enemyXSubBoss <= -30) {
-      enemyXSubBoss = random(1050, 1100);
-      enemyYSubBoss = random(115, 550);
+        enemyXSubBoss = 850; // move SubBoss off screen
+        enemyYSubBoss = 115;
+        enemyBulletXSubBoss = 850
+        enemyBulletYSubBoss = 115;
+        enemyXSpeedSubBoss = 0;
+        enemyBulletXSpeedSubBoss = 0;
+        setTimeout(function() {
+            enemyXSpeedSubBoss = 2;
+            if(score >= 35000){
+                enemyXSpeedSubBoss = 3;
+            }
+            enemyBulletXSpeedSubBoss = 8;
+          enemyXSubBoss = random(800, 900);
+          enemyYSubBoss = random(115, 550);
+          score = score + int(random(59, 217));
+        }, 4000); // 4 seconds delay
       score = score - 100;
     }
     
     if (playerBulletX >= enemyXSubBoss && playerBulletX <= enemyXSubBoss + 40 && playerBulletY >= enemyYSubBoss && playerBulletY <= enemyYSubBoss + 40 || (playerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyYSubBoss + 40) || (playerBulletX3 >= enemyXSubBoss && playerBulletX3 <= enemyXSubBoss + 40 && playerBulletYBottom >= enemyYSubBoss && playerBulletYBottom <= enemyYSubBoss + 40)) {
-      enemyXSubBoss = random(1050, 1100);
-      enemyYSubBoss = random(115, 550);
-      score = score + int(random(59, 217));
+        enemyXSubBoss = 850; // move SubBoss off screen
+        enemyYSubBoss = 115;
+        enemyBulletXSubBoss = 850
+        enemyBulletYSubBoss = 115;
+        enemyXSpeedSubBoss = 0;
+        enemyBulletXSpeedSubBoss = 0;
+        setTimeout(function() {
+            enemyXSpeedSubBoss = 2;
+            if(score >= 35000){
+                enemyXSpeedSubBoss = 3;
+            }
+            enemyBulletXSpeedSubBoss = 8;
+          enemyXSubBoss = random(800, 900);
+          enemyYSubBoss = random(115, 550);
+          score = score + int(random(59, 217));
+        }, 4000); // 4 seconds delay
     }
   }
 
@@ -359,7 +386,7 @@ function enemyLvlSubBoss(){
     rect(enemyXBoss - 10, enemyYBoss + 13, 35, 12);
     enemyXBoss -= enemyXSpeedBoss;
     
-    fill(190, 0, 0);; // purple laser
+    fill(255, 255, 255);; // white laser
     rectMode(CENTER);
     rect(enemyBulletXBoss - 20, enemyBulletYBoss + 18, 30, 10);
     rectMode(CORNER);
@@ -401,20 +428,24 @@ function enemyLvlSubBoss(){
       hitRegBoss = 1;
     }
     
-    if (enemyXBoss <= -30) {
-      enemyXBoss = random(1050, 1100);
-      enemyYBoss = random(115, 550);
-      score = score - 100;
-    }
-    
     if (playerBulletX >= enemyXBoss && playerBulletX <= enemyXBoss + 40 && playerBulletY >= enemyYBoss && playerBulletY <= enemyYBoss + 40 || (playerBulletX2 >= enemyXBoss && playerBulletX2 <= enemyXBoss + 40 && playerBulletYTop >= enemyYBoss && playerBulletYTop <= enemyYBoss + 40) || (playerBulletX3 >= enemyXBoss && playerBulletX3 <= enemyXBoss + 40 && playerBulletYBottom >= enemyYBoss && playerBulletYBottom <= enemyYBoss + 40)) {
         bossHealth--;
         if (bossHealth <= 0){
-        enemyXBoss = random(1050, 1100);
-        enemyYBoss = random(115, 550);
-        score = score + int(random(59, 217));
-        bossHealth = 5; //reset boss health
-        }
+            enemyXBoss = 850; // move boss off screen
+            enemyYBoss = 115;
+            enemyBulletXBoss = 850
+            enemyBulletYBoss = 115;
+            enemyXSpeedBoss = -1;
+            enemyBulletXSpeedBoss = 0;
+            setTimeout(function() {
+                enemyXSpeedBoss = 2;
+                enemyBulletXSpeedBoss = 8;
+              enemyXBoss = random(800, 900);
+              enemyYBoss = random(115, 550);
+              score = score + int(random(59, 217));
+              bossHealth = 5; //reset boss health
+            }, 10000); // 10 seconds delay
+          }
      
     }
   }
@@ -502,7 +533,7 @@ function setup() {
                 enemyYBoss = random(50, 550);
                 enemyBulletXBoss = enemyXSubBoss;
                 enemyBulletYBoss = enemyYSubBoss;
-                enemyXSpeedBoss = 2;
+                enemyXSpeedBoss = 1;
                 enemyBulletXSpeedBoss = 8;
                 bossHealth = 5;
             //Debuff
@@ -1073,8 +1104,6 @@ function difficulty() {
 
         enemyXSpeed1 = 2;
         enemyLvl1();
-
-        enemyXSpeedBoss = 3;
         enemyLvlBoss();
     }else if(score >= 5000 && score < 11000){           //LRT (Low-Risk Targets)
         strokeWeight(0);
@@ -1102,7 +1131,6 @@ function difficulty() {
 
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 2;
-        enemyXSpeedSubBoss = 2;
         enemyLvl1();
         enemyLvl2();
         enemyLvlSubBoss();
@@ -1119,7 +1147,6 @@ function difficulty() {
 
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 5;
-        enemyXSpeedSubBoss = 2;
         enemyLvl1();
         enemyLvl2();
         enemyLvlSubBoss();
@@ -1137,7 +1164,6 @@ function difficulty() {
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 5;
         enemyXSpeed3 = 2;
-        enemyXSpeedSubBoss = 2;
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
@@ -1156,8 +1182,7 @@ function difficulty() {
         enemyXSpeed1 = 5;
         enemyXSpeed2 = 5;
         enemyXSpeed3 = 5;
-        enemyXSpeedSubBoss = 3;
-        enemyXSpeedBoss = 3;
+
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
