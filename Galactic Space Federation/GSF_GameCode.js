@@ -942,7 +942,6 @@ function chrono_sphere(){
     enemyBulletXSpeed1 += chronoS;
     enemyBulletXSpeed2 += chronoS;
     enemyBulletXSpeed3 += chronoS;
-    x += 0.5;
 
     fill(255);
     ellipse(enemyX1, enemyY1, 60, 60)
