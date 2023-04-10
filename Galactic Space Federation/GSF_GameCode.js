@@ -137,8 +137,6 @@ var e3hullR;
 var e3hullG;
 var e3hullB;
 
-<<<<<<< Updated upstream
-=======
 //LVL SUBBOSS
 var enemyXSubBoss;
 var enemyYSubBoss;
@@ -170,7 +168,6 @@ var e5hullB;
 var slowed;
 var slowedDuration;
 
->>>>>>> Stashed changes
 /*
     ALL ENEMY VARIABLES END
 */
@@ -329,8 +326,6 @@ function enemyLvl3() {
     }
 }
 
-<<<<<<< Updated upstream
-=======
 function enemyLvlSubBoss(){
     fill(e4hullR, e4hullG, e4hullB); // orange rectangle
     rect(enemyXSubBoss, enemyYSubBoss, 40, 40);
@@ -484,7 +479,6 @@ function enemyLvlSubBoss(){
      
     }
   }
->>>>>>> Stashed changes
 /*
 -----------------------------------------
     ALL ENEMY LOGIC END
@@ -567,8 +561,6 @@ function setup() {
         e3hullG = 0
         e3hullB = 190
 
-<<<<<<< Updated upstream
-=======
         enemyXSubBoss = random(1050, 1100);
         enemyYSubBoss = random(50, 550);
         enemyBulletXSubBoss = enemyXSubBoss;
@@ -595,7 +587,6 @@ function setup() {
         slowed = false;
         slowedDuration = 10;
 
->>>>>>> Stashed changes
         //Power-Up Default Values
         //Health
         lifeboxX = random(1500, 2000)
@@ -1265,6 +1256,7 @@ function difficulty() {
         enemyXSpeed2 = 2;
         enemyLvl1();
         enemyLvl2();
+        enemyLvlSubBoss();
     } else if (score >= 18000 && score < 26000) {          //HRT (High-Risk Targets)
         strokeWeight(0);
         stroke(0);
@@ -1280,6 +1272,7 @@ function difficulty() {
         enemyXSpeed2 = 5;
         enemyLvl1();
         enemyLvl2();
+        enemyLvlSubBoss();
     } else if (score >= 26000 && score < 35000) {          //VHRT (Very High-Risk Targets)
         strokeWeight(0);
         stroke(0);
@@ -1297,6 +1290,7 @@ function difficulty() {
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
+        enemyLvlSubBoss();
     } else if (score >= 35000) {                           //ERT (Extreme-Risk Targets)
         strokeWeight(0);
         stroke(0);
@@ -1314,6 +1308,8 @@ function difficulty() {
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
+        enemyLvlSubBoss();
+        enemyLvlBoss();
     }
 }
 
