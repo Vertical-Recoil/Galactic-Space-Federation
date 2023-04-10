@@ -137,6 +137,40 @@ var e3hullR;
 var e3hullG;
 var e3hullB;
 
+<<<<<<< Updated upstream
+=======
+//LVL SUBBOSS
+var enemyXSubBoss;
+var enemyYSubBoss;
+var enemyBulletXSubBoss;
+var enemyBulletYSubBoss;
+var enemyXSpeedSubBoss
+var enemyBulletXSpeedSubBoss;
+var hitRegSubBoss;
+var isSubBossDead;
+var e4hullR;
+var e4hullG;
+var e4hullB;
+
+//LVL BOSS
+var enemyXBoss;
+var enemyYBoss;
+var enemyBulletXBoss;
+var enemyBulletYBoss;
+var enemyXSpeedBoss
+var enemyBulletXSpeedBoss;
+var hitRegBoss;
+var bossHealth;
+var isBossDead;
+var e5hullR;
+var e5hullG;
+var e5hullB;
+
+//ENEMY DEBUFF
+var slowed;
+var slowedDuration;
+
+>>>>>>> Stashed changes
 /*
     ALL ENEMY VARIABLES END
 */
@@ -295,6 +329,162 @@ function enemyLvl3() {
     }
 }
 
+<<<<<<< Updated upstream
+=======
+function enemyLvlSubBoss(){
+    fill(e4hullR, e4hullG, e4hullB); // orange rectangle
+    rect(enemyXSubBoss, enemyYSubBoss, 40, 40);
+    fill(120);
+    rect(enemyXSubBoss - 10, enemyYSubBoss + 13, 35, 12);
+    enemyXSubBoss -= enemyXSpeedSubBoss;
+    
+    fill(0, 0, 255); // blue laser
+    rectMode(CENTER);
+    rect(enemyBulletXSubBoss - 20, enemyBulletYSubBoss + 18, 30, 10);
+    rectMode(CORNER);
+    enemyBulletXSubBoss -= enemyBulletXSpeedSubBoss;
+    
+    if (enemyBulletXSubBoss <= -30) {
+        if(isSubBossDead)
+        {
+          enemyBulletXSpeedSubBoss = 0;
+          enemyBulletXSubBoss = enemyXSubBoss;
+          enemyBulletYSubBoss = enemyYSubBoss;
+        }
+        else{
+          enemyBulletXSubBoss = enemyXSubBoss;
+          enemyBulletYSubBoss = enemyYSubBoss;
+        }
+        
+      }
+    
+    if (enemyBulletXSubBoss >= shipx - 10 && enemyBulletXSubBoss <= shipx + 35 && enemyBulletYSubBoss >= shipy - 35 && enemyBulletYSubBoss <= shipy + 10) {
+      if (hitRegSubBoss == true && iddqd == false) {
+        health--;
+        hitRegSubBoss = 0;
+        slowed = true; //set slowed to true
+      }
+    }
+    if (slowed){
+        setTimeout(function(){
+            slowed = false;
+        }, slowedDuration * 1000);
+    }
+    
+    if (enemyBulletXSubBoss == enemyXSubBoss) {
+      hitRegSubBoss = 1;
+    }
+    
+    if (enemyXSubBoss <= -30) {
+        isSubBossDead = true;
+        enemyXSubBoss = 850; //move subboss off screen
+        enemyYSubBoss = random(115, 550);
+        enemyXSpeedSubBoss = 0;
+        setTimeout(function() {
+            isSubBossDead = false;
+            enemyXSpeedSubBoss = 2;
+            if(score >= 35000){
+                enemyXSpeedSubBoss = 3;
+            }
+            enemyBulletXSpeedSubBoss = 8;
+          score = score + int(random(59, 217));
+        }, 4000); // 4 seconds delay
+      score = score - 100;
+
+      console.log("I LIVE!")
+    }
+    
+    if (playerBulletX >= enemyXSubBoss && playerBulletX <= enemyXSubBoss + 40 && playerBulletY >= enemyYSubBoss && playerBulletY <= enemyYSubBoss + 40 || (playerBulletX2 >= enemyX3 && playerBulletX2 <= enemyX3 + 40 && playerBulletYTop >= enemyY3 && playerBulletYTop <= enemyYSubBoss + 40) || (playerBulletX3 >= enemyXSubBoss && playerBulletX3 <= enemyXSubBoss + 40 && playerBulletYBottom >= enemyYSubBoss && playerBulletYBottom <= enemyYSubBoss + 40)) {
+        isSubBossDead = true;
+        enemyXSubBoss = 850; //move subboss off screen
+        enemyYSubBoss = random(115, 550);
+        enemyXSpeedSubBoss = 0;
+        score = score + int(random(59, 217));
+        setTimeout(function() {
+            isSubBossDead = false;
+            enemyXSpeedSubBoss = 2;
+            if(score >= 35000){
+                enemyXSpeedSubBoss = 3;
+            }
+            enemyBulletXSpeedSubBoss = 8;
+        }, 4000); // 4 seconds delay
+    }
+  }
+
+  function enemyLvlBoss(){
+    fill(e5hullR, e5hullG, e5hullB);; // white rectangle
+    rect(enemyXBoss, enemyYBoss, 40, 40);
+    fill(120); 
+    rect(enemyXBoss - 10, enemyYBoss + 13, 35, 12);
+    enemyXBoss -= enemyXSpeedBoss;
+    
+    fill(255, 255, 255);; // white laser
+    rectMode(CENTER);
+    rect(enemyBulletXBoss - 20, enemyBulletYBoss + 18, 30, 10);
+    rectMode(CORNER);
+    enemyBulletXBoss -= enemyBulletXSpeedBoss;
+    
+    //Constraining the boss movement
+    enemyYBoss = constrain(enemyYBoss, 115,550);
+    enemyXBoss = constrain(enemyXBoss, 550,950);
+    //Move the boss up or down based on player
+    if (enemyYBoss < shipy){
+        enemyYBoss +=1;
+    }
+    else if(enemyYBoss > shipy)
+    {
+        enemyYBoss -=1;
+    }
+    if (enemyBulletXBoss <= -30) {
+      if(isBossDead)
+      {
+        enemyBulletXSpeedBoss = 0;
+        enemyBulletXBoss = enemyXBoss;
+        enemyBulletYBoss = enemyYBoss;
+      }
+      else{
+        enemyBulletXBoss = enemyXBoss;
+        enemyBulletYBoss = enemyYBoss;
+      }
+      
+    }
+    
+    if (enemyBulletXBoss >= shipx - 10 && enemyBulletXBoss <= shipx + 35 && enemyBulletYBoss >= shipy - 35 && enemyBulletYBoss <= shipy + 10) {
+      if (hitRegBoss == true && iddqd == false) {
+        health--;
+        hitRegBoss = 0;
+        slowed = true; //set slowed to true
+      }
+    }
+    if (slowed){
+        setTimeout(function(){
+            slowed = false;
+        }, slowedDuration * 1000);
+    }
+    
+    if (enemyBulletXBoss == enemyXBoss) {
+      hitRegBoss = 1;
+    }
+    
+    if (playerBulletX >= enemyXBoss && playerBulletX <= enemyXBoss + 40 && playerBulletY >= enemyYBoss && playerBulletY <= enemyYBoss + 40 || (playerBulletX2 >= enemyXBoss && playerBulletX2 <= enemyXBoss + 40 && playerBulletYTop >= enemyYBoss && playerBulletYTop <= enemyYBoss + 40) || (playerBulletX3 >= enemyXBoss && playerBulletX3 <= enemyXBoss + 40 && playerBulletYBottom >= enemyYBoss && playerBulletYBottom <= enemyYBoss + 40)) {
+        bossHealth--;
+        if (bossHealth <= 0){
+            isBossDead = true;
+            enemyXBoss = 850; // move boss off screen
+            enemyYBoss = random(115, 550);
+            enemyXSpeedBoss = 0;
+            score = score + int(random(59, 217));
+            setTimeout(function() {
+                isBossDead = false;
+                enemyXSpeedBoss = 2;
+                enemyBulletXSpeedBoss = 8;
+              bossHealth = 5; //reset boss health
+            }, 10000); // 10 seconds delay
+          }
+     
+    }
+  }
+>>>>>>> Stashed changes
 /*
 -----------------------------------------
     ALL ENEMY LOGIC END
@@ -377,6 +567,35 @@ function setup() {
         e3hullG = 0
         e3hullB = 190
 
+<<<<<<< Updated upstream
+=======
+        enemyXSubBoss = random(1050, 1100);
+        enemyYSubBoss = random(50, 550);
+        enemyBulletXSubBoss = enemyXSubBoss;
+        enemyBulletYSubBoss = enemyYSubBoss;
+        enemyXSpeedSubBoss = 2;
+        enemyBulletXSpeedSubBoss = 8;
+        isSubBossDead = false;
+        e4hullR = 255;
+        e4hullG = 165;
+        e4hullB = 0;
+
+        enemyXBoss = random(1050, 1100);
+        enemyYBoss = random(50, 550);
+        enemyBulletXBoss = enemyXSubBoss;
+        enemyBulletYBoss = enemyYSubBoss;
+        enemyXSpeedBoss = 1;
+        enemyBulletXSpeedBoss = 8;
+        bossHealth = 5;
+        isBossDead = false;
+        e5hullR = 255;
+        e5hullG = 255;
+        e5hullB = 255;
+        //Debuff
+        slowed = false;
+        slowedDuration = 10;
+
+>>>>>>> Stashed changes
         //Power-Up Default Values
         //Health
         lifeboxX = random(1500, 2000)
@@ -940,6 +1159,9 @@ function empbomb() {
         enemyBulletX1 = (0, 0)
         enemyBulletX2 = (0, 0)
         enemyBulletX3 = (0, 0)
+        enemyBulletXSubBoss = (0, 0)
+        enemyBulletXBoss = (0, 0)
+
 
         e1hullR = 255
         e1hullG = 255
@@ -953,9 +1175,19 @@ function empbomb() {
         e3hullG = 255
         e3hullB = 0
 
+        e4hullR = 255
+        e4hullG = 255
+        e4hullB = 0
+
+        e5hullR = 255
+        e5hullG = 255
+        e5hullB = 0
+
         enemyBulletXSpeed1 = 0;
         enemyBulletXSpeed2 = 0;
         enemyBulletXSpeed3 = 0;
+        enemyBulletXSpeedSubBoss = 0;
+        enemyBulletXSpeedBoss = 0;
 
         empT--;
         rectMode(CORNER)
@@ -974,9 +1206,19 @@ function empbomb() {
         e3hullG = 0
         e3hullB = 190
 
+        e4hullR = 255
+        e4hullG = 165
+        e4hullB = 0
+
+        e5hullR = 255
+        e5hullG = 255
+        e5hullB = 255
+
         enemyBulletXSpeed1 = 8;
         enemyBulletXSpeed2 = 8;
         enemyBulletXSpeed3 = 8;
+        enemyBulletXSpeedSubBoss = 8;
+        enemyBulletXSpeedBoss = 8;
     }
 }//EMP End
 
