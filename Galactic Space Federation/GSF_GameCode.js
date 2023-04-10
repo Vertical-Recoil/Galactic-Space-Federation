@@ -902,8 +902,8 @@ function chrono_sphere(){
    rect(chronoX, chronoY, 50, 50)
    chronoX -= 2
    if (chronoX <= -25) {
-       multX = random(1200, 2000)
-       multY = random(50, 550)
+       chronoX = random(1200, 2000)
+       chronoY = random(50, 550)
    }
 
    //chrono_sphere utility logic
