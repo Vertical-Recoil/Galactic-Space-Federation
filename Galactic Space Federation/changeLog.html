@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galactic Space Federation: ChangeLog</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: #494949;
+            background-image: url('homepagebg.jpg');
+            /*background-repeat: no-repeat;*/
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+        tr,td{
+            border:6px ridge rgb(133, 133, 133);
+        }
+        td{
+            height: 50px;
+            width: 1000px;
+            background-color: rgb(109, 109, 109);
+        }
+        #titleFontSpec {
+            margin-top: 50px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(235, 235, 235)
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(235, 235, 235)
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+    <script src="firebase-config.js" type="module"></script>
+    <script src="CRUD.js" type="module"></script>
+
+    <div id="titleFontSpec">
+        <h1 style="text-align:center">
+            Galactic Space Federation: ChangeLog
+        </h1>
+    </div>
+
+    <div class="button-container">
+        <button class="changelog-to-home-button" onclick="window.location.href='index.html'">Home Page</button>
+    </div>
+
+    <div class="changelog">
+        <h2>
+            Welcome to the ChangeLog!
+        </h2>
+        <h3>
+            Only most recent 5 versions will be posted!
+        </h3>
+        <p>
+            v1.1.1: Previous version + a profanity filter...<br>
+            Because people like to think that they are funny!
+
+            <br><br>
+            v1.1.0: Previous version + database connection via<br>
+            firestore database! We can now store the users name<br>
+            into a variable and pass it along so that when the<br>
+            game finally ends, it will send the name and the score<br>
+            to the database, and from the database to our leaderboard.
+
+            <br><br>
+            v1.0.2: Previous version + Player buffs, including<br>
+            invulnerability, a ship representation of the buff,<br>
+            as well as a timer on the bottom left to indicate the<br>
+            time left of the power-up! Also added visuals to show<br>
+            the players current difficulty level in the top right.
+
+            <br><br>
+            v1.0.1: Previous version + Difficulty factor, including<br>
+            more and quicker enemies based on your current score.<br>
+            Replaced the royalty free music with made by the devs.
+
+            <br><br>
+            v1.0.0: Base version of the game, no difficulty scale,<br>
+            no upgrades, only you, your enemies, a healthpack, and<br>
+            some shoddy music to keep the gloom of space away.
+
+            <br>
+        </p>
+        <h4>"It was never about the goal. It was always about the Journey."</h4>
+    </div>
+</body>
+</html>

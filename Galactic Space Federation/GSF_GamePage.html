@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galactic Space Federation: Save the World</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #1b1b1b;
+      background-image: url('homepagebg.jpg');
+      /*background-repeat: no-repeat;*/
+      background-attachment: fixed;
+      background-size: 100% 100%;
+    }
+    #titleFontSpec {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            color: rgb(235, 235, 235)
+        }
+  </style>
+</head>
+
+<body>
+
+  <div class="overlay2"></div>
+
+  <h1 style="text-align:center" id="titleFontSpec">
+    Galactic Space Federation: Save the World
+  </h1>
+
+  <p id="saved-string"></p>
+
+  <div>
+    <script src="firebase-config.js" type="module"></script>
+    <script src="CRUD.js" type="module"></script>
+    <script src="p5.js"></script>
+    <script src="p5.sound.min.js"></script>
+    <script src="p5.sound.js"></script>
+    <script src="GSF_GameCode.js" type="module"></script>
+  </div>
+
+  <div class="button-container">
+    <button class="game-to-home-button" onclick="window.location.href='index.html'">Home Page</button>
+  </div>
+
+  <div class="button-container">
+    <button class="game-to-leaderboard-button" onclick="window.location.href='GSF_Leaderboards.html'">Hall of Fame</button>
+  </div>
+</body>
+
+</html>

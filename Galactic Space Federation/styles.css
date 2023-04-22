@@ -1,0 +1,189 @@
+  .home-to-game-button {
+    position: absolute;
+    top: 700px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .home-to-game-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+  
+  .home-to-leaderboard-button {
+    position: absolute;
+    top: 840px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .home-to-leaderboard-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .game-to-home-button {
+    position: absolute;
+    top: 690px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .game-to-home-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .game-to-leaderboard-button {
+    position: absolute;
+    top: 740px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .game-to-leaderboard-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .leaderboard-to-game-button {
+    position: absolute;
+    top: 470px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .leaderboard-to-game-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .leaderboard-to-home-button {
+    position: absolute;
+    top: 520px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .leaderboard-to-home-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .home-to-changelog-button {
+    position: absolute;
+    top: 890px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .home-to-changelog-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .changelog-to-home-button {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4CAF50; /* Change the background color */
+    color: white; /* Change the font color */
+    font-size: 16px; /* Change the font size */
+    padding: 10px 20px; /* Change the button padding */
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change the cursor to a hand when hovering over the button */
+  }
+  .changelog-to-home-button:hover {
+    background-color: #3e8e41; /* Change the background color when hovering */
+  }
+
+  .button-container {
+    text-align: center; /* Center the button horizontally */
+  }
+
+  .overlay1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25); /* Use an RGBA value to set the opacity */
+  }
+
+  .overlay2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Use an RGBA value to set the opacity */
+  }
+
+  .box {
+    background-color: #585858;
+    width: 35%;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border: none; /* Remove the button border */
+    border-radius: 5px; /* Add rounded corners */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(181, 255, 187)
+  }
+
+  .changelog {
+    background-color: #585858;
+    width: 35%;
+    margin: auto;
+    margin-top: 70px;
+    text-align: center;
+    padding: 10px;
+    border: none; /* Remove the button border */
+    border-radius: 20px; /* Add rounded corners */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(181, 255, 187)
+  }
+
+  .tdFontSize {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: xxx-large;
+    text-align: center;
+    color: rgb(255, 0, 0)
+}

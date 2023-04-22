@@ -913,22 +913,41 @@ function titleScreen() {
 //Ship Movement
 function shipMove() {
     if (keyIsDown(65)) {
-        shipx -= 5;
-
+        if (slowed)
+        {
+            shipx -= 3;
+        }
+        else{
+            shipx -= 5;
+        }
     }
-
     if (keyIsDown(68)) {
-        shipx += 5;
-
+        if (slowed)
+        {
+            shipx += 3;
+        }
+        else{
+            shipx += 5;
+        }
     }
-
     if (keyIsDown(87)) {
-        shipy -= 5;
+        if (slowed)
+        {
+            shipy -= 3;
+        }
+        else{
+            shipy -= 5;
+        }
         //playerBulletY += 5
     }
-
     if (keyIsDown(83)) {
-        shipy += 5;
+        if (slowed)
+        {
+            shipy += 3;
+        }
+        else{
+            shipy += 5;
+        }
         //playerBulletY -= 5
     }
 }
@@ -1100,7 +1119,7 @@ function multishot() {
         hullB = 120;
         mult = true; //While timer of multishot has juice, give player multishot, decrease timer by 60 per second.
         multT--;
-        console.log(multT);
+        //console.log(multT);
 
         playerBulletX += 20
         playerBulletX2 += 20
@@ -1318,7 +1337,7 @@ function draw() {
     titleScreen();
     loadAssetBuffer = constrain(loadAssetBuffer, 1, 300);
     loadAssetBuffer--;
-    console.log(keyCode);
+    //console.log(keyCode);
     if (loadAssetBuffer > 0) {
         keyCode = 0;
     } else if (loadAssetBuffer <= 0) {
