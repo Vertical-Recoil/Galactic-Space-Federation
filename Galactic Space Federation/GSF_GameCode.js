@@ -146,6 +146,9 @@ var enemyXSpeedSubBoss
 var enemyBulletXSpeedSubBoss;
 var hitRegSubBoss;
 var isSubBossDead;
+var e4hullR;
+var e4hullG;
+var e4hullB;
 
 //LVL BOSS
 var enemyXBoss;
@@ -157,6 +160,9 @@ var enemyBulletXSpeedBoss;
 var hitRegBoss;
 var bossHealth;
 var isBossDead;
+var e5hullR;
+var e5hullG;
+var e5hullB;
 
 //ENEMY DEBUFF
 var slowed;
@@ -321,7 +327,7 @@ function enemyLvl3() {
 }
 
 function enemyLvlSubBoss(){
-    fill(255, 165, 0); // orange rectangle
+    fill(e4hullR, e4hullG, e4hullB); // orange rectangle
     rect(enemyXSubBoss, enemyYSubBoss, 40, 40);
     fill(120);
     rect(enemyXSubBoss - 10, enemyYSubBoss + 13, 35, 12);
@@ -401,7 +407,7 @@ function enemyLvlSubBoss(){
   }
 
   function enemyLvlBoss(){
-    fill(255, 255, 255); // white rectangle
+    fill(e5hullR, e5hullG, e5hullB);; // white rectangle
     rect(enemyXBoss, enemyYBoss, 40, 40);
     fill(120); 
     rect(enemyXBoss - 10, enemyYBoss + 13, 35, 12);
@@ -562,6 +568,9 @@ function setup() {
         enemyXSpeedSubBoss = 2;
         enemyBulletXSpeedSubBoss = 8;
         isSubBossDead = false;
+        e4hullR = 255;
+        e4hullG = 165;
+        e4hullB = 0;
 
         enemyXBoss = random(1050, 1100);
         enemyYBoss = random(50, 550);
@@ -571,6 +580,9 @@ function setup() {
         enemyBulletXSpeedBoss = 8;
         bossHealth = 5;
         isBossDead = false;
+        e5hullR = 255;
+        e5hullG = 255;
+        e5hullB = 255;
         //Debuff
         slowed = false;
         slowedDuration = 10;
@@ -1157,6 +1169,9 @@ function empbomb() {
         enemyBulletX1 = (0, 0)
         enemyBulletX2 = (0, 0)
         enemyBulletX3 = (0, 0)
+        enemyBulletXSubBoss = (0, 0)
+        enemyBulletXBoss = (0, 0)
+
 
         e1hullR = 255
         e1hullG = 255
@@ -1170,9 +1185,19 @@ function empbomb() {
         e3hullG = 255
         e3hullB = 0
 
+        e4hullR = 255
+        e4hullG = 255
+        e4hullB = 0
+
+        e5hullR = 255
+        e5hullG = 255
+        e5hullB = 0
+
         enemyBulletXSpeed1 = 0;
         enemyBulletXSpeed2 = 0;
         enemyBulletXSpeed3 = 0;
+        enemyBulletXSpeedSubBoss = 0;
+        enemyBulletXSpeedBoss = 0;
 
         empT--;
         rectMode(CORNER)
@@ -1191,9 +1216,19 @@ function empbomb() {
         e3hullG = 0
         e3hullB = 190
 
+        e4hullR = 255
+        e4hullG = 165
+        e4hullB = 0
+
+        e5hullR = 255
+        e5hullG = 255
+        e5hullB = 255
+
         enemyBulletXSpeed1 = 8;
         enemyBulletXSpeed2 = 8;
         enemyBulletXSpeed3 = 8;
+        enemyBulletXSpeedSubBoss = 8;
+        enemyBulletXSpeedBoss = 8;
     }
 }//EMP End
 
