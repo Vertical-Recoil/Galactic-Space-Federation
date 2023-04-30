@@ -84,7 +84,7 @@ var chronoY;            //Variable that determines the Y location of the chrono 
 var chrono;             //Variable that determines whether of not the user has chrono_sphere power-up
 var chronoT;            //Variable that determines how long chrono has left
 var chronoS = 1;        //Variable that determines how much the enemy slow
-
+var chronoBS = 100;     //Variable that determines how much the enemy bullet slow
 //Power-Up Variables END
 /*
     ALL ENEMY VARIABLES START
@@ -919,15 +919,15 @@ function chrono_sphere(){
     enemyXSpeed1 -= chronoS;
     enemyXSpeed2 -= chronoS;
     enemyXSpeed3 -= chronoS;
-    enemyBulletXSpeed1 -= chronoS;
-    enemyBulletXSpeed2 -= chronoS;
-    enemyBulletXSpeed3 -= chronoS;
+    enemyBulletXSpeed1 -= chronoBS;
+    enemyBulletXSpeed2 -= chronoBS;
+    enemyBulletXSpeed3 -= chronoBS;
     x -= 0.5;
 
     fill(153, 255, 255);
-    ellipse(enemyX1, enemyY1, 60, 60)
-    ellipse(enemyX2, enemyY2, 60, 60)
-    ellipse(enemyX3, enemyY3, 60, 60)
+    ellipse(enemyX1, enemyY1, 100, 100)
+    ellipse(enemyX2, enemyY2, 100, 100)
+    ellipse(enemyX3, enemyY3, 100, 100)
 
     chronoT--;
     console.log(chronoT);
@@ -939,14 +939,14 @@ function chrono_sphere(){
     enemyXSpeed1 += chronoS;
     enemyXSpeed2 += chronoS;
     enemyXSpeed3 += chronoS; 
-    enemyBulletXSpeed1 += chronoS;
-    enemyBulletXSpeed2 += chronoS;
-    enemyBulletXSpeed3 += chronoS;
+    enemyBulletXSpeed1 += chronoBS;
+    enemyBulletXSpeed2 += chronoBS;
+    enemyBulletXSpeed3 += chronoBS;
 
     fill(255);
-    ellipse(enemyX1, enemyY1, 60, 60)
-    ellipse(enemyX2, enemyY2, 60, 60)
-    ellipse(enemyX3, enemyY3, 60, 60)
+    ellipse(enemyX1, enemyY1, 100, 100)
+    ellipse(enemyX2, enemyY2, 100, 100)
+    ellipse(enemyX3, enemyY3, 100, 100)
    }
 }
 //chrono_sphere end
