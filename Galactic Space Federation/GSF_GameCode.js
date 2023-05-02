@@ -79,7 +79,13 @@ var multX;              //Variable that determines the X location of the multish
 var multY;              //Variable that determines the Y location of the multishot power-up
 var multT;              //Variable that determines how long multishot has left
 
-//
+var chronoX;            //Variable that determines the X location of the chrono power-up
+var chronoY;            //Variable that determines the Y location of the chrono power-up           
+var chrono;             //Variable that determines whether of not the user has chrono_sphere power-up
+var chronoT;            //Variable that determines how long chrono has left
+var chronoS = 1;        //Variable that determines how much the enemy slow
+var chronoBS = 100;     //Variable that determines how much the enemy bullet slow
+
 var emp;                //Variable that determines whether of not the user has emp
 var empX;               //Variable that determines the X location of the emp power-up
 var empY;               //Variable that determines the Y location of the emp power-up
@@ -1139,6 +1145,70 @@ function multishot() {
     }
 }//multishot end
 
+//chrono_sphere start
+function chrono_sphere(){
+    strokeWeight(5)
+    stroke(128)
+    fill(153, 255, 255)
+    rectMode(CENTER)
+
+    //chrono_sphere location logic
+   rect(chronoX, chronoY, 50, 50)
+   chronoX -= 2
+   if (chronoX <= -25) {
+       chronoX = random(1200, 2000)
+       chronoY = random(50, 550)
+   }
+
+   //chrono_sphere utility logic
+   if (playerBulletX >= chronoX - 25 && playerBulletX <= chronoX + 25 && playerBulletY >= chronoY - 25 && playerBulletY <= chronoY + 25 || (playerBulletX2 >= chronoX - 25 && playerBulletX2 <= chronoX + 25 && playerBulletYTop >= chronoY - 25 && playerBulletYTop <= chronoY + 25) || (playerBulletX3 >= chronoX - 25 && playerBulletX3 <= chronoX + 25 && playerBulletYBottom >= chronoY - 25 && playerBulletYBottom <= chronoY + 25)) {
+    chronoT = chronoT + 900;
+    chronoT = constrain(chronoT, 0, 900);
+    chronoX = random(1200, 2000);
+    chronoY = random(50, 550);
+   }
+   if (chronoX <= -25) {
+    chronoX = random(1200, 2000)
+    chronoY = random(50, 550)
+   }
+
+   if(chronoT > 0){
+    chrono = true;
+    enemyXSpeed1 -= chronoS;
+    enemyXSpeed2 -= chronoS;
+    enemyXSpeed3 -= chronoS;
+    enemyBulletXSpeed1 -= chronoBS;
+    enemyBulletXSpeed2 -= chronoBS;
+    enemyBulletXSpeed3 -= chronoBS;
+    x -= 0.5;
+
+    fill(153, 255, 255);
+    ellipse(enemyX1, enemyY1, 40, 40)
+    ellipse(enemyX2, enemyY2, 40, 40)
+    ellipse(enemyX3, enemyY3, 40, 40)
+
+    chronoT--;
+    console.log(chronoT);
+
+    rectMode(CORNER)
+    rect(10, 480, chronoT/10, 25)
+   }else{
+    chrono = false;
+    enemyXSpeed1 += chronoS;
+    enemyXSpeed2 += chronoS;
+    enemyXSpeed3 += chronoS; 
+    enemyBulletXSpeed1 += chronoBS;
+    enemyBulletXSpeed2 += chronoBS;
+    enemyBulletXSpeed3 += chronoBS;
+
+    fill(255);
+    ellipse(enemyX1, enemyY1, 40, 40)
+    ellipse(enemyX2, enemyY2, 40, 40)
+    ellipse(enemyX3, enemyY3, 40, 40)
+   }
+}
+//chrono_sphere end
+
 //EMP Start
 function empbomb() {
     //EMP visuals
@@ -1423,7 +1493,9 @@ function draw() {
             invuln();
             quickshot();
             multishot();
+            chrono_sphere();
             empbomb();
+
 
             strokeWeight(1)
             stroke(0)
