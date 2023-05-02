@@ -616,6 +616,14 @@ function setup() {
         multY = random(50, 550)
         multT = 0
 
+        //Chrono-Sphere
+        chronoX = random(1500, 2000);            //Variable that determines the X location of the chrono power-up
+        chronoY = random(50, 550);            //Variable that determines the Y location of the chrono power-up           
+        chrono = false;             //Variable that determines whether of not the user has chrono_sphere power-up
+        chronoT = 0;            //Variable that determines how long chrono has left
+        chronoS = 1;        //Variable that determines how much the enemy slow
+        chronoBS = 100;     //Variable that determines how much the enemy bullet slow
+
         //EMP
         emp = false;
         empX = random(1500, 2000)
@@ -1188,10 +1196,10 @@ function chrono_sphere(){
     ellipse(enemyX3, enemyY3, 40, 40)
 
     chronoT--;
-    console.log(chronoT);
+    //console.log(chronoT);
 
     rectMode(CORNER)
-    rect(10, 480, chronoT/10, 25)
+    rect(10, 410, chronoT/10, 25)
    }else{
     chrono = false;
     enemyXSpeed1 += chronoS;
@@ -1227,7 +1235,7 @@ function empbomb() {
 
     //EMP interaction
     if (empT <= 0 && playerBulletX >= empX - 25 && playerBulletX <= empX + 25 && playerBulletY >= empY - 25 && playerBulletY <= empY + 25) {
-        empT = 500;
+        empT = empT + 900;
         empT = constrain(empT, 0, 900);
         empX = random(1200, 2000);
         empY = random(50, 550);
