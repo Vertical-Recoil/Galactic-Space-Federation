@@ -913,6 +913,10 @@ function chrono_sphere(){
     chronoX = random(1200, 2000);
     chronoY = random(50, 550);
    }
+   if (chronoX <= -25) {
+    chronoX = random(1200, 2000)
+    chronoY = random(50, 550)
+   }
 
    if(chronoT > 0){
     chrono = true;
@@ -925,9 +929,9 @@ function chrono_sphere(){
     x -= 0.5;
 
     fill(153, 255, 255);
-    ellipse(enemyX1, enemyY1, 100, 100)
-    ellipse(enemyX2, enemyY2, 100, 100)
-    ellipse(enemyX3, enemyY3, 100, 100)
+    ellipse(enemyX1, enemyY1, 40, 40)
+    ellipse(enemyX2, enemyY2, 40, 40)
+    ellipse(enemyX3, enemyY3, 40, 40)
 
     chronoT--;
     console.log(chronoT);
@@ -944,9 +948,9 @@ function chrono_sphere(){
     enemyBulletXSpeed3 += chronoBS;
 
     fill(255);
-    ellipse(enemyX1, enemyY1, 100, 100)
-    ellipse(enemyX2, enemyY2, 100, 100)
-    ellipse(enemyX3, enemyY3, 100, 100)
+    ellipse(enemyX1, enemyY1, 40, 40)
+    ellipse(enemyX2, enemyY2, 40, 40)
+    ellipse(enemyX3, enemyY3, 40, 40)
    }
 }
 //chrono_sphere end
