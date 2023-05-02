@@ -79,7 +79,13 @@ var multX;              //Variable that determines the X location of the multish
 var multY;              //Variable that determines the Y location of the multishot power-up
 var multT;              //Variable that determines how long multishot has left
 
-//
+var chronoX;            //Variable that determines the X location of the chrono power-up
+var chronoY;            //Variable that determines the Y location of the chrono power-up           
+var chrono;             //Variable that determines whether of not the user has chrono_sphere power-up
+var chronoT;            //Variable that determines how long chrono has left
+var chronoS = 1;        //Variable that determines how much the enemy slow
+var chronoBS = 100;     //Variable that determines how much the enemy bullet slow
+
 var emp;                //Variable that determines whether of not the user has emp
 var empX;               //Variable that determines the X location of the emp power-up
 var empY;               //Variable that determines the Y location of the emp power-up
@@ -146,6 +152,9 @@ var enemyXSpeedSubBoss
 var enemyBulletXSpeedSubBoss;
 var hitRegSubBoss;
 var isSubBossDead;
+var e4hullR;
+var e4hullG;
+var e4hullB;
 
 //LVL BOSS
 var enemyXBoss;
@@ -157,6 +166,9 @@ var enemyBulletXSpeedBoss;
 var hitRegBoss;
 var bossHealth;
 var isBossDead;
+var e5hullR;
+var e5hullG;
+var e5hullB;
 
 //ENEMY DEBUFF
 var slowed;
@@ -321,7 +333,7 @@ function enemyLvl3() {
 }
 
 function enemyLvlSubBoss(){
-    fill(255, 165, 0); // orange rectangle
+    fill(e4hullR, e4hullG, e4hullB); // orange rectangle
     rect(enemyXSubBoss, enemyYSubBoss, 40, 40);
     fill(120);
     rect(enemyXSubBoss - 10, enemyYSubBoss + 13, 35, 12);
@@ -401,7 +413,7 @@ function enemyLvlSubBoss(){
   }
 
   function enemyLvlBoss(){
-    fill(255, 255, 255); // white rectangle
+    fill(e5hullR, e5hullG, e5hullB);; // white rectangle
     rect(enemyXBoss, enemyYBoss, 40, 40);
     fill(120); 
     rect(enemyXBoss - 10, enemyYBoss + 13, 35, 12);
@@ -562,6 +574,9 @@ function setup() {
         enemyXSpeedSubBoss = 2;
         enemyBulletXSpeedSubBoss = 8;
         isSubBossDead = false;
+        e4hullR = 255;
+        e4hullG = 165;
+        e4hullB = 0;
 
         enemyXBoss = random(1050, 1100);
         enemyYBoss = random(50, 550);
@@ -571,6 +586,9 @@ function setup() {
         enemyBulletXSpeedBoss = 8;
         bossHealth = 5;
         isBossDead = false;
+        e5hullR = 255;
+        e5hullG = 255;
+        e5hullB = 255;
         //Debuff
         slowed = false;
         slowedDuration = 10;
@@ -597,6 +615,14 @@ function setup() {
         multX = random(1500, 2000)
         multY = random(50, 550)
         multT = 0
+
+        //Chrono-Sphere
+        chronoX = random(1500, 2000);            //Variable that determines the X location of the chrono power-up
+        chronoY = random(50, 550);            //Variable that determines the Y location of the chrono power-up           
+        chrono = false;             //Variable that determines whether of not the user has chrono_sphere power-up
+        chronoT = 0;            //Variable that determines how long chrono has left
+        chronoS = 1;        //Variable that determines how much the enemy slow
+        chronoBS = 100;     //Variable that determines how much the enemy bullet slow
 
         //EMP
         emp = false;
@@ -1127,6 +1153,70 @@ function multishot() {
     }
 }//multishot end
 
+//chrono_sphere start
+function chrono_sphere(){
+    strokeWeight(5)
+    stroke(128)
+    fill(153, 255, 255)
+    rectMode(CENTER)
+
+    //chrono_sphere location logic
+   rect(chronoX, chronoY, 50, 50)
+   chronoX -= 2
+   if (chronoX <= -25) {
+       chronoX = random(1200, 2000)
+       chronoY = random(50, 550)
+   }
+
+   //chrono_sphere utility logic
+   if (playerBulletX >= chronoX - 25 && playerBulletX <= chronoX + 25 && playerBulletY >= chronoY - 25 && playerBulletY <= chronoY + 25 || (playerBulletX2 >= chronoX - 25 && playerBulletX2 <= chronoX + 25 && playerBulletYTop >= chronoY - 25 && playerBulletYTop <= chronoY + 25) || (playerBulletX3 >= chronoX - 25 && playerBulletX3 <= chronoX + 25 && playerBulletYBottom >= chronoY - 25 && playerBulletYBottom <= chronoY + 25)) {
+    chronoT = chronoT + 900;
+    chronoT = constrain(chronoT, 0, 900);
+    chronoX = random(1200, 2000);
+    chronoY = random(50, 550);
+   }
+   if (chronoX <= -25) {
+    chronoX = random(1200, 2000)
+    chronoY = random(50, 550)
+   }
+
+   if(chronoT > 0){
+    chrono = true;
+    enemyXSpeed1 -= chronoS;
+    enemyXSpeed2 -= chronoS;
+    enemyXSpeed3 -= chronoS;
+    enemyBulletXSpeed1 -= chronoBS;
+    enemyBulletXSpeed2 -= chronoBS;
+    enemyBulletXSpeed3 -= chronoBS;
+    x -= 0.5;
+
+    fill(153, 255, 255);
+    ellipse(enemyX1, enemyY1, 40, 40)
+    ellipse(enemyX2, enemyY2, 40, 40)
+    ellipse(enemyX3, enemyY3, 40, 40)
+
+    chronoT--;
+    //console.log(chronoT);
+
+    rectMode(CORNER)
+    rect(10, 410, chronoT/10, 25)
+   }else{
+    chrono = false;
+    enemyXSpeed1 += chronoS;
+    enemyXSpeed2 += chronoS;
+    enemyXSpeed3 += chronoS; 
+    enemyBulletXSpeed1 += chronoBS;
+    enemyBulletXSpeed2 += chronoBS;
+    enemyBulletXSpeed3 += chronoBS;
+
+    fill(255);
+    ellipse(enemyX1, enemyY1, 40, 40)
+    ellipse(enemyX2, enemyY2, 40, 40)
+    ellipse(enemyX3, enemyY3, 40, 40)
+   }
+}
+//chrono_sphere end
+
 //EMP Start
 function empbomb() {
     //EMP visuals
@@ -1145,7 +1235,7 @@ function empbomb() {
 
     //EMP interaction
     if (empT <= 0 && playerBulletX >= empX - 25 && playerBulletX <= empX + 25 && playerBulletY >= empY - 25 && playerBulletY <= empY + 25) {
-        empT = 500;
+        empT = empT + 900;
         empT = constrain(empT, 0, 900);
         empX = random(1200, 2000);
         empY = random(50, 550);
@@ -1157,6 +1247,9 @@ function empbomb() {
         enemyBulletX1 = (0, 0)
         enemyBulletX2 = (0, 0)
         enemyBulletX3 = (0, 0)
+        enemyBulletXSubBoss = (0, 0)
+        enemyBulletXBoss = (0, 0)
+
 
         e1hullR = 255
         e1hullG = 255
@@ -1170,9 +1263,19 @@ function empbomb() {
         e3hullG = 255
         e3hullB = 0
 
+        e4hullR = 255
+        e4hullG = 255
+        e4hullB = 0
+
+        e5hullR = 255
+        e5hullG = 255
+        e5hullB = 0
+
         enemyBulletXSpeed1 = 0;
         enemyBulletXSpeed2 = 0;
         enemyBulletXSpeed3 = 0;
+        enemyBulletXSpeedSubBoss = 0;
+        enemyBulletXSpeedBoss = 0;
 
         empT--;
         rectMode(CORNER)
@@ -1191,9 +1294,19 @@ function empbomb() {
         e3hullG = 0
         e3hullB = 190
 
+        e4hullR = 255
+        e4hullG = 165
+        e4hullB = 0
+
+        e5hullR = 255
+        e5hullG = 255
+        e5hullB = 255
+
         enemyBulletXSpeed1 = 8;
         enemyBulletXSpeed2 = 8;
         enemyBulletXSpeed3 = 8;
+        enemyBulletXSpeedSubBoss = 8;
+        enemyBulletXSpeedBoss = 8;
     }
 }//EMP End
 
@@ -1388,7 +1501,9 @@ function draw() {
             invuln();
             quickshot();
             multishot();
+            chrono_sphere();
             empbomb();
+
 
             strokeWeight(1)
             stroke(0)
