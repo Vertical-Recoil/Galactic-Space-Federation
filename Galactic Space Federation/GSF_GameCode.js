@@ -362,11 +362,11 @@ function enemyLvlSubBoss(){
     if (enemyBulletXSubBoss >= shipx - 10 && enemyBulletXSubBoss <= shipx + 35 && enemyBulletYSubBoss >= shipy - 35 && enemyBulletYSubBoss <= shipy + 10) {
       if (hitRegSubBoss == true && iddqd == false) {
         health--;
-        hitRegSubBoss = 0;
+        hitRegSubBoss = false;
         slowed = true; //set slowed to true
       }
     }
-    if (slowed){
+    if (slowed == true){
         setTimeout(function(){
             slowed = false;
         }, slowedDuration * 1000);
@@ -381,13 +381,13 @@ function enemyLvlSubBoss(){
         enemyXSubBoss = 850; //move subboss off screen
         enemyYSubBoss = random(115, 550);
         enemyXSpeedSubBoss = 0;
+        enemyBulletXSpeedSubBoss = 8;
         setTimeout(function() {
             isSubBossDead = false;
             enemyXSpeedSubBoss = 2;
             if(score >= 35000){
                 enemyXSpeedSubBoss = 3;
             }
-            enemyBulletXSpeedSubBoss = 8;
           score = score + int(random(59, 217));
         }, 4000); // 4 seconds delay
       score = score - 100;
@@ -400,6 +400,7 @@ function enemyLvlSubBoss(){
         enemyXSubBoss = 850; //move subboss off screen
         enemyYSubBoss = random(115, 550);
         enemyXSpeedSubBoss = 0;
+        enemyBulletXSpeedSubBoss = 8;
         score = score + int(random(59, 217));
         setTimeout(function() {
             isSubBossDead = false;
@@ -407,7 +408,6 @@ function enemyLvlSubBoss(){
             if(score >= 35000){
                 enemyXSpeedSubBoss = 3;
             }
-            enemyBulletXSpeedSubBoss = 8;
         }, 4000); // 4 seconds delay
     }
   }
@@ -439,7 +439,6 @@ function enemyLvlSubBoss(){
     if (enemyBulletXBoss <= -30) {
       if(isBossDead)
       {
-        enemyBulletXSpeedBoss = 0;
         enemyBulletXBoss = enemyXBoss;
         enemyBulletYBoss = enemyYBoss;
       }
@@ -572,7 +571,7 @@ function setup() {
         enemyBulletXSubBoss = enemyXSubBoss;
         enemyBulletYSubBoss = enemyYSubBoss;
         enemyXSpeedSubBoss = 2;
-        enemyBulletXSpeedSubBoss = 8;
+        enemyBulletXSpeedSubBoss = 2;
         isSubBossDead = false;
         e4hullR = 255;
         e4hullG = 165;
@@ -1182,37 +1181,32 @@ function chrono_sphere(){
 
    if(chronoT > 0){
     chrono = true;
-    enemyXSpeed1 -= chronoS;
-    enemyXSpeed2 -= chronoS;
-    enemyXSpeed3 -= chronoS;
-    enemyBulletXSpeed1 -= chronoBS;
-    enemyBulletXSpeed2 -= chronoBS;
-    enemyBulletXSpeed3 -= chronoBS;
-    x -= 0.5;
+    enemyXSpeed1 = 2;
+    enemyXSpeed2 = 2;
+    enemyXSpeed3 = 2;
+    enemyBulletXSpeed1 = 4;
+    enemyBulletXSpeed2 = 4;
+    enemyBulletXSpeed3 = 4;
+    enemyXSpeedSubBoss = 2;
+    enemyXSpeedBoss = 4;
+    x = 0.5;
 
-    fill(153, 255, 255);
-    ellipse(enemyX1, enemyY1, 40, 40)
-    ellipse(enemyX2, enemyY2, 40, 40)
-    ellipse(enemyX3, enemyY3, 40, 40)
+    rectMode(CENTER)
+    strokeWeight(1)
+    fill('rgba(153, 255, 255, 0.25)')
+    circle(enemyX1 + 20, enemyY1 + 20, 60)
+    circle(enemyX2 + 20, enemyY2 + 20, 60)
+    circle(enemyX3 + 20, enemyY3 + 20, 60)
+    strokeWeight(5)
 
     chronoT--;
     //console.log(chronoT);
 
     rectMode(CORNER)
+    fill(153, 255, 255)
     rect(10, 410, chronoT/10, 25)
    }else{
     chrono = false;
-    enemyXSpeed1 += chronoS;
-    enemyXSpeed2 += chronoS;
-    enemyXSpeed3 += chronoS; 
-    enemyBulletXSpeed1 += chronoBS;
-    enemyBulletXSpeed2 += chronoBS;
-    enemyBulletXSpeed3 += chronoBS;
-
-    fill(255);
-    ellipse(enemyX1, enemyY1, 40, 40)
-    ellipse(enemyX2, enemyY2, 40, 40)
-    ellipse(enemyX3, enemyY3, 40, 40)
    }
 }
 //chrono_sphere end
@@ -1302,11 +1296,6 @@ function empbomb() {
         e5hullG = 255
         e5hullB = 255
 
-        enemyBulletXSpeed1 = 8;
-        enemyBulletXSpeed2 = 8;
-        enemyBulletXSpeed3 = 8;
-        enemyBulletXSpeedSubBoss = 8;
-        enemyBulletXSpeedBoss = 8;
     }
 }//EMP End
 
@@ -1323,7 +1312,9 @@ function difficulty() {
 
         strokeWeight(2);
 
-        enemyXSpeed1 = 2;
+        if(chrono == false){
+            enemyXSpeed1 = 2;
+        }
         enemyLvl1();
     } else if (score >= 5000 && score < 11000) {           //LRT (Low-Risk Targets)
         strokeWeight(0);
@@ -1336,7 +1327,9 @@ function difficulty() {
 
         strokeWeight(2);
 
-        enemyXSpeed1 = 5;
+        if(chrono == false){
+            enemyXSpeed1 = 5;
+        }
         enemyLvl1();
     } else if (score >= 11000 && score < 18000) {          //MRT (Moderate-Risk Targets)
         strokeWeight(0);
@@ -1349,8 +1342,10 @@ function difficulty() {
 
         strokeWeight(2);
 
-        enemyXSpeed1 = 5;
-        enemyXSpeed2 = 2;
+        if(chrono == false){
+            enemyXSpeed1 = 5;
+            enemyXSpeed2 = 2;
+        }
         enemyLvl1();
         enemyLvl2();
         enemyLvlSubBoss();
@@ -1365,8 +1360,10 @@ function difficulty() {
 
         strokeWeight(2);
 
-        enemyXSpeed1 = 5;
-        enemyXSpeed2 = 5;
+        if(chrono == false){
+            enemyXSpeed1 = 5;
+            enemyXSpeed2 = 5;
+        }
         enemyLvl1();
         enemyLvl2();
         enemyLvlSubBoss();
@@ -1381,9 +1378,11 @@ function difficulty() {
 
         strokeWeight(2);
 
-        enemyXSpeed1 = 5;
-        enemyXSpeed2 = 5;
-        enemyXSpeed3 = 2;
+        if(chrono == false){
+            enemyXSpeed1 = 5;
+            enemyXSpeed2 = 5;
+            enemyXSpeed3 = 2;
+        }
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
@@ -1399,9 +1398,11 @@ function difficulty() {
 
         strokeWeight(2);
 
-        enemyXSpeed1 = 5;
-        enemyXSpeed2 = 5;
-        enemyXSpeed3 = 5;
+        if(chrono == false){
+            enemyXSpeed1 = 5;
+            enemyXSpeed2 = 5;
+            enemyXSpeed3 = 5;
+        }
         enemyLvl1();
         enemyLvl2();
         enemyLvl3();
