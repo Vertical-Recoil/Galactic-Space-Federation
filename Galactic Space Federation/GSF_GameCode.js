@@ -594,29 +594,29 @@ function setup() {
 
         //Power-Up Default Values
         //Health
-        lifeboxX = random(1500, 2000)
+        lifeboxX = 1500
         lifeboxY = random(50, 550)
 
         //Invulnerability
         iddqd = false;
-        iddqdX = random(1500, 2000)
+        iddqdX = random(4000, 7000)
         iddqdY = random(50, 550)
         iddqdT = 0
 
         //Quick-shot
         quick = false;
-        quickX = random(1500, 2000)
+        quickX = random(4000, 7000)
         quickY = random(50, 550)
         quickT = 0
 
         //Multi-shot
         mult = false;
-        multX = random(1500, 2000)
+        multX = random(4000, 7000)
         multY = random(50, 550)
         multT = 0
 
         //Chrono-Sphere
-        chronoX = random(1500, 2000);            //Variable that determines the X location of the chrono power-up
+        chronoX = random(4000, 7000);            //Variable that determines the X location of the chrono power-up
         chronoY = random(50, 550);            //Variable that determines the Y location of the chrono power-up           
         chrono = false;             //Variable that determines whether of not the user has chrono_sphere power-up
         chronoT = 0;            //Variable that determines how long chrono has left
@@ -625,7 +625,7 @@ function setup() {
 
         //EMP
         emp = false;
-        empX = random(1500, 2000)
+        empX = random(4000, 7000)
         empY = random(50, 550)
         empT = 0
 
@@ -985,7 +985,7 @@ function healthPack() {
     rect(lifeboxX, lifeboxY, 50, 50)
     lifeboxX -= 2
     if (lifeboxX <= -25) {
-        lifeboxX = random(1200, 2000)
+        lifeboxX = random(4000, 7000)
         lifeboxY = random(50, 550)
     }
 
@@ -995,7 +995,7 @@ function healthPack() {
             score = score + 1000
         }
         health = health + 1
-        lifeboxX = random(1200, 2000)
+        lifeboxX = random(4000, 7000)
         lifeboxY = random(50, 550)
 
     }
@@ -1014,7 +1014,7 @@ function invuln() {
     iddqdX -= 2
 
     if (iddqdX <= -25) {
-        iddqdX = random(1200, 2000)
+        iddqdX = random(4000, 7000)
         iddqdY = random(50, 550)
     }
 
@@ -1022,7 +1022,7 @@ function invuln() {
     if (playerBulletX >= iddqdX - 25 && playerBulletX <= iddqdX + 25 && playerBulletY >= iddqdY - 25 && playerBulletY <= iddqdY + 25 || (playerBulletX2 >= iddqdX - 25 && playerBulletX2 <= iddqdX + 25 && playerBulletYTop >= iddqdY - 25 && playerBulletYTop <= iddqdY + 25) || (playerBulletX3 >= iddqdX - 25 && playerBulletX3 <= iddqdX + 25 && playerBulletYBottom >= iddqdY - 25 && playerBulletYBottom <= iddqdY + 25)) {
         iddqdT = iddqdT + 900;
         iddqdT = constrain(iddqdT, 0, 900);
-        iddqdX = random(1200, 2000);
+        iddqdX = random(4000, 7000);
         iddqdY = random(50, 550);
 
     }
@@ -1058,7 +1058,7 @@ function quickshot() {
     quickX -= 2
 
     if (quickX <= -25) {
-        quickX = random(1200, 2000)
+        quickX = random(4000, 7000)
         quickY = random(50, 550)
     }
 
@@ -1066,7 +1066,7 @@ function quickshot() {
     if (playerBulletX >= quickX - 25 && playerBulletX <= quickX + 25 && playerBulletY >= quickY - 25 && playerBulletY <= quickY + 25 || (playerBulletX2 >= quickX - 25 && playerBulletX2 <= quickX + 25 && playerBulletYTop >= quickY - 25 && playerBulletYTop <= quickY + 25) || (playerBulletX3 >= quickX - 25 && playerBulletX3 <= quickX + 25 && playerBulletYBottom >= quickY - 25 && playerBulletYBottom <= quickY + 25)) {
         quickT = quickT + 900;
         quickT = constrain(quickT, 0, 900);
-        quickX = random(1200, 2000);
+        quickX = random(4000, 7000);
         quickY = random(50, 550);
 
     }
@@ -1114,7 +1114,7 @@ function multishot() {
     rect(multX, multY, 50, 50)
     multX -= 2
     if (multX <= -25) {
-        multX = random(1200, 2000)
+        multX = random(4000, 7000)
         multY = random(50, 550)
     }
 
@@ -1122,7 +1122,7 @@ function multishot() {
     if (playerBulletX >= multX - 25 && playerBulletX <= multX + 25 && playerBulletY >= multY - 25 && playerBulletY <= multY + 25 || (playerBulletX2 >= multX - 25 && playerBulletX2 <= multX + 25 && playerBulletYTop >= multY - 25 && playerBulletYTop <= multY + 25) || (playerBulletX3 >= multX - 25 && playerBulletX3 <= multX + 25 && playerBulletYBottom >= multY - 25 && playerBulletYBottom <= multY + 25)) {
         multT = multT + 900;
         multT = constrain(multT, 0, 900);
-        multX = random(1200, 2000);
+        multX = random(4000, 7000);
         multY = random(50, 550);
     }
     //multishot activity logic
@@ -1163,7 +1163,7 @@ function chrono_sphere(){
    rect(chronoX, chronoY, 50, 50)
    chronoX -= 2
    if (chronoX <= -25) {
-       chronoX = random(1200, 2000)
+       chronoX = random(4000, 7000)
        chronoY = random(50, 550)
    }
 
@@ -1171,11 +1171,11 @@ function chrono_sphere(){
    if (playerBulletX >= chronoX - 25 && playerBulletX <= chronoX + 25 && playerBulletY >= chronoY - 25 && playerBulletY <= chronoY + 25 || (playerBulletX2 >= chronoX - 25 && playerBulletX2 <= chronoX + 25 && playerBulletYTop >= chronoY - 25 && playerBulletYTop <= chronoY + 25) || (playerBulletX3 >= chronoX - 25 && playerBulletX3 <= chronoX + 25 && playerBulletYBottom >= chronoY - 25 && playerBulletYBottom <= chronoY + 25)) {
     chronoT = chronoT + 900;
     chronoT = constrain(chronoT, 0, 900);
-    chronoX = random(1200, 2000);
+    chronoX = random(4000, 7000);
     chronoY = random(50, 550);
    }
    if (chronoX <= -25) {
-    chronoX = random(1200, 2000)
+    chronoX = random(4000, 7000)
     chronoY = random(50, 550)
    }
 
@@ -1223,7 +1223,7 @@ function empbomb() {
     rect(empX, empY, 50, 50)
     empX -= 2
     if (empX <= -25) {
-        empX = random(1200, 2000)
+        empX = random(4000, 7000)
         empY = random(50, 550)
     }
 
@@ -1231,7 +1231,7 @@ function empbomb() {
     if (empT <= 0 && playerBulletX >= empX - 25 && playerBulletX <= empX + 25 && playerBulletY >= empY - 25 && playerBulletY <= empY + 25) {
         empT = empT + 900;
         empT = constrain(empT, 0, 900);
-        empX = random(1200, 2000);
+        empX = random(4000, 7000);
         empY = random(50, 550);
     }
 
